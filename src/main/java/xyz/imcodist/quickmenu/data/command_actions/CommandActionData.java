@@ -23,12 +23,12 @@ public class CommandActionData extends BaseActionData {
     }
 
     @Override
-    public void run() {
+    public long run() {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client == null) return;
+        if (client == null) return 0;
 
         ClientPlayerEntity player = client.player;
-        if (player == null) return;
+        if (player == null) return 0;
 
         // Run the command.
         String commandToRun = command;
@@ -44,5 +44,6 @@ public class CommandActionData extends BaseActionData {
                 player.networkHandler.sendChatMessage(commandToRun);
             }
         }
+        return 0;
     }
 }

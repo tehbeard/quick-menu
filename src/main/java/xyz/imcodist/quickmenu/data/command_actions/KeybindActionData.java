@@ -23,7 +23,8 @@ public class KeybindActionData extends BaseActionData {
     }
 
     @Override
-    public void run() {
+    public long run() {
         KeybindHandler.pressKey(keybindTranslationKey);
+        return 0;
     }
 }

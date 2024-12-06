@@ -13,5 +13,7 @@ public class BaseActionData {
         return "uh oh why are you seeing this";
     }
 
-    public void run() {}
+    public long run() {
+        return 0;
+    }
 }

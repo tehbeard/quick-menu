@@ -3,10 +3,8 @@ package xyz.imcodist.quickmenu;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.util.InputUtil;
-import xyz.imcodist.quickmenu.other.ActionButtonDataHandler;
-import xyz.imcodist.quickmenu.other.KeybindHandler;
+import xyz.imcodist.quickmenu.other.*;
 import xyz.imcodist.quickmenu.other.ModConfig;
-import xyz.imcodist.quickmenu.other.ModKeybindings;
 import xyz.imcodist.quickmenu.ui.MainUI;
 
 public class QuickMenu implements ModInitializer {
@@ -20,8 +18,10 @@ public class QuickMenu implements ModInitializer {
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();
 
+//        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
         ClientTickEvents.END_CLIENT_TICK.register((client) -> {
+            ActionButtonDelayHandler.INSTANCE.doDelayChecks();
             // Check for menu open keybind.
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {

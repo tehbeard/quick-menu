@@ -24,7 +24,8 @@ public class DelayActionData extends BaseActionData {
     }
 
     @Override
-    public void run() {
+    public long run() {
         // TODO - rework this function to allow delays
+        return ticks;
     }
 }

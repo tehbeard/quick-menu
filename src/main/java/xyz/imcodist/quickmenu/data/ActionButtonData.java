@@ -1,5 +1,6 @@
 package xyz.imcodist.quickmenu.data;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
@@ -13,9 +14,12 @@ import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 import xyz.imcodist.quickmenu.data.command_actions.CommandActionData;
 import xyz.imcodist.quickmenu.data.command_actions.DelayActionData;
 import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
+import xyz.imcodist.quickmenu.other.ActionButtonDelayHandler;
 import xyz.imcodist.quickmenu.other.ModConfigModel;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionButtonData {
     public String name;
@@ -120,7 +124,52 @@ public class ActionButtonData {
 //        MinecraftClient.getInstance()
 
         // Run the buttons action.
-        actions.forEach(BaseActionData::run);
+//        actions.forEach(BaseActionData::run);
+        new ActionButtonDataContext(new ArrayList<>(actions), 0).run();
+    }
+
+    public static class ActionButtonDataContext {
+
+        private final List<BaseActionData> actions;
+        private long delay;
+
+        public ActionButtonDataContext(
+            List<BaseActionData> actions,
+            long delay
+        ) {
+            this.actions = actions;
+            this.delay = delay;
+        }
+
+        public void run() {
+            for (var idx = 0; idx < actions.size(); idx++) {
+                var action = actions.get(idx);
+                var nextDelay = action.run();
+                if (nextDelay > 0) {
+                    // TODO : Envelope the remaining actions in a timer.
+                    var nextSet = new ActionButtonDataContext(actions.subList(idx + 1, actions.size()), nextDelay);
+                    // TODO - Create a timer construct that listens
+                    ActionButtonDelayHandler.INSTANCE.add(nextSet);
+                    return;
+                }
+            }
+        }
+
+        public long getDelay() {
+            return delay;
+        }
+
+        public void decrementDelay()
+        {
+            delay = Math.max(0, delay - 1);
+        }
+
+        public boolean isReady()
+        {
+            return delay == 0;
+        }
+
+
     }
 }
 
