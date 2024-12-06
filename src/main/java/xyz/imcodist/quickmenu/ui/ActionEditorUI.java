@@ -23,6 +23,7 @@ import org.lwjgl.glfw.GLFW;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
 import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 import xyz.imcodist.quickmenu.data.command_actions.CommandActionData;
+import xyz.imcodist.quickmenu.data.command_actions.DelayActionData;
 import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
 import xyz.imcodist.quickmenu.other.ActionButtonDataHandler;
 import xyz.imcodist.quickmenu.ui.components.QuickMenuButton;
@@ -313,6 +314,16 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
                 property.child(keybindActionButton);
             }
 
+            if (action instanceof DelayActionData delayAction) {
+                TextBoxComponent textBoxComponent = Components.textBox(Sizing.fill(57));
+
+                textBoxComponent.setMaxLength(10);
+                textBoxComponent.text( String.format("%s", delayAction.ticks) );
+
+                property.child(textBoxComponent);
+                source = textBoxComponent;
+            }
+
             // Add the remove button.
             ButtonComponent removeActionButton = Components.button(Text.literal(" - "), (buttonComponent -> {
                 int currentIndex = actionArray.indexOf(action);
@@ -375,6 +386,11 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
             if (action instanceof CommandActionData commandAction) {
                 TextBoxComponent textBoxSource = (TextBoxComponent) source;
                 commandAction.command = textBoxSource.getText();
+            }
+
+            if (action instanceof DelayActionData delayAction) {
+                TextBoxComponent textBoxSource = (TextBoxComponent) source;
+                delayAction.ticks = Long.parseLong(textBoxSource.getText());
             }
 
             i.addAndGet(1);

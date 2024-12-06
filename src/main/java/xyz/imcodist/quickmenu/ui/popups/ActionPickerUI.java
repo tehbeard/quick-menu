@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 import xyz.imcodist.quickmenu.data.command_actions.CommandActionData;
+import xyz.imcodist.quickmenu.data.command_actions.DelayActionData;
 import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
 import xyz.imcodist.quickmenu.ui.surfaces.SwitcherSurface;
 
@@ -47,6 +48,7 @@ public class ActionPickerUI extends OverlayContainer<FlowLayout> {
         // Create action buttons.
         addListData("command", "Command", "Runs a chat command.");
         addListData("keybind", "Keybind", "Activates a keybind.");
+        addListData("delay", "Delay", "Adds a delay.");
 
         for (ArrayList<String> data : listData) {
             actionsLayout.child(createActionLayout(data));
@@ -91,6 +93,7 @@ public class ActionPickerUI extends OverlayContainer<FlowLayout> {
         switch (type) {
             case "command" -> {return new CommandActionData();}
             case "keybind" -> {return new KeybindActionData();}
+            case "delay" -> { return new DelayActionData(); }
         }
 
         return null;

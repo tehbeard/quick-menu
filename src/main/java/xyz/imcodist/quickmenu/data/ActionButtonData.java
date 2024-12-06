@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.QuickMenu;
 import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 import xyz.imcodist.quickmenu.data.command_actions.CommandActionData;
+import xyz.imcodist.quickmenu.data.command_actions.DelayActionData;
 import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
 import xyz.imcodist.quickmenu.other.ModConfigModel;
 
@@ -87,6 +88,11 @@ public class ActionButtonData {
                 keybindActionData.keybindTranslationKey = value;
                 return keybindActionData;
             }
+            case "delay" -> {
+                var delayAction = new DelayActionData();
+                delayAction.ticks = Long.parseLong(value);
+                return delayAction;
+            }
         }
 
         return null;
@@ -111,6 +117,7 @@ public class ActionButtonData {
                 client.player.sendMessage(Text.of("Ran action \"" + name + "\""), true);
             }
         }
+//        MinecraftClient.getInstance()
 
         // Run the buttons action.
         actions.forEach(BaseActionData::run);
