@@ -1,6 +1,5 @@
 package xyz.imcodist.quickmenu.data;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
@@ -17,7 +16,6 @@ import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
 import xyz.imcodist.quickmenu.other.ActionButtonDelayHandler;
 import xyz.imcodist.quickmenu.other.ModConfigModel;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
