@@ -50,7 +50,12 @@ public class ActionButtonData {
                 jsonData.icon = icon.getRegistryEntry().getKey().get().getValue().toString();
             }
 
-            jsonData.customModelData = icon.getOrDefault(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelDataComponent.DEFAULT).value();
+            String cmdString = "";
+
+            CustomModelDataComponent customModelDataComponent = icon.getOrDefault(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelDataComponent.DEFAULT);
+            if (!customModelDataComponent.strings().isEmpty()) cmdString = customModelDataComponent.strings().getFirst();
+
+            jsonData.customModelData = cmdString;
         }
 
         return jsonData;
@@ -71,7 +76,9 @@ public class ActionButtonData {
 
         if (json.icon != null) {
             data.icon = new ItemStack(Registries.ITEM.get(Identifier.of(json.icon)));
-            data.icon.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(json.customModelData));
+
+            CustomModelDataValues customModelDataValues = new CustomModelDataValues(json.customModelData);
+            data.icon.set(DataComponentTypes.CUSTOM_MODEL_DATA, customModelDataValues.getComponent());
         }
 
         return data;
@@ -170,6 +177,26 @@ public class ActionButtonData {
         }
 
 
+    }
+
+    public static class CustomModelDataValues {
+        public List<String> stringList;
+        public List<Float> floatList = List.of();
+
+        public CustomModelDataValues(String cmdStr) {
+            stringList = List.of(cmdStr);
+
+            try{
+                floatList = List.of(Float.parseFloat(cmdStr));
+            } catch (Exception ignored) {}
+        }
+
+        public CustomModelDataComponent getComponent() {
+            return new CustomModelDataComponent(
+                this.floatList, List.of(),
+                this.stringList, List.of()
+            );
+        }
     }
 }
 

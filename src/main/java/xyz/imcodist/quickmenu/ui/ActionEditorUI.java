@@ -160,16 +160,12 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
         FlowLayout customModelDataProperty = createNewProperty("custommodeldata", false);
         advancedLayout.child(customModelDataProperty);
 
-        Integer customModelData = getCustomModelData(iconButton.itemIcon);
-        String cmdText = customModelData != 0 ? customModelData.toString() : "";
+        String customModelData = getCustomModelData(iconButton.itemIcon);
 
-        customModelDataTextBox = Components.textBox(Sizing.fixed(75), cmdText);
+        customModelDataTextBox = Components.textBox(Sizing.fixed(75), customModelData);
         customModelDataTextBox.cursorStyle(CursorStyle.TEXT);
 
-        customModelDataTextBox.onChanged().subscribe((text) -> {
-            customModelDataTextBox.setText(text.replaceAll("^0+|\\D", ""));
-            updateCustomModelData(iconButton.itemIcon);
-        });
+        customModelDataTextBox.onChanged().subscribe((text) -> updateCustomModelData(iconButton.itemIcon));
 
         customModelDataProperty.child(customModelDataTextBox);
 
@@ -215,9 +211,13 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
         buttonsLayout.child(cancelButton);
     }
 
-    private Integer getCustomModelData(ItemStack item) {
-        if (item == null) return CustomModelDataComponent.DEFAULT.value();
-        return item.getOrDefault(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelDataComponent.DEFAULT).value();
+    private String getCustomModelData(ItemStack item) {
+        if (item == null) return "";
+
+        CustomModelDataComponent cmdComponent = item.getOrDefault(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelDataComponent.DEFAULT);
+        if (cmdComponent.strings().isEmpty()) return "";
+
+        return cmdComponent.strings().getFirst();
     }
 
     private void updateCustomModelData(ItemStack itemStack) {
@@ -227,8 +227,10 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
         if (itemStack == null) return;
 
         try {
-            if (!text.equals("")) {
-                itemStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(Integer.parseInt(text)));
+            ActionButtonData.CustomModelDataValues values = new ActionButtonData.CustomModelDataValues(text);
+            if (!text.isEmpty()) {
+                itemStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, values.getComponent());
+                System.out.println(getCustomModelData(itemStack));
             } else {
                 itemStack.remove(DataComponentTypes.CUSTOM_MODEL_DATA);
             }
@@ -407,11 +409,11 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
             if (!isMouse) {
                 message = InputUtil.fromKeyCode(keybind.get(0), keybind.get(1)).getLocalizedText().getString();
             } else {
-                message = switch (keybind.get(0)) {
+                message = switch (keybind.getFirst()) {
                     case 0 -> "Left Button";
                     case 1 -> "Right Button";
                     case 2 -> "Middle Button";
-                    default -> "Mouse " + keybind.get(0);
+                    default -> "Mouse " + keybind.getFirst();
                 };
             }
         }
@@ -421,7 +423,7 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
     }
 
     private void updateActionKeybindMessage(ButtonComponent button, KeybindActionData actionData) {
-        if (!actionData.keybindTranslationKey.equals("")) {
+        if (!actionData.keybindTranslationKey.isEmpty()) {
             String textString = Text.translatable(actionData.keybindTranslationKey).getString();
             int maxLength = 14;
 
