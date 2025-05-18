@@ -25,14 +25,14 @@ public class SwitcherSurface implements Surface {
         int sourceX = (isHeader) ? 0 : 24;
 
         // Make sure the background renders as transparent.
-        if (!isHeader) RenderSystem.enableBlend();
+//        if (!isHeader) RenderSystem.enableBlend(); // TODO - Figure out if a fix is needed
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         // Draws the texture as a 9 slice.
         drawNineSlicedTexture(context, x, y, width, height, sourceX, 0, 6, 6, 12, 12, 52, 50);
 
         // Undo previous render system changes.
-        if (!isHeader) RenderSystem.disableBlend();
+//        if (!isHeader) RenderSystem.disableBlend(); // TODO - Figure out if a fix is needed
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
