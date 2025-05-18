@@ -392,7 +392,7 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
 
             if (action instanceof DelayActionData delayAction) {
                 TextBoxComponent textBoxSource = (TextBoxComponent) source;
-                delayAction.ticks = Long.parseLong(textBoxSource.getText());
+                delayAction.ticks = Math.max(0, Long.parseLong(textBoxSource.getText()));
             }
 
             i.addAndGet(1);

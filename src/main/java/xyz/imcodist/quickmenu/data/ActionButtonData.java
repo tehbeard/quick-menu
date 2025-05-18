@@ -101,7 +101,7 @@ public class ActionButtonData {
             }
             case "delay" -> {
                 var delayAction = new DelayActionData();
-                delayAction.ticks = Long.parseLong(value);
+                delayAction.ticks = Math.max(0, Long.parseLong(value));
                 return delayAction;
             }
         }
