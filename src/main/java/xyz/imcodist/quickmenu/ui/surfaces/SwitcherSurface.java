@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.ParentComponent;
 import io.wispforest.owo.ui.core.Surface;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
@@ -26,14 +27,14 @@ public class SwitcherSurface implements Surface {
 
         // Make sure the background renders as transparent.
 //        if (!isHeader) RenderSystem.enableBlend(); // TODO - Figure out if a fix is needed
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+//        RenderSystem.setShaderColor(1, 1, 1, 1);
 
         // Draws the texture as a 9 slice.
         drawNineSlicedTexture(context, x, y, width, height, sourceX, 0, 6, 6, 12, 12, 52, 50);
 
         // Undo previous render system changes.
 //        if (!isHeader) RenderSystem.disableBlend(); // TODO - Figure out if a fix is needed
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+//        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     public void drawNineSlicedTexture(OwoUIDrawContext context, int x, int y, int width, int height, int sourceX, int sourceY, int sideWidth, int sideHeight, int centerWidth, int centerHeight, int textureWidth, int textureHeight) {
@@ -59,7 +60,7 @@ public class SwitcherSurface implements Surface {
     }
 
     public void drawTexture(OwoUIDrawContext context, int x, int y, int sourceX, int sourceY, int sourceWidth, int sourceHeight, int textureWidth, int textureHeight) {
-        context.drawTexture(RenderLayer::getGuiTexturedOverlay, Identifier.of("quickmenu", "textures/switcher_textures.png"), x, y, sourceX, sourceY, sourceWidth, sourceHeight, textureWidth, textureHeight);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("quickmenu", "textures/switcher_textures.png"), x, y, sourceX, sourceY, sourceWidth, sourceHeight, textureWidth, textureHeight);
     }
 
     public void drawRepeatingTexture(OwoUIDrawContext context, int x, int y, int sourceX, int sourceY, int sourceWidth, int sourceHeight, int textureWidth, int textureHeight, int width, int height) {
