@@ -36,6 +36,10 @@ public class ActionButtonData {
         jsonData.keybind = keybind;
 
         actions.forEach((action) -> {
+            if(action == null)
+            {
+                return;
+            }
             ArrayList<String> actionArray = new ArrayList<>();
             actionArray.add(action.getJsonType());
             actionArray.add(action.getJsonValue());
@@ -69,7 +73,9 @@ public class ActionButtonData {
 
         json.actions.forEach((actionArray) -> {
             BaseActionData actionData = getActionDataType(actionArray.get(0), actionArray.get(1));
-            data.actions.add(actionData);
+            if(actionData != null) {
+                data.actions.add(actionData);
+            }
         });
 
         if (json.icon != null) {
