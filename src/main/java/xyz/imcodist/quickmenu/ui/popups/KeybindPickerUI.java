@@ -49,7 +49,7 @@ public class KeybindPickerUI extends OverlayContainer<FlowLayout> {
         if (keyBindings != null) {
             Map<String, ArrayList<KeyBinding>> sortedKeybindings = new HashMap<>();
             for (KeyBinding keyBinding : keyBindings) {
-                String category = keyBinding.getCategory().id().toShortTranslationKey(); // TODO - Handle this better
+                String category = keyBinding.getCategory().id().toTranslationKey("key.category"); // TODO - Handle this better
 
                 if (!sortedKeybindings.containsKey(category)) {
                     sortedKeybindings.put(category, new ArrayList<>());
