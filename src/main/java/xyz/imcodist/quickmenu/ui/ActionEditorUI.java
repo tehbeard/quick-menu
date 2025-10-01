@@ -11,6 +11,8 @@ import io.wispforest.owo.ui.container.OverlayContainer;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
@@ -300,7 +302,7 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
                 ButtonComponent keybindActionButton = Components.button(Text.translatable("menu.editor.not_bound"), (buttonComponent) -> {
                     KeybindPickerUI keybindPicker = new KeybindPickerUI();
                     keybindPicker.onSelectedKeybind = (item) -> {
-                        keybindAction.keybindTranslationKey = item.getTranslationKey();
+                        keybindAction.keybindTranslationKey = item.getId();
                         updateActionKeybindMessage(buttonComponent, keybindAction);
                     };
 
@@ -406,7 +408,7 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
             boolean isMouse = keybind.get(3) == 1;
 
             if (!isMouse) {
-                message = InputUtil.fromKeyCode(keybind.get(0), keybind.get(1)).getLocalizedText().getString();
+                message = InputUtil.fromKeyCode(new KeyInput(keybind.get(0), keybind.get(1),0)).getLocalizedText().getString();
             } else {
                 message = switch (keybind.getFirst()) {
                     case 0 -> "Left Button";
@@ -437,7 +439,10 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
+        int keyCode = input.key();
+        int scanCode = input.scancode();
+        int modifiers = input.modifiers();
         boolean wasEscape = false;
 
         if (settingKeybind) {
@@ -461,12 +466,15 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
             updateKeybindButton();
         }
 
-        if (!wasEscape) return super.keyPressed(keyCode, scanCode, modifiers);
+        if (!wasEscape) return super.keyPressed(input);
         else return false;
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        double mouseX = click.x();
+        double mouseY = click.y();
+        int button = click.button();
         boolean keybindSet = false;
 
         if (settingKeybind) {
@@ -490,7 +498,7 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
             updateKeybindButton();
         }
 
-        if (!keybindSet) return super.mouseClicked(mouseX, mouseY, button);
+        if (!keybindSet) return super.mouseClicked(click, doubled);
         else return false;
     }
 

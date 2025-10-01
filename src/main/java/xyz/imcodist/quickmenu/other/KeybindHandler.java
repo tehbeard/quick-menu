@@ -46,7 +46,7 @@ public class KeybindHandler {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client != null) {
             for (KeyBinding keyBinding : client.options.allKeys) {
-                if (keyBinding.getTranslationKey().equals(translationKey)) return keyBinding;
+                if (keyBinding.getId().equals(translationKey)) return keyBinding;
             }
         }
 

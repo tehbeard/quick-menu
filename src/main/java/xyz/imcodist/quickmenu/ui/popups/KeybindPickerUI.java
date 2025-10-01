@@ -49,7 +49,7 @@ public class KeybindPickerUI extends OverlayContainer<FlowLayout> {
         if (keyBindings != null) {
             Map<String, ArrayList<KeyBinding>> sortedKeybindings = new HashMap<>();
             for (KeyBinding keyBinding : keyBindings) {
-                String category = keyBinding.getCategory();
+                String category = keyBinding.getCategory().id().toShortTranslationKey(); // TODO - Handle this better
 
                 if (!sortedKeybindings.containsKey(category)) {
                     sortedKeybindings.put(category, new ArrayList<>());
@@ -72,7 +72,7 @@ public class KeybindPickerUI extends OverlayContainer<FlowLayout> {
                     layout.padding(Insets.of(1, 1, 0, 0));
                     layout.horizontalAlignment(HorizontalAlignment.RIGHT);
 
-                    LabelComponent keyLabel = Components.label(Text.translatable(keyBinding.getTranslationKey()));
+                    LabelComponent keyLabel = Components.label(Text.translatable(keyBinding.getId()));
                     keyLabel.horizontalTextAlignment(HorizontalAlignment.LEFT);
                     keyLabel.positioning(Positioning.relative(0, 50));
                     layout.child(keyLabel);
