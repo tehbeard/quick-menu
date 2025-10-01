@@ -82,7 +82,6 @@ public class ActionEditorUI extends BaseOwoScreen<FlowLayout> {
         int mainLayoutHeight = 206;
         FlowLayout mainLayout = Containers.verticalFlow(Sizing.fixed(210), Sizing.fixed(mainLayoutHeight));
         mainLayout.surface(new SwitcherSurface());
-        mainLayout.zIndex(-200);
         rootComponent.child(mainLayout);
 
         // Set up the header.

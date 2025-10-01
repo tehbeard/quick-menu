@@ -10,6 +10,9 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
+import net.minecraft.client.input.KeyInput;
+import net.minecraft.client.input.MouseInput;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -256,8 +259,8 @@ public class MainUI extends BaseOwoScreen<FlowLayout> {
 
         // Make sure the keybind is correct.
         if (
-                (mouse && ModKeybindings.menuOpenKeybinding.matchesMouse(button))
-                || (!mouse && ModKeybindings.menuOpenKeybinding.matchesKey(button, button2))
+                (mouse && ModKeybindings.menuOpenKeybinding.matchesMouse(new Click(0,0, new MouseInput(button, 0))))
+                || (!mouse && ModKeybindings.menuOpenKeybinding.matchesKey(new KeyInput(button, button2, 0)))
         ) {
             if (hoveredData != null) {
                 // Press the current button.
@@ -269,25 +272,25 @@ public class MainUI extends BaseOwoScreen<FlowLayout> {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_E) {
+    public boolean keyPressed(KeyInput keyInput) {
+        if (keyInput.getKeycode() == GLFW.GLFW_KEY_E) {
             editMode = !editMode;
             updateEditorLayout();
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(keyInput);
     }
 
     @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        closeOnKeybindRelease(keyCode, scanCode);
-        return super.keyReleased(keyCode, scanCode, modifiers);
+    public boolean keyReleased(KeyInput keyInput) {
+        closeOnKeybindRelease(keyInput.getKeycode(), keyInput.scancode());
+        return super.keyReleased(keyInput);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        closeOnKeybindRelease(button);
-        return super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(Click click) {
+        closeOnKeybindRelease(click.button());
+        return super.mouseReleased(click);
     }
 
     @Override

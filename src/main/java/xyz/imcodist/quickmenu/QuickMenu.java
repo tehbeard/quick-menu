@@ -44,7 +44,7 @@ public class QuickMenu implements ModInitializer {
                         InputUtil.Key key = actionButtonData.getKey();
                         if (key == null) return;
 
-                        long handle = client.getWindow().getHandle();
+                        var handle = client.getWindow();
                         if (InputUtil.isKeyPressed(handle, key.getCode())) {
                             if (!actionButtonData.keyPressed) run = true;
                             actionButtonData.keyPressed = true;

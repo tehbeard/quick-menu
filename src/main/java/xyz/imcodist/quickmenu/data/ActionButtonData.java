@@ -1,6 +1,7 @@
 package xyz.imcodist.quickmenu.data;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
@@ -115,7 +116,7 @@ public class ActionButtonData {
 
     public InputUtil.Key getKey() {
         if (keybind.size() < 4) return null;
-        return InputUtil.fromKeyCode(keybind.get(0), keybind.get(1));
+        return InputUtil.fromKeyCode(new KeyInput(keybind.get(0), keybind.get(1), 0));
     }
 
     public void run() {

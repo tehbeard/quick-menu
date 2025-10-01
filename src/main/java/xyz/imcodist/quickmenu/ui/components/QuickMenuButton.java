@@ -3,6 +3,7 @@ package xyz.imcodist.quickmenu.ui.components;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;
+import net.minecraft.client.gui.Click;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -41,8 +42,8 @@ public class QuickMenuButton extends ButtonComponent {
     }
 
     @Override
-    public boolean onMouseDown(double mouseX, double mouseY, int button) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_2) rightClick.accept(this);
-        return super.onMouseDown(mouseX, mouseY, button);
+    public boolean onMouseDown(Click click, boolean doubled) {
+        if (click.button() == GLFW.GLFW_MOUSE_BUTTON_2) rightClick.accept(this);
+        return super.onMouseDown(click, doubled);
     }
 }
