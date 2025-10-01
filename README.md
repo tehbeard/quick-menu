@@ -13,9 +13,7 @@ You can download the **latest version** in the [Releases](https://github.com/ImC
 The mod is also avaliable to download on [Modrinth](https://modrinth.com/mod/quick-menu).
 
 ## Features
-<p align="center">
-  <img src="https://github.com/ImCodist/quick-menu/assets/50346006/e6ce7cf2-43f5-442e-bf90-8d912eb0fa58" alt="In-Game Preview"/>
-</p>
+<img src="https://github.com/ImCodist/quick-menu/assets/50346006/e6ce7cf2-43f5-442e-bf90-8d912eb0fa58" alt="In-Game Preview"/>
 
 - Easy to access menu with a **keybind** *(Default: G)*
 - A simple action button **editor**.

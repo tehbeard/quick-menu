@@ -29,11 +29,11 @@
 		"quickmenu.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": ["1.21.7","1.21.8"],
+		"fabricloader": ">=0.17.2",
+		"minecraft": ["1.21.7","1.21.9"],
 		"java": ">=21",
 		"fabric-api": "*",
-		"owo-lib": ">=0.12.22+1.21.8",
+		"owo-lib": ">=0.12.22+1.21.9",
 
 		"fabric-key-binding-api-v1": "*"
 	}
