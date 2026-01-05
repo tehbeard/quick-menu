@@ -1,0 +1,48 @@
+package com.tehbeard.fabric.quickaction.data.action;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
+
+public class DoCommand implements IAction {
+
+    public String command;
+
+    @Override
+    public String type() {
+        return "command";
+    }
+
+    @Override
+    public Text description() {
+        return Text.literal("Run: " + command).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY)));
+    }
+
+    @Override
+    public long run() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client == null) return 0;
+
+        ClientPlayerEntity player = client.player;
+        if (player == null) return 0;
+
+        // Run the command.
+        String commandToRun = command;
+
+        if (commandToRun != null) {
+            if (commandToRun.startsWith("/")) {
+                commandToRun = commandToRun.substring(1);
+                player.networkHandler.sendChatCommand(commandToRun);
+            } else {
+                if (commandToRun.length() >= 256) {
+                    commandToRun = commandToRun.substring(0, 256);
+                }
+                player.networkHandler.sendChatMessage(commandToRun);
+            }
+        }
+        return 0;
+    }
+}
