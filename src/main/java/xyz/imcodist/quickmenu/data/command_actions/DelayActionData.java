@@ -2,6 +2,10 @@ package xyz.imcodist.quickmenu.data.command_actions;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 
 public class DelayActionData extends BaseActionData {
 
@@ -28,4 +32,6 @@ public class DelayActionData extends BaseActionData {
         // TODO - rework this function to allow delays
         return ticks;
     }
+
+    public Text getText() { return Text.literal("Wait: %s ticks".formatted(ticks)).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY))); }
 }

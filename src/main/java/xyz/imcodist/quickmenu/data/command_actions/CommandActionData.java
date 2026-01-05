@@ -2,6 +2,10 @@ package xyz.imcodist.quickmenu.data.command_actions;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 
 public class CommandActionData extends BaseActionData {
     public String command = "";
@@ -46,4 +50,6 @@ public class CommandActionData extends BaseActionData {
         }
         return 0;
     }
+
+    public Text getText() { return Text.literal("Run: " + command).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY))); }
 }

@@ -1,5 +1,7 @@
 package xyz.imcodist.quickmenu.data.command_actions;
 
+import net.minecraft.text.Text;
+
 public class BaseActionData {
     public String getJsonType() {
         return "base";
@@ -16,4 +18,6 @@ public class BaseActionData {
     public long run() {
         return 0;
     }
+
+    public Text getText() { return Text.literal("N/A"); }
 }

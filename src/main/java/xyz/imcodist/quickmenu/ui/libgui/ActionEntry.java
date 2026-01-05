@@ -1,10 +1,8 @@
 package xyz.imcodist.quickmenu.ui.libgui;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
-import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
@@ -12,10 +10,11 @@ import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.cursor.StandardCursors;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.data.ActionButtonData;
+import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 
 public class ActionEntry extends WWidget {
 
@@ -23,11 +22,11 @@ public class ActionEntry extends WWidget {
     public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/btn_normal.png");
     public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_hover.png");
 
-    private int i;
-    public ActionEntry(int i) {
+    private ActionButtonData data;
+    public ActionEntry(ActionButtonData data) {
         height = 26;
         width = 26;
-        this.i = i;
+        this.data = data;
     }
 
     @Override
@@ -37,7 +36,15 @@ public class ActionEntry extends WWidget {
 
     @Override
     public void addTooltip(TooltipBuilder tooltip) {
-            tooltip.add(Text.literal("entry %s".formatted(i)));
+            tooltip.add(Text.literal(data.name));
+            var kb = data.getKey();
+            if(kb != null)
+            {
+                tooltip.add(Text.literal("Trigger: ").append(kb.getLocalizedText()));
+            }
+            data.actions.forEach( action -> {
+                tooltip.add(action.getText());
+            });
     }
 
     @Override
@@ -60,7 +67,7 @@ public class ActionEntry extends WWidget {
         );
 
         context.drawItemWithoutEntity(
-            Blocks.CRAFTING_TABLE.asItem().getDefaultStack(),
+            data.icon,
             x+5,y+5
         );
 
@@ -82,6 +89,8 @@ public class ActionEntry extends WWidget {
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        data.run();
+        MinecraftClient.getInstance().setScreen(null);
         return InputResult.PROCESSED;
     }
 }

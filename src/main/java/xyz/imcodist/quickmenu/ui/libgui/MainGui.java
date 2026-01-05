@@ -8,8 +8,12 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import io.github.cottonmc.cotton.gui.widget.icon.Icon;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.data.ActionButtonData;
+import xyz.imcodist.quickmenu.other.ActionButtonDataHandler;
+import xyz.imcodist.quickmenu.ui.components.QuickMenuButton;
 
 public class MainGui extends LightweightGuiDescription {
 
@@ -58,32 +62,24 @@ public class MainGui extends LightweightGuiDescription {
         WGridPanel scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4,2);
 
-        var posX = 0;
-        var posY = 0;
+        int posX = 0;
+        int posY = 0;
 
-        for(int i = 1; i <= 20; i++)
+        for(ActionButtonData data : ActionButtonDataHandler.actions)
         {
-//            WSprite actionWidget = new WSprite(
-//                Identifier.of("quickmenu", "textures/switcher_buttons.png")
-//            );
-//            actionWidget.setUv(0,0, (float) 26 /64, (float) 26 /64);
-            ActionEntry actionWidget = new ActionEntry(i);
+            ActionEntry actionWidget = new ActionEntry(data);
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == 5)
             {
                 posX = 0;
-                posY ++;
+                posY++;
             }
-
-            icon2.setUv(0,0, (float) 26 /64, (float) 26 /64);
-//            scrollPanelContents.add(button,0, i-1,4,1);
-        }
+        };
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
         root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
-
 
         root.validate(this);
     }
