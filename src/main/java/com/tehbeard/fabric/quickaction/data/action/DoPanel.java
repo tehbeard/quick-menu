@@ -1,5 +1,7 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -9,7 +11,28 @@ import xyz.imcodist.quickmenu.other.KeybindHandler;
 
 public class DoPanel implements IAction {
 
+    public static final Codec<DoPanel> CODEC = RecordCodecBuilder.create(inst ->
+        inst.group(
+            Identifier.CODEC.fieldOf("target").forGetter(DoPanel::getTarget)
+        ).apply(inst, DoPanel::new)
+    );
+
     public Identifier target;
+
+    public DoPanel() {
+    }
+
+    public DoPanel(Identifier target) {
+        this.target = target;
+    }
+
+    public Identifier getTarget() {
+        return target;
+    }
+
+    public void setTarget(Identifier target) {
+        this.target = target;
+    }
 
     @Override
     public String type() {

@@ -1,5 +1,7 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Style;
@@ -9,7 +11,28 @@ import net.minecraft.util.Formatting;
 
 public class DoCommand implements IAction {
 
-    public String command;
+    public static final Codec<DoCommand> CODEC = RecordCodecBuilder.create(inst ->
+        inst.group(
+            Codec.STRING.fieldOf("command").forGetter(DoCommand::getCommand)
+        ).apply(inst, DoCommand::new)
+    );
+
+    public DoCommand() {
+    }
+
+    public DoCommand(String command) {
+        this.command = command;
+    }
+
+    private String command;
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
 
     @Override
     public String type() {

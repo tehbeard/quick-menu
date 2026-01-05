@@ -1,5 +1,7 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Style;
@@ -9,7 +11,28 @@ import net.minecraft.util.Formatting;
 
 public class DoDelay implements IAction {
 
+    public static final Codec<DoDelay> CODEC = RecordCodecBuilder.create(inst ->
+        inst.group(
+            Codec.LONG.fieldOf("delay").forGetter(DoDelay::getTicks)
+        ).apply(inst, DoDelay::new)
+    );
+
     public long ticks = 20;
+
+    public DoDelay() {
+    }
+
+    public DoDelay(long ticks) {
+        this.ticks = ticks;
+    }
+
+    public long getTicks() {
+        return ticks;
+    }
+
+    public void setTicks(long ticks) {
+        this.ticks = ticks;
+    }
 
     @Override
     public String type() {

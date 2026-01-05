@@ -1,9 +1,8 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -12,7 +11,28 @@ import xyz.imcodist.quickmenu.other.KeybindHandler;
 
 public class DoKeybind implements IAction {
 
+    public static final Codec<DoKeybind> CODEC = RecordCodecBuilder.create(inst ->
+        inst.group(
+            Codec.STRING.fieldOf("keybind").forGetter(DoKeybind::getKeybind)
+        ).apply(inst, DoKeybind::new)
+    );
     public String keybindTranslationKey = "";
+
+    public DoKeybind() {
+    }
+
+    public DoKeybind(String keybindTranslationKey) {
+        this.keybindTranslationKey = keybindTranslationKey;
+    }
+
+
+    public String getKeybind() {
+        return keybindTranslationKey;
+    }
+
+    public void setKeybind(String keybindTranslationKey) {
+        this.keybindTranslationKey = keybindTranslationKey;
+    }
 
     @Override
     public String type() {
@@ -27,7 +47,7 @@ public class DoKeybind implements IAction {
     @Override
     public long run() {
         KeybindHandler.pressKey(keybindTranslationKey);
-        KeyBindingHelper.getBoundKeyOf(null).getTranslationKey();
+//        KeyBindingHelper.getBoundKeyOf(null).getTranslationKey();
         return 0;
     }
 }
