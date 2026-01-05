@@ -1,22 +1,29 @@
 package xyz.imcodist.quickmenu;
 
+import io.github.cottonmc.cotton.gui.client.LibGui;
+import io.github.cottonmc.cotton.gui.impl.client.LibGuiClient;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 import xyz.imcodist.quickmenu.other.ModConfig;
+import xyz.imcodist.quickmenu.ui.MainScreenVanilla;
 import xyz.imcodist.quickmenu.ui.MainUI;
+import xyz.imcodist.quickmenu.ui.libgui.MainScreenCotton;
 
 public class QuickMenu implements ModInitializer {
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
 
     private static boolean menuKeyPressed = false;
 
+    private static boolean flip = true;
+
     @Override
     public void onInitialize() {
         // Initialize the mods keybinds and data handler.
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();
+        LibGuiClient.loadConfig().darkMode = true;
 
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
@@ -25,7 +32,13 @@ public class QuickMenu implements ModInitializer {
             // Check for menu open keybind.
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
-                    client.setScreen(new MainUI());
+                    if(flip) {
+                        client.setScreen(new MainScreenCotton());
+//                        client.setScreen(new MainScreenVanilla());
+                    } else {
+                        client.setScreen(new MainUI());
+                    }
+                    flip = !flip;
                 }
                 menuKeyPressed = true;
             } else if (client.currentScreen == null) {

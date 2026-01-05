@@ -17,9 +17,15 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
+
 	mavenLocal()
 	// owo-lib
 	maven { url 'https://maven.wispforest.io' }
+
+    maven {
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
+    }
 }
 
 dependencies {
@@ -36,6 +42,8 @@ dependencies {
 	annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
 
 	include "io.wispforest:owo-sentinel:${project.owo_version}"
+
+        modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
 
 	// gson
 	implementation 'com.google.code.gson:gson:2.8.9'
