@@ -1,22 +1,31 @@
 package com.tehbeard.fabric.quickaction.data;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import net.minecraft.util.Identifier;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Represents the config
  */
 public class ActionConfig {
 
-    public static final Identifier DEFAULT_TAB = Identifier.of("quickaction","default");
+    public static final Identifier DEFAULT_TAB = Identifier.of("quickaction", "default");
 
-    public static final Codec<ActionConfig> CODEC = RecordCodecBuilder.create( inst ->
+    public static final Codec<ActionConfig> CODEC = RecordCodecBuilder.create(inst ->
         inst.group(
             ActionTab.CODEC.listOf().fieldOf("tabs").forGetter(ActionConfig::getTabs),
             Codec.unboundedMap(
@@ -51,8 +60,8 @@ public class ActionConfig {
     private Size size = Size.SIX;
 
     public enum Size {
-        SIX(3,2),
-        FIFTEEN(5,3),
+        SIX(3, 2),
+        FIFTEEN(5, 3),
         THIRTY_TWO(8, 4);
 
         private final int rowSize;
@@ -102,5 +111,40 @@ public class ActionConfig {
 
     public void setSize(Size size) {
         this.size = size;
+    }
+
+    public JsonElement encode() {
+        var logger = Logger.getLogger("quickaction");
+
+        var res = ActionConfig.CODEC.encodeStart(JsonOps.INSTANCE, this);
+        return res.resultOrPartial(logger::severe).orElseThrow();
+    }
+
+    public void save(File file) throws IOException {
+
+        var gson = new GsonBuilder().setPrettyPrinting().create();
+        Files.write(
+            file.toPath(),
+            gson.toJson(encode()).getBytes(StandardCharsets.UTF_8)
+        );
+    }
+
+    public static ActionConfig getDefaultConfig() {
+        var cfg = new ActionConfig();
+
+        var tab = new ActionTab();
+        tab.setId(ActionConfig.DEFAULT_TAB);
+        cfg.getTabs().add(
+            tab
+        );
+
+        var btn = new ActionButton();
+        btn.setName("Open Vanilla Quick Actions");
+        tab.getButtons().add(btn);
+
+        btn.getTasks().add(
+            new KeybindTask("key.quickActions")
+        );
+        return cfg;
     }
 }

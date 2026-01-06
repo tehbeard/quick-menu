@@ -45,38 +45,6 @@ public class QuickMenu implements ModInitializer {
         // START new config
         var file = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
 
-        var cfg = new ActionConfig();
-
-        var tab = new ActionTab();
-        tab.setId(ActionConfig.DEFAULT_TAB);
-        cfg.getTabs().add(
-            tab
-        );
-
-        var btn = new ActionButton();
-        tab.getButtons().add(btn);
-
-        btn.getTasks().add(
-            new CommandTask("/lobby")
-        );
-        btn.getTasks().add(
-            new KeybindTask("key.advancements")
-        );
-
-        var logger = Logger.getLogger("quickaction");
-
-        var res = ActionConfig.CODEC.encodeStart(JsonOps.INSTANCE, cfg);
-        var data = res.resultOrPartial(logger::severe).orElseThrow();
-
-        try {
-            var gson = new GsonBuilder().setPrettyPrinting().create();
-            Files.write(
-                file.toPath(),
-                gson.toJson(data).getBytes(StandardCharsets.UTF_8)
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         // END new config
 

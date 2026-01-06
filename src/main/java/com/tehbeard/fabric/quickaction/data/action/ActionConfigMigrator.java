@@ -1,0 +1,105 @@
+package com.tehbeard.fabric.quickaction.data.action;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.tehbeard.fabric.quickaction.data.ActionButton;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
+import com.tehbeard.fabric.quickaction.data.ActionTab;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.input.KeyInput;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
+
+public class ActionConfigMigrator {
+
+    public static ActionConfig convertQuickMenuToActionConfig(List<ActionButtonDataJSON> oldConfig) {
+        var cfg = new ActionConfig();
+
+        var tab = new ActionTab();
+        tab.setName("Default");
+
+        oldConfig.forEach(action -> {
+            var button = new ActionButton();
+            button.setName(action.name);
+            if (action.icon != null) {
+                button.setIcon(
+                    new ItemStack(Registries.ITEM.get(Identifier.of(action.icon)))
+                );
+            }
+
+            if (!action.keybind.isEmpty()) {
+//                InputUtil.fromKeyCode()
+                button.setKeybind(InputUtil.fromKeyCode(new KeyInput(action.keybind.get(0), action.keybind.get(1), 0)));
+            }
+
+            action.actions.forEach(
+                task -> {
+                    switch (task.get(0)) {
+                        case "cmd" -> button.getTasks().add(
+                            new CommandTask(task.get(1))
+                        );
+                        case "delay" -> button.getTasks().add(
+                            new DelayTask(Long.parseLong(task.get(1)))
+                        );
+                        case "key" -> button.getTasks().add(
+                            new KeybindTask(task.get(1))
+                        );
+                    }
+                }
+            );
+
+
+            tab.getButtons().add(button);
+        });
+        cfg.getTabs().add(tab);
+
+
+        return cfg;
+    }
+
+    public static void attemptMigrate() {
+        File oldFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickmenu_data.json");
+        File newFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<ActionButtonDataJSON>>() {
+        }.getType();
+
+        // Load the json.
+        if (oldFile.exists() && !newFile.exists()) {
+            try (FileReader fileReader = new FileReader(oldFile)) {
+                List<ActionButtonDataJSON> actionDataJSONS = gson.fromJson(fileReader, listType);
+
+                migrateQuickMenu(actionDataJSONS, newFile);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
+
+    public static void migrateQuickMenu(List<ActionButtonDataJSON> actionDataJSONS, File outputFile) {
+        var newCfg = convertQuickMenuToActionConfig(actionDataJSONS);
+        try {
+            var gson = new GsonBuilder().setPrettyPrinting().create();
+            Files.write(
+                outputFile.toPath(),
+                gson.toJson(newCfg.encode()).getBytes(StandardCharsets.UTF_8)
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
