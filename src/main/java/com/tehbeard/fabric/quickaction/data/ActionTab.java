@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionTab {
@@ -22,10 +23,10 @@ public class ActionTab {
         })
     );
 
-    private Identifier id;
-    private String name;
+    private Identifier id = ActionConfig.DEFAULT_TAB;
+    private String name = "";
 
-    private List<ActionButton> buttons;
+    private List<ActionButton> buttons = new ArrayList<>();
 
 
     public Identifier getId() {

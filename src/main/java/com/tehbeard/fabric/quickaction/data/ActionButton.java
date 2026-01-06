@@ -6,7 +6,9 @@ import com.tehbeard.fabric.quickaction.data.action.IActionTask;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,12 +33,12 @@ public class ActionButton {
         })
     );
 
-    private String name;
-    private List<IActionTask> tasks;
-    private ItemStack Icon;
+    private String name = "";
+    private List<IActionTask> tasks = new ArrayList<>();
+    private ItemStack Icon = Items.KNOWLEDGE_BOOK.getDefaultStack();
 
     //    public List<Integer> keybind; // TODO - better way to store this??
-    public InputUtil.Key keybind;
+    public InputUtil.Key keybind = null;
 
 
     private boolean alreadyPressed = false; // transient latch to prevent repeated activation.

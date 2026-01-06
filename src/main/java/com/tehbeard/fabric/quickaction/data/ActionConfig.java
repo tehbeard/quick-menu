@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,8 @@ import java.util.Map;
  * Represents the config
  */
 public class ActionConfig {
+
+    public static final Identifier DEFAULT_TAB = Identifier.of("quickaction","default");
 
     public static final Codec<ActionConfig> CODEC = RecordCodecBuilder.create( inst ->
         inst.group(
@@ -36,15 +40,15 @@ public class ActionConfig {
         }));
 
     // List of all action tabs
-    private List<ActionTab> tabs;
+    private List<ActionTab> tabs = new ArrayList<>();
 
     // Mapping of sp_<name> or mp_<address> to the default tab for that world/server.
-    private Map<String, Identifier> defaultTabs;
+    private Map<String, Identifier> defaultTabs = new HashMap<>();
 
     // Default tab to use in all other situations
-    private Identifier defaultTab;
+    private Identifier defaultTab = DEFAULT_TAB;
 
-    private Size size;
+    private Size size = Size.SIX;
 
     public enum Size {
         SIX(3,2),
