@@ -59,6 +59,9 @@ public class ActionConfig {
 
     private Size size = Size.SIX;
 
+    private boolean actionsInTooltip = true;
+    private boolean closeOnAction = true;
+
     public enum Size {
         SIX(3, 2),
         FIFTEEN(5, 3),
@@ -111,6 +114,22 @@ public class ActionConfig {
 
     public void setSize(Size size) {
         this.size = size;
+    }
+
+    public boolean isActionsInTooltip() {
+        return actionsInTooltip;
+    }
+
+    public void setActionsInTooltip(boolean actionsInTooltip) {
+        this.actionsInTooltip = actionsInTooltip;
+    }
+
+    public boolean isCloseOnAction() {
+        return closeOnAction;
+    }
+
+    public void setCloseOnAction(boolean closeOnAction) {
+        this.closeOnAction = closeOnAction;
     }
 
     public JsonElement encode() {
