@@ -5,6 +5,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class TaskTypes {
+
     public static TaskType<CommandTask> COMMAND_TASK = register("command", CommandTask.CODEC);
     public static TaskType<DelayTask> DELAY_TASK = register("delay", DelayTask.CODEC);
     public static TaskType<KeybindTask> KEYBIND_TASK = register("keybind", KeybindTask.CODEC);

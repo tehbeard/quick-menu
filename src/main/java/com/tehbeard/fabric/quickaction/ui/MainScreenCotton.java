@@ -1,4 +1,4 @@
-package xyz.imcodist.quickmenu.ui.libgui;
+package com.tehbeard.fabric.quickaction.ui;
 
 import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
 import net.minecraft.client.gui.DrawContext;

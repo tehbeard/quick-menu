@@ -1,9 +1,8 @@
-package xyz.imcodist.quickmenu.ui.libgui;
+package com.tehbeard.fabric.quickaction.ui;
 
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
@@ -14,7 +13,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
-import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 
 public class ActionEntry extends WWidget {
 

@@ -1,15 +1,5 @@
 package xyz.imcodist.quickmenu;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonWriter;
-import com.mojang.serialization.JsonOps;
-import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.ActionConfig;
-import com.tehbeard.fabric.quickaction.data.ActionTab;
-import com.tehbeard.fabric.quickaction.data.action.CommandTask;
-import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
-import io.github.cottonmc.cotton.gui.client.LibGui;
 import io.github.cottonmc.cotton.gui.impl.client.LibGuiClient;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -17,16 +7,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 import xyz.imcodist.quickmenu.other.ModConfig;
-import xyz.imcodist.quickmenu.ui.MainScreenVanilla;
 import xyz.imcodist.quickmenu.ui.MainUI;
-import xyz.imcodist.quickmenu.ui.libgui.MainScreenCotton;
+import com.tehbeard.fabric.quickaction.ui.MainScreenCotton;
 
-import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.logging.Logger;
 
 public class QuickMenu implements ModInitializer {
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
