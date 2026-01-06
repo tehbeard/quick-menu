@@ -8,7 +8,7 @@ import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 import xyz.imcodist.quickmenu.other.ModConfig;
 import xyz.imcodist.quickmenu.ui.MainUI;
-import com.tehbeard.fabric.quickaction.ui.MainScreenCotton;
+import com.tehbeard.fabric.quickaction.ui.MainScreen;
 
 import java.io.File;
 
@@ -40,7 +40,7 @@ public class QuickMenu implements ModInitializer {
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
                     if(flip) {
-                        client.setScreen(new MainScreenCotton());
+                        client.setScreen(new MainScreen(false));
 //                        client.setScreen(new MainScreenVanilla());
                     } else {
                         client.setScreen(new MainUI());

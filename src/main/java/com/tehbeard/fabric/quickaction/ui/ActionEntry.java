@@ -20,11 +20,16 @@ public class ActionEntry extends WWidget {
     public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/btn_normal.png");
     public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_hover.png");
 
+    public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("quickmenu", "textures/btn_plus_normal.png");
+    public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_plus_hover.png");
+
     private ActionButtonData data;
-    public ActionEntry(ActionButtonData data) {
+    private boolean isEditMode;
+    public ActionEntry(ActionButtonData data, boolean isEditMode) {
         height = 26;
         width = 26;
         this.data = data;
+        this.isEditMode = isEditMode;
     }
 
     @Override
@@ -34,15 +39,18 @@ public class ActionEntry extends WWidget {
 
     @Override
     public void addTooltip(TooltipBuilder tooltip) {
+        if(data !=null) {
             tooltip.add(Text.literal(data.name));
             var kb = data.getKey();
-            if(kb != null)
-            {
+            if (kb != null) {
                 tooltip.add(Text.literal("Trigger: ").append(kb.getLocalizedText()));
             }
-            data.actions.forEach( action -> {
+            data.actions.forEach(action -> {
                 tooltip.add(action.getText());
             });
+        } else {
+            tooltip.add(Text.literal("Add Action"));
+        }
     }
 
     @Override
@@ -51,44 +59,57 @@ public class ActionEntry extends WWidget {
         var isHovered = isWithinBounds(mouseX,mouseY) || getHost().isFocused(this);
         // Doesn't render texture...
         // (RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight)
-        context.drawTexture(
-            RenderPipelines.GUI_TEXTURED,
-            isHovered ? TEXTURE_BUTTON_HOVER : TEXTURE_BUTTON,
-            x,
-            y,
-            0,
-            0,
-            getWidth(),
-            getHeight(),
-            26,
-            26
-        );
-
-        context.drawItemWithoutEntity(
-            data.icon,
-            x+5,y+5
-        );
+        if(data == null ) {
+            context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                isHovered ? TEXTURE_ADD_BUTTON_HOVER : TEXTURE_ADD_BUTTON,
+                x,
+                y,
+                0,
+                0,
+                getWidth(),
+                getHeight(),
+                26,
+                26
+            );
+        } else {
+            context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                isHovered ? TEXTURE_BUTTON_HOVER : TEXTURE_BUTTON,
+                x,
+                y,
+                0,
+                0,
+                getWidth(),
+                getHeight(),
+                26,
+                26
+            );
+            context.drawItemWithoutEntity(
+                data.icon,
+                x + 5, y + 5
+            );
+        }
 
         if(isHovered ) {
             context.setCursor(StandardCursors.POINTING_HAND);
         }
 
-//        context.drawGuiTexture(
-//            RenderPipelines.GUI_TEXTURED,
-//            TEXTURE_BUTTON,
-////            textures.get(enabled, hovered || isFocused()),
-//            x,
-//            y,
-//            getWidth(),
-//            getHeight()
-//        );
     }
 
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-        data.run();
-        MinecraftClient.getInstance().setScreen(null);
+        if(data != null) {
+            if(!isEditMode) {
+                MinecraftClient.getInstance().setScreen(null);
+                data.run();
+            } else {
+                // TODO - Open edit mode
+            }
+        } else {
+            // TODO - Open edit mode for new action.
+        }
         return InputResult.PROCESSED;
     }
 }
