@@ -1,28 +1,27 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-public class DoDelay implements IAction {
+public class DelayTask implements IActionTask {
 
-    public static final Codec<DoDelay> CODEC = RecordCodecBuilder.create(inst ->
+    public static final MapCodec<DelayTask> CODEC = RecordCodecBuilder.mapCodec(inst ->
         inst.group(
-            Codec.LONG.fieldOf("delay").forGetter(DoDelay::getTicks)
-        ).apply(inst, DoDelay::new)
+            Codec.LONG.fieldOf("delay").forGetter(DelayTask::getTicks)
+        ).apply(inst, DelayTask::new)
     );
 
     public long ticks = 20;
 
-    public DoDelay() {
+    public DelayTask() {
     }
 
-    public DoDelay(long ticks) {
+    public DelayTask(long ticks) {
         this.ticks = ticks;
     }
 
@@ -47,5 +46,10 @@ public class DoDelay implements IAction {
     @Override
     public long run() {
         return ticks;
+    }
+
+    @Override
+    public TaskType<?> getType() {
+        return TaskTypes.DELAY_TASK;
     }
 }

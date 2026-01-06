@@ -1,6 +1,7 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -9,18 +10,18 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-public class DoCommand implements IAction {
+public class CommandTask implements IActionTask {
 
-    public static final Codec<DoCommand> CODEC = RecordCodecBuilder.create(inst ->
+    public static final MapCodec<CommandTask> CODEC = RecordCodecBuilder.mapCodec(inst ->
         inst.group(
-            Codec.STRING.fieldOf("command").forGetter(DoCommand::getCommand)
-        ).apply(inst, DoCommand::new)
+            Codec.STRING.fieldOf("command").forGetter(CommandTask::getCommand)
+        ).apply(inst, CommandTask::new)
     );
 
-    public DoCommand() {
+    public CommandTask() {
     }
 
-    public DoCommand(String command) {
+    public CommandTask(String command) {
         this.command = command;
     }
 
@@ -67,5 +68,10 @@ public class DoCommand implements IAction {
             }
         }
         return 0;
+    }
+
+    @Override
+    public TaskType<?> getType() {
+        return TaskTypes.COMMAND_TASK;
     }
 }

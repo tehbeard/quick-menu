@@ -1,28 +1,28 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.other.KeybindHandler;
 
-public class DoPanel implements IAction {
+public class PanelTask implements IActionTask {
 
-    public static final Codec<DoPanel> CODEC = RecordCodecBuilder.create(inst ->
+    public static final MapCodec<PanelTask> CODEC = RecordCodecBuilder.mapCodec(inst ->
         inst.group(
-            Identifier.CODEC.fieldOf("target").forGetter(DoPanel::getTarget)
-        ).apply(inst, DoPanel::new)
+            Identifier.CODEC.fieldOf("target").forGetter(PanelTask::getTarget)
+        ).apply(inst, PanelTask::new)
     );
 
     public Identifier target;
 
-    public DoPanel() {
+    public PanelTask() {
     }
 
-    public DoPanel(Identifier target) {
+    public PanelTask(Identifier target) {
         this.target = target;
     }
 
@@ -49,5 +49,10 @@ public class DoPanel implements IAction {
 //        TODO - Open screen on selected panel.
 //        KeybindHandler.pressKey(keybindTranslationKey);
         return 0;
+    }
+
+    @Override
+    public TaskType<?> getType() {
+        return TaskTypes.PANEL_TASK;
     }
 }

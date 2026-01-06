@@ -1,27 +1,27 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import xyz.imcodist.quickmenu.other.KeybindHandler;
 
-public class DoKeybind implements IAction {
+public class KeybindTask implements IActionTask {
 
-    public static final Codec<DoKeybind> CODEC = RecordCodecBuilder.create(inst ->
+    public static final MapCodec<KeybindTask> CODEC = RecordCodecBuilder.mapCodec(inst ->
         inst.group(
-            Codec.STRING.fieldOf("keybind").forGetter(DoKeybind::getKeybind)
-        ).apply(inst, DoKeybind::new)
+            Codec.STRING.fieldOf("keybind").forGetter(KeybindTask::getKeybind)
+        ).apply(inst, KeybindTask::new)
     );
     public String keybindTranslationKey = "";
 
-    public DoKeybind() {
+    public KeybindTask() {
     }
 
-    public DoKeybind(String keybindTranslationKey) {
+    public KeybindTask(String keybindTranslationKey) {
         this.keybindTranslationKey = keybindTranslationKey;
     }
 
@@ -49,5 +49,10 @@ public class DoKeybind implements IAction {
         KeybindHandler.pressKey(keybindTranslationKey);
 //        KeyBindingHelper.getBoundKeyOf(null).getTranslationKey();
         return 0;
+    }
+
+    @Override
+    public TaskType<?> getType() {
+        return TaskTypes.KEYBIND_TASK;
     }
 }
