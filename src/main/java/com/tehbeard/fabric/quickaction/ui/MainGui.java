@@ -1,16 +1,15 @@
 package com.tehbeard.fabric.quickaction.ui;
 
+import com.tehbeard.fabric.quickaction.ui.component.EditButton;
 import com.tehbeard.fabric.quickaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.*;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
 import xyz.imcodist.quickmenu.other.ActionButtonDataHandler;
-import com.tehbeard.fabric.quickaction.ui.component.EditButton;
 
 public class MainGui extends LightweightGuiDescription {
 
@@ -19,7 +18,17 @@ public class MainGui extends LightweightGuiDescription {
 //        WGridPanel root = new WGridPanel();
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
-        root.setSize(180, 114); // TODO - Load this from config, calculating off of the size
+        // TODO - Load from config
+        // Small
+//        root.setSize(124, 86);
+//        int perRow = 3;
+        // Medium
+//        root.setSize(180, 114); // TODO - Load this from config, calculating off of the size
+//        int perRow = 5;
+        // Large
+        root.setSize(274, 142);
+        int perRow = 8;
+
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
@@ -33,30 +42,20 @@ public class MainGui extends LightweightGuiDescription {
             new Texture(Identifier.of("quickmenu", "textures/background_header.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
-        WLabel label = new WLabel(Text.literal("Quick Menu"), 0xFF_FFFFFF);
+        root.add(header, 0,0,root.getWidth(),24);
+
+        WLabel label = new WLabel(Text.literal("Quick Actions"), 0xFF_FFFFFF);
         label.setHorizontalAlignment(HorizontalAlignment.CENTER);
         label.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        header.add(label, 80,3);
+        header.add(label, (root.getWidth() / 2),3);
 
         WLabel editButton = new EditButton(isEditMode);
         editButton.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         editButton.setVerticalAlignment(VerticalAlignment.CENTER);
-        header.add(editButton, 155,3);
+        header.add(editButton, root.getWidth() - 25,3);
 
-        if(isEditMode)
-        {
-            var configBtn = new TextButton("\uD83D\uDD27", (click, doubleClick) -> {
-                // TODO - Open config menu
-//                MinecraftClient.getInstance().setScreen(new MainScreenCotton(false));
-                return InputResult.PROCESSED;
-            });
-            configBtn.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-            configBtn.setVerticalAlignment(VerticalAlignment.CENTER);
-            header.add(configBtn, 145,3);
-        }
 
-        root.add(header, 0,0,180,24);
 
 
         WGridPanel scrollPanelContents = new WGridPanel(26);
@@ -65,12 +64,14 @@ public class MainGui extends LightweightGuiDescription {
         int posX = 0;
         int posY = 0;
 
+
+
         for(ActionButtonData data : ActionButtonDataHandler.actions)
         {
             ActionEntry actionWidget = new ActionEntry(data, isEditMode);
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
             posX++;
-            if(posX == 5) // TODO - Pull value from config
+            if(posX == perRow) // TODO - Pull value from config
             {
                 posX = 0;
                 posY++;
@@ -81,7 +82,16 @@ public class MainGui extends LightweightGuiDescription {
         {
             ActionEntry actionWidget = new ActionEntry(null, true);
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
+            posX++;
+            if(posX == perRow) // TODO - Pull value from config
+            {
+                posX = 0;
+                posY++;
+            }
+            ConfigEntry configWidget = new ConfigEntry();
+            scrollPanelContents.add(configWidget, posX, posY,1,1);
         }
+
 
 
 

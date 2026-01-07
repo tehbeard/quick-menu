@@ -63,16 +63,21 @@ public class ActionConfig {
     private boolean closeOnAction = true;
 
     public enum Size {
-        SIX(3, 2),
-        FIFTEEN(5, 3),
-        THIRTY_TWO(8, 4);
+        SIX(3, 2,124, 86),
+        FIFTEEN(5, 3, 180, 114),
+        THIRTY_TWO(8, 4, 274, 142);
 
         private final int rowSize;
         private final int rowCount;
 
-        Size(int rowSize, int rowCount) {
+        private final int width;
+        private final int height;
+
+        Size(int rowSize, int rowCount, int width, int height) {
             this.rowSize = rowSize;
             this.rowCount = rowCount;
+            this.height = height;
+            this.width = width;
         }
 
         public int getRowSize() {
@@ -81,6 +86,14 @@ public class ActionConfig {
 
         public int getRowCount() {
             return rowCount;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
         }
     }
 
