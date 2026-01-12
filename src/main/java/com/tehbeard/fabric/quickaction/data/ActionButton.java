@@ -7,6 +7,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
+import xyz.imcodist.quickmenu.data.ActionButtonData;
+import xyz.imcodist.quickmenu.other.ModConfigModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +89,7 @@ public class ActionButton {
             if (InputUtil.isKeyPressed(handle, keybind.getCode())) {
                 if(!alreadyPressed){
                     alreadyPressed = true;
-                    run();
+                    run(true);
                 }
             } else {
                 alreadyPressed = false;
@@ -102,7 +105,7 @@ public class ActionButton {
             if(pressed)
             {
                 alreadyPressed = true;
-                run();
+                run(true);
             } else {
                 alreadyPressed = false;
             }
@@ -110,8 +113,20 @@ public class ActionButton {
     }
     // TODO - Move keybind check logic in here.
 
-    public void run()
+    public void run(boolean isKeybind)
     {
+        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
+        if (displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind) {
+            MinecraftClient client = MinecraftClient.getInstance();
 
+            if (client != null && client.player != null) {
+                client.player.sendMessage(Text.of("Ran action \"" + name + "\""), true);
+            }
+        }
+//        MinecraftClient.getInstance()
+
+        // Run the buttons action.
+//        actions.forEach(BaseActionData::run);
+//        new ActionButtonData.ActionButtonDataContext(new ArrayList<>(actions), 0).run();
     }
 }
