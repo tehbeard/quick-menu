@@ -76,7 +76,7 @@ public class ConfigEntry extends WWidget {
 
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
-        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
         // TODO - Load config screen
         return InputResult.PROCESSED;

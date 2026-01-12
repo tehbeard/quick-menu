@@ -125,7 +125,7 @@ public class ActionButtonData {
 
     public void run(boolean isKeybind) {
         // Show run message.
-        ModConfigModel.DisplayRunText displayRunText = QuickMenu.CONFIG.displayRunText();
+        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
         if (displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind) {
             MinecraftClient client = MinecraftClient.getInstance();
 

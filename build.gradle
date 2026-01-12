@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.11-SNAPSHOT'
+	id 'fabric-loom' version '1.14-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -37,13 +37,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// owo-lib
-	modImplementation "io.wispforest:owo-lib:${project.owo_version}"
-	annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
-
-	include "io.wispforest:owo-sentinel:${project.owo_version}"
-
-        modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
+	// lib-guid
+    modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
 
 	// gson
 	implementation 'com.google.code.gson:gson:2.8.9'
@@ -77,9 +72,7 @@ java {
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
+	from("LICENSE")
 }
 
 // configure the maven publication

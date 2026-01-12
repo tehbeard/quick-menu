@@ -99,7 +99,7 @@ public class ActionEntry extends WWidget {
 
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
-        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         if(data != null) {
             if(!isEditMode) {
                 MinecraftClient.getInstance().setScreen(null);

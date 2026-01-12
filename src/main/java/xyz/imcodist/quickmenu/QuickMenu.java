@@ -6,25 +6,22 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
-import xyz.imcodist.quickmenu.other.ModConfig;
-import xyz.imcodist.quickmenu.ui.MainUI;
 import com.tehbeard.fabric.quickaction.ui.MainScreen;
 
 import java.io.File;
 
 public class QuickMenu implements ModInitializer {
-    public static final ModConfig CONFIG = ModConfig.createAndLoad();
 
     private static boolean menuKeyPressed = false;
-
-    private static boolean flip = true;
 
     @Override
     public void onInitialize() {
         // Initialize the mods keybinds and data handler.
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();
-        LibGuiClient.loadConfig().darkMode = true;
+        var cfg = LibGuiClient.loadConfig();
+        cfg.darkMode = true;
+        LibGuiClient.saveConfig(cfg);
 
         // START new config
         var file = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
@@ -39,13 +36,7 @@ public class QuickMenu implements ModInitializer {
             // Check for menu open keybind.
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
-                    if(flip) {
-                        client.setScreen(new MainScreen(false));
-//                        client.setScreen(new MainScreenVanilla());
-                    } else {
-                        client.setScreen(new MainUI());
-                    }
-                    flip = !flip;
+                    client.setScreen(new MainScreen(false));
                 }
                 menuKeyPressed = true;
             } else if (client.currentScreen == null) {

@@ -1,3 +1,4 @@
+/*
 package xyz.imcodist.quickmenu.ui;
 
 import io.wispforest.owo.config.ui.ConfigScreen;
@@ -298,3 +299,4 @@ public class MainUI extends BaseOwoScreen<FlowLayout> {
         return false;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package xyz.imcodist.quickmenu.ui.components;
 
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -47,3 +48,4 @@ public class QuickMenuButton extends ButtonComponent {
         return super.onMouseDown(click, doubled);
     }
 }
+*/

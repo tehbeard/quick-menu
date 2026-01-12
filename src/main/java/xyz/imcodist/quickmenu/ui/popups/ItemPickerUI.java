@@ -1,3 +1,4 @@
+/*
 package xyz.imcodist.quickmenu.ui.popups;
 
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -129,3 +130,4 @@ public class ItemPickerUI extends OverlayContainer<FlowLayout> {
         onSelectedItem.accept(selectedItem);
     }
 }
+*/
