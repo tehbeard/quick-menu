@@ -1,12 +1,15 @@
 package xyz.imcodist.quickmenu;
 
+import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
+import com.tehbeard.fabric.quickaction.ui.MainScreen;
+import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
+import com.tehbeard.fabric.quickaction.ui.panel.KeybindPicker;
 import io.github.cottonmc.cotton.gui.impl.client.LibGuiClient;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
-import com.tehbeard.fabric.quickaction.ui.MainScreen;
 
 import java.io.File;
 
@@ -19,9 +22,6 @@ public class QuickMenu implements ModInitializer {
         // Initialize the mods keybinds and data handler.
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();
-        var cfg = LibGuiClient.loadConfig();
-        cfg.darkMode = true;
-        LibGuiClient.saveConfig(cfg);
 
         // START new config
         var file = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
@@ -32,11 +32,16 @@ public class QuickMenu implements ModInitializer {
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
         ClientTickEvents.END_CLIENT_TICK.register((client) -> {
+
+            ActionButtonExecutor.getInstance().tick();
+
             ActionButtonDelayHandler.INSTANCE.doDelayChecks();
             // Check for menu open keybind.
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
                     client.setScreen(new MainScreen(false));
+//                    client.setScreen(new MinedeckScreen(new ItemstackPicker()));
+//                    client.setScreen(new MinedeckScreen(new KeybindPicker()));
                 }
                 menuKeyPressed = true;
             } else if (client.currentScreen == null) {

@@ -6,6 +6,7 @@ import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.*;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
@@ -100,5 +101,10 @@ public class MainGui extends LightweightGuiDescription {
         root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
 
         root.validate(this);
+    }
+
+    @Override
+    public TriState isDarkMode() {
+        return TriState.TRUE;
     }
 }
