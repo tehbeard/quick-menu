@@ -1,6 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
 import com.tehbeard.fabric.quickaction.ui.ItemstackEntry;
+import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -8,20 +9,24 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class ItemstackPicker  extends LightweightGuiDescription {
 
-    public ItemstackPicker() {
+    private Consumer<ItemStack> onSelect;
+    public ItemstackPicker(Consumer<ItemStack> onSelect) {
         setUseDefaultRootBackground(false);
 //        WGridPanel root = new WGridPanel();
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
-        root.setSize(274, 142);
+        root.setSize(274, 175);
+        this.onSelect = onSelect;
         int perRow = 8;
 
         root.setInsets(Insets.NONE);
@@ -76,7 +81,9 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         for(Item item : items)
         {
             var data = item.getDefaultStack();
-            ItemstackEntry actionWidget = new ItemstackEntry(data, a ->{});
+            ItemstackEntry actionWidget = new ItemstackEntry(data, a ->{
+                onSelect.accept(a);
+            });
             panel.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == perRow) // TODO - Pull value from config

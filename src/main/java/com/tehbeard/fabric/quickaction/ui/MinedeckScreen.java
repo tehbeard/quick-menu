@@ -39,6 +39,7 @@ public class MinedeckScreen extends CottonClientScreen {
     {
         this.overlay.push(this.description);
         this.description = description;
+        this.reposition(width, height);
         return this;
     }
 

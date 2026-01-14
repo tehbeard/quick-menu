@@ -4,6 +4,7 @@ import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
 import com.tehbeard.fabric.quickaction.ui.MainScreen;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.quickaction.ui.panel.ActionPicker;
+import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
 import com.tehbeard.fabric.quickaction.ui.panel.ItemstackPicker;
 import com.tehbeard.fabric.quickaction.ui.panel.KeybindPicker;
 import io.github.cottonmc.cotton.gui.impl.client.LibGuiClient;
@@ -42,13 +43,10 @@ public class QuickMenu implements ModInitializer {
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
                     var mainScreen = new MainScreen(false);
-                    client.setScreen(
-                        mainScreen
-//                            .push(new ItemstackPicker())
-//                            .push(new ActionPicker(act -> {
-//                                mainScreen.pop();
-//                            }))
-                    );
+//                    client.setScreen(
+//                        mainScreen
+//                    );
+                    client.setScreen(new MinedeckScreen(new ButtonEditor()));
 //                    client.setScreen(new MinedeckScreen(new ItemstackPicker()));
 //                    client.setScreen(new MinedeckScreen(new KeybindPicker()));
 //                    client.setScreen(new MinedeckScreen(new ActionPicker(act -> {})));
