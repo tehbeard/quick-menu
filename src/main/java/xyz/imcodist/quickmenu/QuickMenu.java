@@ -45,9 +45,9 @@ public class QuickMenu implements ModInitializer {
                     client.setScreen(
                         mainScreen
 //                            .push(new ItemstackPicker())
-                            .push(new ActionPicker(act -> {
-                                mainScreen.pop();
-                            }))
+//                            .push(new ActionPicker(act -> {
+//                                mainScreen.pop();
+//                            }))
                     );
 //                    client.setScreen(new MinedeckScreen(new ItemstackPicker()));
 //                    client.setScreen(new MinedeckScreen(new KeybindPicker()));
