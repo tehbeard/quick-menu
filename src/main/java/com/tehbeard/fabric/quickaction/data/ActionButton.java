@@ -8,8 +8,6 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
-import xyz.imcodist.quickmenu.other.ModConfigModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +113,8 @@ public class ActionButton {
 
     public void run(boolean isKeybind)
     {
-        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
-        if (displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind) {
+//        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
+        if ( isKeybind /*displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind*/ ) {
             MinecraftClient client = MinecraftClient.getInstance();
 
             if (client != null && client.player != null) {

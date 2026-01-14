@@ -9,13 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.QuickMenu;
 import xyz.imcodist.quickmenu.data.command_actions.BaseActionData;
 import xyz.imcodist.quickmenu.data.command_actions.CommandActionData;
 import xyz.imcodist.quickmenu.data.command_actions.DelayActionData;
 import xyz.imcodist.quickmenu.data.command_actions.KeybindActionData;
 import xyz.imcodist.quickmenu.other.ActionButtonDelayHandler;
-import xyz.imcodist.quickmenu.other.ModConfigModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,8 +123,7 @@ public class ActionButtonData {
 
     public void run(boolean isKeybind) {
         // Show run message.
-        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
-        if (displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind) {
+        if (isKeybind/* displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind*/) {
             MinecraftClient client = MinecraftClient.getInstance();
 
             if (client != null && client.player != null) {
