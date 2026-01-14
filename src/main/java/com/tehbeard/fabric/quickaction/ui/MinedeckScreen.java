@@ -5,6 +5,7 @@ import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
 import io.github.cottonmc.cotton.gui.impl.VisualLogger;
 import io.github.cottonmc.cotton.gui.widget.WPanel;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
 import java.util.Stack;
@@ -15,6 +16,23 @@ public class MinedeckScreen extends CottonClientScreen {
 
     public MinedeckScreen(GuiDescription description) {
         super(description);
+    }
+
+
+    public static void pushCurrent(GuiDescription description)
+    {
+        if(MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s)
+        {
+            s.push(description);
+        }
+    }
+
+    public static void popCurrent()
+    {
+        if(MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s)
+        {
+            s.pop();
+        }
     }
 
     public MinedeckScreen push(GuiDescription description)
