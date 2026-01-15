@@ -7,6 +7,7 @@ import io.github.cottonmc.cotton.gui.widget.WPanel;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.input.KeyInput;
 
 import java.util.Stack;
 
@@ -92,5 +93,13 @@ public class MinedeckScreen extends CottonClientScreen {
         VisualLogger.render(context);
     }
 
-
+    @Override
+    public boolean keyPressed(KeyInput input) {
+        if(input.isEscape() && !overlay.isEmpty())
+        {
+            pop();
+            return true;
+        }
+        return super.keyPressed(input);
+    }
 }
