@@ -1,6 +1,5 @@
 package com.tehbeard.fabric.quickaction.data.action;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.text.Style;
@@ -53,6 +52,6 @@ public class PanelTask implements IActionTask {
 
     @Override
     public TaskType<?> getType() {
-        return TaskTypes.PANEL_TASK;
+        return TaskType.PANEL_TASK;
     }
 }

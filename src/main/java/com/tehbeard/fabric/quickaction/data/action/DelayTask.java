@@ -50,6 +50,6 @@ public class DelayTask implements IActionTask {
 
     @Override
     public TaskType<?> getType() {
-        return TaskTypes.DELAY_TASK;
+        return TaskType.DELAY_TASK;
     }
 }

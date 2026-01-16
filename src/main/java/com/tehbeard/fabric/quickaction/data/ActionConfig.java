@@ -3,7 +3,6 @@ package com.tehbeard.fabric.quickaction.data;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,7 +34,7 @@ public class ActionConfig {
                 Codec.STRING,
                 Identifier.CODEC
             ).fieldOf("defaultTabs").forGetter(ActionConfig::getDefaultTabs),
-            Identifier.CODEC.fieldOf("defaultTab").forGetter(ActionConfig::getDefaultTab),
+            Identifier.CODEC.fieldOf("defaultTab").forGetter(ActionConfig::getDefaultTabId),
             Codec.STRING.xmap(Size::valueOf, Enum::name).fieldOf("size").forGetter(ActionConfig::getSize)
         ).apply(inst, (
             tabs,
@@ -116,8 +115,13 @@ public class ActionConfig {
         this.defaultTabs = defaultTabs;
     }
 
-    public Identifier getDefaultTab() {
+    public Identifier getDefaultTabId() {
         return defaultTab;
+    }
+
+    public ActionTab getDefaultTab()
+    {
+        return this.tabs.stream().filter( t -> t.getId().equals(getDefaultTabId())).findFirst().orElseThrow();
     }
 
     public void setDefaultTab(Identifier defaultTab) {
@@ -181,9 +185,11 @@ public class ActionConfig {
                 config = p.getFirst();
             }).ifError( e -> {
                 Logger.getGlobal().severe("FAILED TO LOAD CONFIG: " + e.message());
+                System.exit(-100);
             });
         } else {
-            getDefaultConfig().save(file);
+            config = getDefaultConfig();
+            config.save(file);
         }
 
     }

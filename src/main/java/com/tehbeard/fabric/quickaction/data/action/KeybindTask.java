@@ -53,6 +53,6 @@ public class KeybindTask implements IActionTask {
 
     @Override
     public TaskType<?> getType() {
-        return TaskTypes.KEYBIND_TASK;
+        return TaskType.KEYBIND_TASK;
     }
 }

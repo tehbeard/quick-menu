@@ -72,6 +72,6 @@ public class CommandTask implements IActionTask {
 
     @Override
     public TaskType<?> getType() {
-        return TaskTypes.COMMAND_TASK;
+        return TaskType.COMMAND_TASK;
     }
 }
