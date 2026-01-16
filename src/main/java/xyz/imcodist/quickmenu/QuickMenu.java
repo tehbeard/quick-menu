@@ -1,15 +1,8 @@
 package xyz.imcodist.quickmenu;
 
-import com.tehbeard.fabric.quickaction.data.ActionButton;
 import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
 import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.MainScreen;
-import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
-import com.tehbeard.fabric.quickaction.ui.panel.ActionPicker;
-import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
-import com.tehbeard.fabric.quickaction.ui.panel.ItemstackPicker;
-import com.tehbeard.fabric.quickaction.ui.panel.KeybindPicker;
-import io.github.cottonmc.cotton.gui.impl.client.LibGuiClient;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -17,8 +10,6 @@ import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuickMenu implements ModInitializer {
 

@@ -15,7 +15,6 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
 
 public class ActionEntry extends WWidget {
 
@@ -26,9 +25,9 @@ public class ActionEntry extends WWidget {
     public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("quickmenu", "textures/btn_plus_normal.png");
     public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_plus_hover.png");
 
-    private ActionButtonData data;
+    private ActionButton data;
     private boolean isEditMode;
-    public ActionEntry(ActionButtonData data, boolean isEditMode) {
+    public ActionEntry(ActionButton data, boolean isEditMode) {
         height = 26;
         width = 26;
         this.data = data;
@@ -43,14 +42,12 @@ public class ActionEntry extends WWidget {
     @Override
     public void addTooltip(TooltipBuilder tooltip) {
         if(data !=null) {
-            tooltip.add(Text.literal(data.name));
-            var kb = data.getKey();
+            tooltip.add(Text.literal(data.getName()));
+            var kb = data.getKeybind();
             if (kb != null) {
                 tooltip.add(Text.literal("Trigger: ").append(kb.getLocalizedText()));
             }
-            data.actions.forEach(action -> {
-                tooltip.add(action.getText());
-            });
+            data.getTasks().forEach( a -> tooltip.add(a.description()));
         } else {
             tooltip.add(Text.literal("Add Action"));
         }
@@ -89,7 +86,7 @@ public class ActionEntry extends WWidget {
                 26
             );
             context.drawItemWithoutEntity(
-                data.icon,
+                data.getIcon(),
                 x + 5, y + 5
             );
         }
@@ -106,22 +103,16 @@ public class ActionEntry extends WWidget {
         if(data != null) {
             if(!isEditMode) {
                 MinecraftClient.getInstance().setScreen(null);
-                data.run();
+                data.run(false);
             } else {
                 // TODO - Open edit mode
-                MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-                    ActionConfigMigrator.migrateActionButton(data.toJSON())
-//                    new ActionButton()
-//                        .setName(data.name)
-//                        .setIcon(data.icon)
-//                        .setTasks(new ArrayList<>(List.of(
-//                            new CommandTask("/server survival"),
-//                            new DelayTask(20),
-//                            new CommandTask("/home"),
-//                            new KeybindTask(""),
-//                            new PanelTask()
-//                        )))
-                )));
+                MinecraftClient.getInstance().setScreen(
+                    new MinedeckScreen(
+                        new ButtonEditor(
+                            data
+                        )
+                    )
+                );
             }
         } else {
             // TODO - Open edit mode for new action.

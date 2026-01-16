@@ -122,6 +122,8 @@ public class ActionButton {
                 client.player.sendMessage(Text.of("Ran action \"" + name + "\""), true);
             }
         }
+
+        new ActionButtonExecutorContext(tasks, 0).run();
 //        MinecraftClient.getInstance()
 
         // Run the buttons action.
