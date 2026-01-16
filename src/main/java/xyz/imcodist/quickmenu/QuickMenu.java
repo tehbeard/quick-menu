@@ -1,6 +1,8 @@
 package xyz.imcodist.quickmenu;
 
 import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
+import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
 import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.MainScreen;
 import net.fabricmc.api.ModInitializer;
@@ -10,6 +12,8 @@ import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class QuickMenu implements ModInitializer {
 
@@ -18,6 +22,14 @@ public class QuickMenu implements ModInitializer {
     @Override
     public void onInitialize() {
         // Initialize the mods keybinds and data handler.
+        ActionConfigMigrator.attemptMigrate();
+        try {
+            ActionConfig.load(new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json"));
+        }catch(IOException ex)
+        {
+            var logger = Logger.getLogger("quickaction");
+            logger.severe(ex.toString());
+        }
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();
 
