@@ -12,6 +12,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.data.ActionButtonData;
 import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
 
 import java.io.File;
@@ -24,6 +25,38 @@ import java.util.List;
 
 public class ActionConfigMigrator {
 
+    public static ActionButton fromOldActionButton(ActionButtonDataJSON action)
+    {
+        var button = new ActionButton();
+        button.setName(action.name);
+        if (action.icon != null) {
+            button.setIcon(
+                new ItemStack(Registries.ITEM.get(Identifier.of(action.icon)))
+            );
+        }
+
+        if (!action.keybind.isEmpty()) {
+//                InputUtil.fromKeyCode()
+            button.setKeybind(InputUtil.fromKeyCode(new KeyInput(action.keybind.get(0), action.keybind.get(1), 0)));
+        }
+
+        action.actions.forEach(
+            task -> {
+                switch (task.get(0)) {
+                    case "cmd" -> button.getTasks().add(
+                        new CommandTask(task.get(1))
+                    );
+                    case "delay" -> button.getTasks().add(
+                        new DelayTask(Long.parseLong(task.get(1)))
+                    );
+                    case "key" -> button.getTasks().add(
+                        new KeybindTask(task.get(1))
+                    );
+                }
+            }
+        );
+        return button;
+    }
     public static ActionConfig convertQuickMenuToActionConfig(List<ActionButtonDataJSON> oldConfig) {
         var cfg = new ActionConfig();
 
@@ -31,36 +64,7 @@ public class ActionConfigMigrator {
         tab.setName("Default");
 
         oldConfig.forEach(action -> {
-            var button = new ActionButton();
-            button.setName(action.name);
-            if (action.icon != null) {
-                button.setIcon(
-                    new ItemStack(Registries.ITEM.get(Identifier.of(action.icon)))
-                );
-            }
-
-            if (!action.keybind.isEmpty()) {
-//                InputUtil.fromKeyCode()
-                button.setKeybind(InputUtil.fromKeyCode(new KeyInput(action.keybind.get(0), action.keybind.get(1), 0)));
-            }
-
-            action.actions.forEach(
-                task -> {
-                    switch (task.get(0)) {
-                        case "cmd" -> button.getTasks().add(
-                            new CommandTask(task.get(1))
-                        );
-                        case "delay" -> button.getTasks().add(
-                            new DelayTask(Long.parseLong(task.get(1)))
-                        );
-                        case "key" -> button.getTasks().add(
-                            new KeybindTask(task.get(1))
-                        );
-                    }
-                }
-            );
-
-
+            var button = fromOldActionButton(action);
             tab.getButtons().add(button);
         });
         cfg.getTabs().add(tab);

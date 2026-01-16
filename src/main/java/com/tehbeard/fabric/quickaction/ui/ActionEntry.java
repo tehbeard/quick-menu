@@ -1,10 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui;
 
 import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.action.CommandTask;
-import com.tehbeard.fabric.quickaction.data.action.DelayTask;
-import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
-import com.tehbeard.fabric.quickaction.data.action.PanelTask;
+import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
@@ -116,16 +113,17 @@ public class ActionEntry extends WWidget {
             } else {
                 // TODO - Open edit mode
                 MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-                    new ActionButton()
-                        .setName(data.name)
-                        .setIcon(data.icon)
-                        .setTasks(new ArrayList<>(List.of(
-                            new CommandTask("/server survival"),
-                            new DelayTask(20),
-                            new CommandTask("/home"),
-                            new KeybindTask(""),
-                            new PanelTask()
-                        )))
+                    ActionConfigMigrator.fromOldActionButton(data.toJSON())
+//                    new ActionButton()
+//                        .setName(data.name)
+//                        .setIcon(data.icon)
+//                        .setTasks(new ArrayList<>(List.of(
+//                            new CommandTask("/server survival"),
+//                            new DelayTask(20),
+//                            new CommandTask("/home"),
+//                            new KeybindTask(""),
+//                            new PanelTask()
+//                        )))
                 )));
             }
         } else {
