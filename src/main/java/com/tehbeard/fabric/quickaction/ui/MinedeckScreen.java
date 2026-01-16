@@ -8,6 +8,7 @@ import io.github.cottonmc.cotton.gui.widget.WWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.input.KeyInput;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
 
@@ -15,39 +16,46 @@ public class MinedeckScreen extends CottonClientScreen {
 
     protected Stack<GuiDescription> overlay = new Stack<>();
 
+    protected Runnable onRemove;
+
     public MinedeckScreen(GuiDescription description) {
         super(description);
     }
 
+    public MinedeckScreen onRemoved(@NotNull Runnable onRemove) {
+        this.onRemove = onRemove;
+        return this;
+    }
 
-    public static void pushCurrent(GuiDescription description)
-    {
-        if(MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s)
-        {
+    @Override
+    public void removed() {
+        super.removed();
+        if (this.onRemove != null) {
+            this.onRemove.run();
+        }
+    }
+
+    public static void pushCurrent(GuiDescription description) {
+        if (MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s) {
             s.push(description);
         }
     }
 
-    public static void popCurrent()
-    {
-        if(MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s)
-        {
+    public static void popCurrent() {
+        if (MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s) {
             s.pop();
         }
     }
 
-    public MinedeckScreen push(GuiDescription description)
-    {
+    public MinedeckScreen push(GuiDescription description) {
         this.overlay.push(this.description);
         this.description = description;
         this.reposition(width, height);
         return this;
     }
 
-    public MinedeckScreen pop()
-    {
-        if(!this.overlay.isEmpty())
-        {
+    public MinedeckScreen pop() {
+        if (!this.overlay.isEmpty()) {
             this.description = this.overlay.pop();
             this.reposition(width, height);
         }
@@ -75,19 +83,19 @@ public class MinedeckScreen extends CottonClientScreen {
         // TODO - Render the overlay
         overlay.forEach(
             entry -> {
-                var panel =  entry.getRootPanel();
+                var panel = entry.getRootPanel();
                 // TODO - This uses a hack to position all windows centered, might need to in future cache the left/top values when the stack is made.
 
-                panel.paint(context, (width/2) - (panel.getWidth() / 2), (height/2) - (panel.getHeight() / 2), -1, -1);
+                panel.paint(context, (width / 2) - (panel.getWidth() / 2), (height / 2) - (panel.getHeight() / 2), -1, -1);
             }
         );
         super.render(context, mouseX, mouseY, partialTicks);
 
-        if (description!=null) {
+        if (description != null) {
             WPanel root = description.getRootPanel();
-            if (root!=null) {
-                WWidget hitChild = root.hit(mouseX-left, mouseY-top);
-                if (hitChild!=null) hitChild.renderTooltip(context, left, top, mouseX-left, mouseY-top);
+            if (root != null) {
+                WWidget hitChild = root.hit(mouseX - left, mouseY - top);
+                if (hitChild != null) hitChild.renderTooltip(context, left, top, mouseX - left, mouseY - top);
             }
         }
 
@@ -96,8 +104,7 @@ public class MinedeckScreen extends CottonClientScreen {
 
     @Override
     public boolean keyPressed(KeyInput input) {
-        if(input.isEscape() && !overlay.isEmpty())
-        {
+        if (input.isEscape() && !overlay.isEmpty()) {
             pop();
             return true;
         }

@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
+import com.tehbeard.fabric.quickaction.data.ActionButton;
 import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.IconEntry;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
@@ -35,7 +36,9 @@ public class ButtonEditor extends LightweightGuiDescription {
 
     private int yOffset = 0;
 
-    public ButtonEditor() {
+    private ActionButton data;
+
+    public ButtonEditor(@NotNull ActionButton data) {
         setUseDefaultRootBackground(false);
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
@@ -71,15 +74,18 @@ public class ButtonEditor extends LightweightGuiDescription {
         WTextField name = new WTextField(Text.literal("Name"));
         name.setMaxLength(255);
         name.setSize(140,18);
+        name.setText(data.getName());
+        name.setChangedListener(data::setName);
         addRow(scrollPanelContents, "Name", name);
 
         WTextField model = new WTextField(Text.literal("namespace:id"));
         model.setMaxLength(4096);
 
-        final IconEntry iconSelect = new IconEntry(null, selector -> {
+        final IconEntry iconSelect = new IconEntry(data.getIcon(), selector -> {
             MinedeckScreen.pushCurrent(
                 new ItemstackPicker(item -> {
                     selector.setIcon(item);
+                    data.setIcon(item);
                     model.setText("");
                     MinedeckScreen.popCurrent();
                 })
@@ -95,6 +101,7 @@ public class ButtonEditor extends LightweightGuiDescription {
                 }else{
                     // HACK - reset stack
                     iconSelect.setIcon(is.getItem().getDefaultStack());
+                    data.setIcon(is.getItem().getDefaultStack());
                 }
             }
         });
@@ -111,10 +118,13 @@ public class ButtonEditor extends LightweightGuiDescription {
 //        addRow(scrollPanelContents, "Custom Model", model);
 
 
+        // TODO - Wire up to `data.getKeybind()`
         WButton keybindButton = new WButton(Text.literal("Not Bound"));
         keybindButton.setSize(100, keybindButton.getHeight());
 
         addRow(scrollPanelContents,"Keybind", keybindButton);
+        // END KEYBIND CODE
+
 
         WLabel actionsLabel = new WLabel(Text.literal("Actions:").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))));
         scrollPanelContents.add(actionsLabel, 5, 5 + 7 + (ELEMENT_SIZE * yOffset++));
@@ -124,15 +134,7 @@ public class ButtonEditor extends LightweightGuiDescription {
 
         scrollPanelContents.add(actions, 5, 5 + 7 + ( ELEMENT_SIZE * yOffset));
 
-        List<IActionTask> actionList = new ArrayList<>(List.of(
-            new CommandTask("/server survival"),
-            new DelayTask(20),
-            new CommandTask("/home"),
-            new KeybindTask(""),
-            new PanelTask()
-        ));
-
-        updateActionsList(actionList, actions);
+        updateActionsList(data.getTasks(), actions);
 
         // TODO - Generate list from actions, or use the list widget and reset size to show all items.
 

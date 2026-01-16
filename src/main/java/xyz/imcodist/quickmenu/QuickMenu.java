@@ -1,6 +1,8 @@
 package xyz.imcodist.quickmenu;
 
+import com.tehbeard.fabric.quickaction.data.ActionButton;
 import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
+import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.MainScreen;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.quickaction.ui.panel.ActionPicker;
@@ -15,6 +17,8 @@ import net.minecraft.client.util.InputUtil;
 import xyz.imcodist.quickmenu.other.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuickMenu implements ModInitializer {
 
@@ -43,13 +47,9 @@ public class QuickMenu implements ModInitializer {
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
                     var mainScreen = new MainScreen(false);
-//                    client.setScreen(
-//                        mainScreen
-//                    );
-                    client.setScreen(new MinedeckScreen(new ButtonEditor()));
-//                    client.setScreen(new MinedeckScreen(new ItemstackPicker()));
-//                    client.setScreen(new MinedeckScreen(new KeybindPicker()));
-//                    client.setScreen(new MinedeckScreen(new ActionPicker(act -> {})));
+                    client.setScreen(
+                        mainScreen
+                    );
                 }
                 menuKeyPressed = true;
             } else if (client.currentScreen == null) {
