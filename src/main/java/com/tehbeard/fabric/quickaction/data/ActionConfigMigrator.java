@@ -1,18 +1,17 @@
-package com.tehbeard.fabric.quickaction.data.action;
+package com.tehbeard.fabric.quickaction.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.ActionConfig;
-import com.tehbeard.fabric.quickaction.data.ActionTab;
+import com.tehbeard.fabric.quickaction.data.action.CommandTask;
+import com.tehbeard.fabric.quickaction.data.action.DelayTask;
+import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
 import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
 
 import java.io.File;
@@ -25,7 +24,12 @@ import java.util.List;
 
 public class ActionConfigMigrator {
 
-    public static ActionButton fromOldActionButton(ActionButtonDataJSON action)
+    /**
+     * Converts quick menu entry to minedeck
+     * @param action
+     * @return
+     */
+    public static ActionButton migrateActionButton(ActionButtonDataJSON action)
     {
         var button = new ActionButton();
         button.setName(action.name);
@@ -64,7 +68,7 @@ public class ActionConfigMigrator {
         tab.setName("Default");
 
         oldConfig.forEach(action -> {
-            var button = fromOldActionButton(action);
+            var button = migrateActionButton(action);
             tab.getButtons().add(button);
         });
         cfg.getTabs().add(tab);
@@ -76,7 +80,7 @@ public class ActionConfigMigrator {
     public static void attemptMigrate() {
         File oldFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickmenu_data.json");
         File newFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
-        Gson gson = new Gson();
+        var gson = new GsonBuilder().setPrettyPrinting().create();
         Type listType = new TypeToken<List<ActionButtonDataJSON>>() {
         }.getType();
 
@@ -85,25 +89,16 @@ public class ActionConfigMigrator {
             try (FileReader fileReader = new FileReader(oldFile)) {
                 List<ActionButtonDataJSON> actionDataJSONS = gson.fromJson(fileReader, listType);
 
-                migrateQuickMenu(actionDataJSONS, newFile);
+                var newCfg = convertQuickMenuToActionConfig(actionDataJSONS);
+                Files.writeString(
+                    newFile.toPath(),
+                    gson.toJson(newCfg.encode())
+                );
 
             } catch (Exception e) {
                 e.printStackTrace();
 
             }
-        }
-    }
-
-    public static void migrateQuickMenu(List<ActionButtonDataJSON> actionDataJSONS, File outputFile) {
-        var newCfg = convertQuickMenuToActionConfig(actionDataJSONS);
-        try {
-            var gson = new GsonBuilder().setPrettyPrinting().create();
-            Files.write(
-                outputFile.toPath(),
-                gson.toJson(newCfg.encode()).getBytes(StandardCharsets.UTF_8)
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

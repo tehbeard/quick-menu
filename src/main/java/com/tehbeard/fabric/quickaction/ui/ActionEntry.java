@@ -1,7 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui;
 
 import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.action.*;
+import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
 import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
@@ -16,9 +16,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ActionEntry extends WWidget {
 
@@ -113,7 +110,7 @@ public class ActionEntry extends WWidget {
             } else {
                 // TODO - Open edit mode
                 MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-                    ActionConfigMigrator.fromOldActionButton(data.toJSON())
+                    ActionConfigMigrator.migrateActionButton(data.toJSON())
 //                    new ActionButton()
 //                        .setName(data.name)
 //                        .setIcon(data.icon)

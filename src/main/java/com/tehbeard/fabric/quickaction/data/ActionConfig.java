@@ -2,10 +2,13 @@ package com.tehbeard.fabric.quickaction.data;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -23,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class ActionConfig {
 
-    public static final Identifier DEFAULT_TAB = Identifier.of("quickaction", "default");
+    public static final Identifier DEFAULT_TAB = Identifier.of("minedeck", "default");
 
     public static final Codec<ActionConfig> CODEC = RecordCodecBuilder.create(inst ->
         inst.group(
@@ -161,6 +164,39 @@ public class ActionConfig {
         );
     }
 
+    private static ActionConfig config = null;
+
+    public static void load(File file) throws IOException
+    {
+        if(file.exists())
+        {
+            var rawCfg = JsonParser.parseString(
+                Files.readString(
+                    file.toPath()
+                )
+            );
+
+            var res = ActionConfig.CODEC.decode(JsonOps.INSTANCE, rawCfg);
+            res.ifSuccess( p -> {
+                config = p.getFirst();
+            }).ifError( e -> {
+                Logger.getGlobal().severe("FAILED TO LOAD CONFIG: " + e.message());
+            });
+        } else {
+            getDefaultConfig().save(file);
+        }
+
+    }
+
+    public static ActionConfig getConfig()
+    {
+        if(config == null)
+        {
+            throw new RuntimeException("Config not yet loaded");
+        }
+        return config;
+    }
+
     public static ActionConfig getDefaultConfig() {
         var cfg = new ActionConfig();
 
@@ -172,6 +208,7 @@ public class ActionConfig {
 
         var btn = new ActionButton();
         btn.setName("Open Vanilla Quick Actions");
+        btn.setIcon(Items.KNOWLEDGE_BOOK.getDefaultStack());
         tab.getButtons().add(btn);
 
         btn.getTasks().add(
