@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
+import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.IconEntry;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
@@ -10,20 +11,18 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.other.KeybindHandler;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * TODO: Redo as a list, try to figure an approach for category vs. keybind split
@@ -72,24 +71,20 @@ public class ButtonEditor extends LightweightGuiDescription {
         WTextField name = new WTextField(Text.literal("Name"));
         name.setMaxLength(255);
         name.setSize(140,18);
-
-
         addRow(scrollPanelContents, "Name", name);
+
+        WTextField model = new WTextField(Text.literal("namespace:id"));
+        model.setMaxLength(4096);
+
         final IconEntry iconSelect = new IconEntry(null, selector -> {
             MinedeckScreen.pushCurrent(
                 new ItemstackPicker(item -> {
                     selector.setIcon(item);
+                    model.setText("");
                     MinedeckScreen.popCurrent();
                 })
             );
         });
-
-        addRow(scrollPanelContents, "Icon", iconSelect);
-
-        WTextField model = new WTextField(Text.literal("custom model name"));
-        model.setMaxLength(4096);
-        model.setSize(140,18);
-
         model.setTextPredicate(str -> str.isEmpty() || !str.isBlank());
         model.setChangedListener( str -> {
             var is = iconSelect.getIcon();
@@ -104,7 +99,16 @@ public class ButtonEditor extends LightweightGuiDescription {
             }
         });
 
-        addRow(scrollPanelContents, "Custom Model", model);
+        var iconRow = new WPlainPanel();
+        iconRow.setSize(140, 26);
+
+        iconRow.add(iconSelect,0,0);
+        iconRow.add(model,28,3);
+        model.setSize(112,18);
+
+        addRow(scrollPanelContents, "Icon", iconRow);
+
+//        addRow(scrollPanelContents, "Custom Model", model);
 
 
         WButton keybindButton = new WButton(Text.literal("Not Bound"));
@@ -112,15 +116,155 @@ public class ButtonEditor extends LightweightGuiDescription {
 
         addRow(scrollPanelContents,"Keybind", keybindButton);
 
+        WLabel actionsLabel = new WLabel(Text.literal("Actions:").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))));
+        scrollPanelContents.add(actionsLabel, 5, 5 + 7 + (ELEMENT_SIZE * yOffset++));
+
+        WPlainPanel actions = new WPlainPanel();
+
+
+        scrollPanelContents.add(actions, 5, 5 + 7 + ( ELEMENT_SIZE * yOffset));
+
+        List<IActionTask> actionList = new ArrayList<>(List.of(
+            new CommandTask("/server survival"),
+            new DelayTask(20),
+            new CommandTask("/home"),
+            new KeybindTask(""),
+            new PanelTask()
+        ));
+
+        updateActionsList(actionList, actions);
+
+        // TODO - Generate list from actions, or use the list widget and reset size to show all items.
+
         root.validate(this);
+    }
+
+    public void updateActionsList(List<IActionTask> actionList, WPlainPanel actions)
+    {
+        var currentItems = actions.streamChildren().toList();
+        for (WWidget currentItem : currentItems) {
+            actions.remove(currentItem);
+        }
+
+        var i = 0;
+        for(var a : actionList)
+        {
+            final int pos = i;
+            actions.add(new ActionRow(a, btn -> {
+                switch (btn)
+                {
+                    case UP -> {
+                        if(pos > 0)
+                        {
+                            actionList.remove(pos);
+                            actionList.add(pos-1, a);
+                            updateActionsList(actionList, actions);
+                        }
+                    }
+                    case DOWN -> {
+                        if(pos < (actionList.size() - 1))
+                        {
+                            actionList.remove(pos);
+                            actionList.add(pos+1, a);
+                            updateActionsList(actionList, actions);
+                        }
+                    }
+                    case DELETE -> {
+                        actionList.remove(pos);
+                        updateActionsList(actionList, actions);
+                    }
+                }
+            }),0, ELEMENT_SIZE * i++);
+
+        }
+        WButton addButton = new WButton(Text.literal("Add Action"));
+        addButton.setOnClick(() -> {
+            MinedeckScreen.pushCurrent(
+                new ActionPicker( newAction -> {
+                    actionList.add(newAction);
+                    updateActionsList(actionList, actions);
+                    MinedeckScreen.popCurrent();
+                })
+            );
+        });
+        actions.add(addButton, 50, (ELEMENT_SIZE * i) + 1, 120, 18);
+        actions.setSize(220, ELEMENT_SIZE * (i+1));
+        actions.validate(this);
+
     }
 
     public void addRow(WPlainPanel panel, String label, WWidget widget)
     {
-        panel.add(new WLabel(Text.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),  5,5 + 7 + ELEMENT_SIZE * yOffset);
-        panel.add(widget,  100, 5 + ELEMENT_SIZE * yOffset++, widget.getWidth(), widget.getHeight());
+        panel.add(new WLabel(Text.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),  5,5 + 7 + (ELEMENT_SIZE * yOffset));
+        panel.add(widget,  100, 5 + (ELEMENT_SIZE * yOffset++), widget.getWidth(), widget.getHeight());
     }
 
+
+    enum RowButton {
+        UP,
+        DOWN,
+        DELETE
+    }
+    class ActionRow extends WPlainPanel
+    {
+        public ActionRow(@NotNull IActionTask task, Consumer<RowButton> onClick) {
+
+            this.add(new WLabel(Text.literal("%s:".formatted(StringUtils.capitalize(task.type()))).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),0,5);
+
+            // TODO - Change this based on the action type.
+            // With command, can we autocomplete the string? (Not easily)
+            // with delay, ensure numeric only
+            // with panel, autocomplete panels? (Or show a list popup)
+            // with keybind, show button to list popup.
+
+            WWidget config = new WLabel(Text.literal("Unknown"));
+
+            if(task instanceof CommandTask c) {
+                var txt = new WTextField();
+                txt.setMaxLength(256);
+                txt.setText(c.getCommand());
+                txt.setChangedListener(str -> c.setCommand(str));
+                config = txt;
+            } else if (task instanceof DelayTask d)
+            {
+                var txt = new WTextField();
+                txt.setMaxLength(256);
+                txt.setText(String.valueOf(d.getTicks()));
+                txt.setTextPredicate(str -> str.matches("^[1-9][0-9]*$"));
+                txt.setChangedListener(str -> d.setTicks(str.isBlank() ? 0 : Long.parseLong(str)));
+                config = txt;
+            } else if(task instanceof KeybindTask k)
+            {
+                var btn = new WButton(Text.literal("Not Bound"));
+                btn.setOnClick(() -> {
+                    MinedeckScreen.pushCurrent(
+                        new KeybindPicker()
+                    );
+                    // TODO - move this logic into a custom button that handles tracking internal state and capturing the input
+                });
+                config = btn;
+            } else if(task instanceof PanelTask p)
+            {
+                var btn = new WButton(Text.literal("No Panel Set"));
+                btn.setOnClick(() -> {
+                    // TODO - move this logic into a custom button that handles tracking internal state and capturing the input
+                });
+                config = btn;
+            }
+            this.add(config,50, (config instanceof WButton) ? 1 : 0, 120, 18);
+
+            this.add(new WButton(Text.literal("▲")).setOnClick(() -> onClick.accept(RowButton.UP)),172, 1);
+            this.add(new WButton(Text.literal("▼")).setOnClick(() -> onClick.accept(RowButton.DOWN)),192, 1);
+            this.add(new WButton(Text.literal("❌")).setOnClick(() -> onClick.accept(RowButton.DELETE)),212, 1);
+
+            this.setSize(230, ELEMENT_SIZE);
+        }
+
+        @Override
+        public boolean canResize() {
+            return false;
+        }
+    }
 
 
     @Override

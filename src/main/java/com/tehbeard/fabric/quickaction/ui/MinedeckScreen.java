@@ -77,6 +77,7 @@ public class MinedeckScreen extends CottonClientScreen {
             entry -> {
                 var panel =  entry.getRootPanel();
                 // TODO - This uses a hack to position all windows centered, might need to in future cache the left/top values when the stack is made.
+
                 panel.paint(context, (width/2) - (panel.getWidth() / 2), (height/2) - (panel.getHeight() / 2), -1, -1);
             }
         );

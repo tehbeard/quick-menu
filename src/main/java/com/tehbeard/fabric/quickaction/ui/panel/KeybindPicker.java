@@ -33,6 +33,7 @@ public class KeybindPicker extends LightweightGuiDescription {
 
     private static final int ELEMENT_SIZE = 20;
 
+    // TODO - Passthru a handler for when a keybind is selected.
     public KeybindPicker() {
         setUseDefaultRootBackground(false);
         WPlainPanel root = new WPlainPanel();
@@ -41,9 +42,24 @@ public class KeybindPicker extends LightweightGuiDescription {
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background.png")),
+            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
+
+        WPlainPanel header = new WPlainPanel();
+        header.setInsets(Insets.NONE);
+        header.setBackgroundPainter(BackgroundPainter.createNinePatch(
+            new Texture(Identifier.of("quickmenu", "textures/background_header.png")),
+            builder -> builder.cornerSize(8).cornerUv(0.33f)
+        ));
+        root.add(header, 0,0,root.getWidth(),24);
+
+        WLabel label = new WLabel(Text.literal("Select a Keybind"), 0xFF_FFFFFF);
+        label.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        label.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        header.add(label, (root.getWidth() / 2),3);
+
 
         WPlainPanel scrollPanelContents = new WPlainPanel();
 
@@ -103,9 +119,9 @@ public class KeybindPicker extends LightweightGuiDescription {
 //
 //        root.add(searchField,48, 5, root.getWidth() - (15 + 48 + 7), 16);
 
-        WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
-        root.add(icon, 17 + 7, 5 + 7);
-        icon.setSize(12,12);
+//        WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
+//        root.add(icon, 17 + 7, 5 + 7);
+//        icon.setSize(12,12);
 
         root.validate(this);
     }

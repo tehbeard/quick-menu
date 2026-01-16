@@ -32,7 +32,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background.png")),
+            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
 

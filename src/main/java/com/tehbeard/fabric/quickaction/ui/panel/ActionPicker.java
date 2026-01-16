@@ -42,14 +42,14 @@ public class ActionPicker extends LightweightGuiDescription {
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background.png")),
+            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
 
         List<ActionPickerEntry> list = List.of(
-            new ActionPickerEntry("Command", "Runs a chat command", () -> { newAction.accept(new CommandTask()); }),
-            new ActionPickerEntry("Keybind", "Activates a keybind", () -> { newAction.accept(new KeybindTask()); }),
-            new ActionPickerEntry("Delay", "Adds a delay between tasks", () -> { newAction.accept(new DelayTask()); })
+            new ActionPickerEntry("Command", "Runs a chat command", () -> { newAction.accept(new CommandTask("")); }),
+            new ActionPickerEntry("Keybind", "Activates a keybind", () -> { newAction.accept(new KeybindTask("")); }),
+            new ActionPickerEntry("Delay", "Adds a delay between tasks", () -> { newAction.accept(new DelayTask(20)); })
         );
 
         var listPanel = new WListPanel<>(list, WButton::new, (ActionPickerEntry action, WButton button) -> {
