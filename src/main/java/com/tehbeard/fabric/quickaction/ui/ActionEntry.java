@@ -125,12 +125,10 @@ public class ActionEntry extends WWidget {
                 );
             }
         } else {
-            // TODO - Open edit mode for new action.
-            // TODO - Add new action button to config
-            // TODO - Use that in the button editor
+            var newData = new ActionButton().setName("");
+            ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
             MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-                new ActionButton()
-                    .setName("")
+                newData
             )).onRemoved(() -> {
                 try {
                     ActionConfig.getConfig().save(QuickMenu.getConfigFile());

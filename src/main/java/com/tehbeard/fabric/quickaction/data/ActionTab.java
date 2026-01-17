@@ -18,7 +18,7 @@ public class ActionTab {
             var tab = new ActionTab();
             tab.setId(id);
             tab.setName(name);
-            tab.setButtons(buttons);
+            tab.setButtons(new ArrayList<>(buttons));
             return tab;
         })
     );
