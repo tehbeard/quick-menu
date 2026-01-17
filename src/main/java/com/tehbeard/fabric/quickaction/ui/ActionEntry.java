@@ -1,7 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui;
 
 import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
 import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
@@ -15,6 +15,9 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.QuickMenu;
+
+import java.io.IOException;
 
 public class ActionEntry extends WWidget {
 
@@ -111,7 +114,14 @@ public class ActionEntry extends WWidget {
                         new ButtonEditor(
                             data
                         )
-                    )
+                    ).onRemoved(() -> {
+                        try {
+                            ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                        } catch (IOException e) {
+                            QuickMenu.LOGGER.error(e.toString());
+//                        throw new RuntimeException(e);
+                        }
+                    })
                 );
             }
         } else {
@@ -121,7 +131,14 @@ public class ActionEntry extends WWidget {
             MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
                 new ActionButton()
                     .setName("")
-            )));
+            )).onRemoved(() -> {
+                try {
+                    ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                } catch (IOException e) {
+                    QuickMenu.LOGGER.error(e.toString());
+//                        throw new RuntimeException(e);
+                }
+            }));
 
 
         }

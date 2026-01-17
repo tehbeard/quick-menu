@@ -12,7 +12,6 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
 
 public class ConfigEntry extends WWidget {
 

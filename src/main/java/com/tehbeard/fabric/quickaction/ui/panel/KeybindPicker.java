@@ -1,6 +1,5 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
-import com.tehbeard.fabric.quickaction.ui.ItemstackEntry;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -10,8 +9,6 @@ import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -22,7 +19,6 @@ import xyz.imcodist.quickmenu.other.KeybindHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**

@@ -4,10 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.quickaction.data.action.IActionTask;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.MouseInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,15 +99,12 @@ public class ActionButton {
                 alreadyPressed = false;
             }
         } else if (this.keybind.getCategory() == InputUtil.Type.MOUSE) {
-            var pressed = false;
-            switch (this.keybind.getCode()) {
-                case 0 -> pressed = client.mouse.wasLeftButtonClicked();
-                case 1 -> pressed = client.mouse.wasRightButtonClicked();
-                case 2 -> pressed = client.mouse.wasMiddleButtonClicked();
-            }
-            if (pressed) {
-                alreadyPressed = true;
-                run(true);
+            if(GLFW.glfwGetMouseButton(client.getWindow().getHandle(), this.getKeybind().getCode()) == GLFW.GLFW_PRESS)
+            {
+                if (!alreadyPressed) {
+                    alreadyPressed = true;
+                    run(true);
+                }
             } else {
                 alreadyPressed = false;
             }

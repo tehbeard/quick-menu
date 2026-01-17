@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import xyz.imcodist.quickmenu.QuickMenu;
 
-import java.util.logging.Logger;
 
 public class KeybindSelectButton extends WButton {
 

@@ -1,8 +1,6 @@
 package com.tehbeard.fabric.quickaction.data;
 
 import com.tehbeard.fabric.quickaction.data.action.IActionTask;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
-import xyz.imcodist.quickmenu.other.ActionButtonDelayHandler;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package xyz.imcodist.quickmenu.other;
 
-import net.minecraft.client.MinecraftClient;
 import xyz.imcodist.quickmenu.data.ActionButtonData;
 
 import java.util.ArrayList;

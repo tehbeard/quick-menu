@@ -7,22 +7,13 @@ import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
-import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.other.KeybindHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**

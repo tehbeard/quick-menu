@@ -1,8 +1,9 @@
 package com.tehbeard.fabric.quickaction.ui;
 
+import com.tehbeard.fabric.quickaction.data.ActionButton;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
 import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
 import com.tehbeard.fabric.quickaction.ui.component.EditButton;
-import com.tehbeard.fabric.quickaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -68,7 +69,18 @@ public class MainGui extends LightweightGuiDescription {
 
 
 
-        for(ActionButtonData data : ActionButtonDataHandler.actions)
+        for(ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons())
+        {
+            ActionEntry actionWidget = new ActionEntry(data, isEditMode);
+            scrollPanelContents.add(actionWidget, posX, posY,1,1);
+            posX++;
+            if(posX == perRow) // TODO - Pull value from config
+            {
+                posX = 0;
+                posY++;
+            }
+        };
+        /*for(ActionButtonData data : ActionButtonDataHandler.actions)
         {
             ActionEntry actionWidget = new ActionEntry(ActionConfigMigrator.migrateActionButton(data.toJSON()), isEditMode);
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
@@ -78,7 +90,7 @@ public class MainGui extends LightweightGuiDescription {
                 posX = 0;
                 posY++;
             }
-        };
+        }*/
 
         if(isEditMode)
         {

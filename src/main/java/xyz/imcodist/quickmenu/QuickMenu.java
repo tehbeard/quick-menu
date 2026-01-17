@@ -8,7 +8,6 @@ import com.tehbeard.fabric.quickaction.ui.MainScreen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.util.InputUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.imcodist.quickmenu.other.*;
@@ -21,12 +20,16 @@ public class QuickMenu implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("quickmenu");
     private static boolean menuKeyPressed = false;
 
+    public static File getConfigFile()
+    {
+        return new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
+    }
     @Override
     public void onInitialize() {
         // Initialize the mods keybinds and data handler.
         ActionConfigMigrator.attemptMigrate();
         try {
-            ActionConfig.load(new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json"));
+            ActionConfig.load(QuickMenu.getConfigFile());
         }catch(IOException ex)
         {
             LOGGER.error(ex.toString());

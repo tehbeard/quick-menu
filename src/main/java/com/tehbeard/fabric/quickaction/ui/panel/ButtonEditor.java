@@ -13,7 +13,6 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -23,7 +22,6 @@ import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 

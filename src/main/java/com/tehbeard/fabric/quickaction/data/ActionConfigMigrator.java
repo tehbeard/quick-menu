@@ -1,6 +1,5 @@
 package com.tehbeard.fabric.quickaction.data;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.tehbeard.fabric.quickaction.data.action.CommandTask;
@@ -12,13 +11,12 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.QuickMenu;
 import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -79,7 +77,7 @@ public class ActionConfigMigrator {
 
     public static void attemptMigrate() {
         File oldFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickmenu_data.json");
-        File newFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
+        File newFile = QuickMenu.getConfigFile();
         var gson = new GsonBuilder().setPrettyPrinting().create();
         Type listType = new TypeToken<List<ActionButtonDataJSON>>() {
         }.getType();

@@ -1,11 +1,15 @@
 package com.tehbeard.fabric.quickaction.ui;
 
-import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
-import net.minecraft.client.gui.DrawContext;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
+import xyz.imcodist.quickmenu.QuickMenu;
+
+import java.io.IOException;
 
 public class MainScreen extends MinedeckScreen {
     public MainScreen(boolean isEditMode) {
         super(new MainGui(isEditMode));
     }
+
+
 
 }

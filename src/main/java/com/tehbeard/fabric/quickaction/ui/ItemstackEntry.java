@@ -11,9 +11,7 @@ import net.minecraft.client.gui.cursor.StandardCursors;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
 
 import java.util.function.Consumer;
 
