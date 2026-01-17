@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * TODO: Redo as a list, try to figure an approach for category vs. keybind split
@@ -33,8 +34,9 @@ public class KeybindPicker extends LightweightGuiDescription {
 
     private static final int ELEMENT_SIZE = 20;
 
+    private Consumer<String> onSelect;
     // TODO - Passthru a handler for when a keybind is selected.
-    public KeybindPicker() {
+    public KeybindPicker(Consumer<String> onSelect) {
         setUseDefaultRootBackground(false);
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
@@ -95,7 +97,9 @@ public class KeybindPicker extends LightweightGuiDescription {
                 for (KeyBinding keyBinding : sortedKeybindings.get(category)) {
 
                     scrollPanelContents.add(
-                        new KeybindEntry(Text.translatable(keyBinding.getId()).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))), () -> {}),
+                        new KeybindEntry(Text.translatable(keyBinding.getId()).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))), () -> {
+                            onSelect.accept(keyBinding.getId());
+                        }),
                         0, ELEMENT_SIZE * yOffset++
                     );
 //                    WLabel keyLabel = new WLabel(Text.translatable(keyBinding.getId()));

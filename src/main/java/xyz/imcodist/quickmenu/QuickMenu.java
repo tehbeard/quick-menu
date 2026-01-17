@@ -9,14 +9,16 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xyz.imcodist.quickmenu.other.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class QuickMenu implements ModInitializer {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger("quickmenu");
     private static boolean menuKeyPressed = false;
 
     @Override
@@ -27,8 +29,7 @@ public class QuickMenu implements ModInitializer {
             ActionConfig.load(new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json"));
         }catch(IOException ex)
         {
-            var logger = Logger.getLogger("quickaction");
-            logger.severe(ex.toString());
+            LOGGER.error(ex.toString());
         }
         ModKeybindings.initialize();
         ActionButtonDataHandler.initialize();

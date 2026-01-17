@@ -4,6 +4,7 @@ import com.tehbeard.fabric.quickaction.data.ActionButton;
 import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.IconEntry;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
+import com.tehbeard.fabric.quickaction.ui.component.KeybindSelectButton;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -12,6 +13,7 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -119,7 +121,7 @@ public class ButtonEditor extends LightweightGuiDescription {
 
 
         // TODO - Wire up to `data.getKeybind()`
-        WButton keybindButton = new WButton(Text.literal("Not Bound"));
+        WButton keybindButton = new KeybindSelectButton(data);
         keybindButton.setSize(100, keybindButton.getHeight());
 
         addRow(scrollPanelContents,"Keybind", keybindButton);
@@ -237,10 +239,14 @@ public class ButtonEditor extends LightweightGuiDescription {
                 config = txt;
             } else if(task instanceof KeybindTask k)
             {
-                var btn = new WButton(Text.literal("Not Bound"));
+                var btn = new WButton( k.getKeybind() == null ? Text.literal("Not Bound") : Text.translatable(k.getKeybind()));
                 btn.setOnClick(() -> {
                     MinedeckScreen.pushCurrent(
-                        new KeybindPicker()
+                        new KeybindPicker( kb -> {
+                            k.setKeybind(kb);
+                            btn.setLabel(Text.translatable(k.getKeybind()));
+                            MinedeckScreen.popCurrent();
+                        })
                     );
                     // TODO - move this logic into a custom button that handles tracking internal state and capturing the input
                 });

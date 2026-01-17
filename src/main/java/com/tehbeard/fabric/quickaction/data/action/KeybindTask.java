@@ -47,7 +47,6 @@ public class KeybindTask implements IActionTask {
     @Override
     public long run() {
         KeybindHandler.pressKey(keybindTranslationKey);
-//        KeyBindingHelper.getBoundKeyOf(null).getTranslationKey();
         return 0;
     }
 
