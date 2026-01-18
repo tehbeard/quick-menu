@@ -56,7 +56,7 @@ public class ConfigMenu extends LightweightGuiDescription {
 
         WPlainPanel scrollPanelContents = new WPlainPanel();
 
-        // TODO - Size selector
+        // Size selector
         addRow(scrollPanelContents, 0, "Size",
             new WSelectButton<>(
                 Arrays.asList(
@@ -68,7 +68,7 @@ public class ConfigMenu extends LightweightGuiDescription {
             )
         );
 
-        // TODO - Actions in tooltip
+        // Actions in tooltip
         var tglActions = new WToggleButton();
         tglActions.setToggle(ActionConfig.getConfig().isActionsInTooltip());
         tglActions.setOnToggle( a -> ActionConfig.getConfig().setActionsInTooltip(a));
@@ -77,7 +77,7 @@ public class ConfigMenu extends LightweightGuiDescription {
             tglActions
         );
 
-        // TODO - close on action
+        // Close menu on action
         var tglClose = new WToggleButton();
         tglClose.setToggle(ActionConfig.getConfig().isCloseOnAction());
         tglClose.setOnToggle( a -> ActionConfig.getConfig().setCloseOnAction(a));
@@ -86,19 +86,10 @@ public class ConfigMenu extends LightweightGuiDescription {
             tglClose
         );
 
-        addRow(scrollPanelContents,
-            20, "Show action in tooltip",
-            tglActions
-        );
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
         root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
-
-
-//        WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
-//        root.add(icon, 17 + 7, 5 + 7);
-//        icon.setSize(12,12);
 
         root.validate(this);
     }
