@@ -65,21 +65,27 @@ public class ActionConfig {
     private boolean closeOnAction = true;
 
     public enum Size {
-        SIX(3, 2,124, 86),
-        FIFTEEN(5, 3, 180, 114),
-        THIRTY_TWO(8, 4, 274, 142);
+        SIX("Small", 3, 2,124, 86),
+        FIFTEEN("Medium", 5, 3, 180, 114),
+        THIRTY_TWO("Large", 8, 4, 274, 142);
 
+        private final String label;
         private final int rowSize;
         private final int rowCount;
 
         private final int width;
         private final int height;
 
-        Size(int rowSize, int rowCount, int width, int height) {
+        Size(String label, int rowSize, int rowCount, int width, int height) {
+            this.label = label;
             this.rowSize = rowSize;
             this.rowCount = rowCount;
             this.height = height;
             this.width = width;
+        }
+
+        public String getLabel() {
+            return label;
         }
 
         public int getRowSize() {

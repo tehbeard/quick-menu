@@ -29,8 +29,10 @@ public class MainGui extends LightweightGuiDescription {
 //        root.setSize(180, 114); // TODO - Load this from config, calculating off of the size
 //        int perRow = 5;
         // Large
-        root.setSize(274, 142);
-        int perRow = 8;
+//        root.setSize(274, 142);
+        var size = ActionConfig.getConfig().getSize();
+        root.setSize(size.getWidth(), size.getHeight());
+        int perRow = size.getRowSize();
 
         root.setInsets(Insets.NONE);
 
@@ -114,6 +116,7 @@ public class MainGui extends LightweightGuiDescription {
         root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
 
         root.validate(this);
+        label.setLocation((root.getWidth() / 2),3);
     }
 
     @Override

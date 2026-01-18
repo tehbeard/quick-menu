@@ -50,7 +50,9 @@ public class ActionEntry extends WWidget {
             if (kb != null) {
                 tooltip.add(Text.literal("Trigger: ").append(kb.getLocalizedText()));
             }
-            data.getTasks().forEach( a -> tooltip.add(a.description()));
+            if(ActionConfig.getConfig().isActionsInTooltip()) {
+                data.getTasks().forEach(a -> tooltip.add(a.description()));
+            }
         } else {
             tooltip.add(Text.literal("Add Action"));
         }
@@ -105,7 +107,9 @@ public class ActionEntry extends WWidget {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         if(data != null) {
             if(!isEditMode) {
-                MinecraftClient.getInstance().setScreen(null);
+                if(ActionConfig.getConfig().isCloseOnAction()) {
+                    MinecraftClient.getInstance().setScreen(null);
+                }
                 data.run(false);
             } else {
                 // TODO - Open edit mode
@@ -133,7 +137,7 @@ public class ActionEntry extends WWidget {
                 try {
                     ActionConfig.getConfig().save(QuickMenu.getConfigFile());
                 } catch (IOException e) {
-                    QuickMenu.LOGGER.error(e.toString());
+                        QuickMenu.LOGGER.error(e.toString());
 //                        throw new RuntimeException(e);
                 }
             }));

@@ -1,5 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui;
 
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
+import com.tehbeard.fabric.quickaction.ui.panel.ConfigMenu;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
@@ -12,6 +14,9 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import xyz.imcodist.quickmenu.QuickMenu;
+
+import java.io.IOException;
 
 public class ConfigEntry extends WWidget {
 
@@ -76,7 +81,20 @@ public class ConfigEntry extends WWidget {
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-
+        MinecraftClient.getInstance()
+            .setScreen(
+                new MinedeckScreen(new ConfigMenu())
+                    .onRemoved(() -> {
+                        try {
+                            ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+//                            MinecraftClient.getInstance().setScreen(
+//                                new MainScreen(true)
+//                            );
+                        } catch (IOException e) {
+                            QuickMenu.LOGGER.error(e.toString());
+                        }
+                    })
+            );
         // TODO - Load config screen
         return InputResult.PROCESSED;
     }

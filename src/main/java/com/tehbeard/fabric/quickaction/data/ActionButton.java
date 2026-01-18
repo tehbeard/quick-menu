@@ -113,8 +113,7 @@ public class ActionButton {
     // TODO - Move keybind check logic in here.
 
     public void run(boolean isKeybind) {
-//        ModConfigModel.DisplayRunText displayRunText = ModConfigModel.DisplayRunText.KEYBIND_ONLY;
-        if (isKeybind /*displayRunText == ModConfigModel.DisplayRunText.ALWAYS || displayRunText == ModConfigModel.DisplayRunText.KEYBIND_ONLY && isKeybind*/) {
+        if ( isKeybind ) {
             MinecraftClient client = MinecraftClient.getInstance();
 
             if (client != null && client.player != null) {
