@@ -29,7 +29,7 @@ public class ActionButton {
         ).apply(inst, (name, tasks, icon, keybind) -> {
             var btn = new ActionButton();
             btn.setName(name);
-            btn.setTasks(tasks);
+            btn.setTasks(new ArrayList<>(tasks));
             btn.setIcon(icon);
             keybind.ifPresent(btn::setKeybind);
             return btn;
