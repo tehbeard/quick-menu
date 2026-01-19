@@ -1,19 +1,16 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
-import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
+import com.tehbeard.fabric.quickaction.ui.component.PanelWithHeader;
+import com.tehbeard.fabric.quickaction.ui.component.WPixelPanel;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
-import io.github.cottonmc.cotton.gui.widget.data.Insets;
-import io.github.cottonmc.cotton.gui.widget.data.Texture;
-import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.other.KeybindHandler;
 
 import java.util.ArrayList;
@@ -34,40 +31,17 @@ public class KeybindPicker extends LightweightGuiDescription {
     // TODO - Passthru a handler for when a keybind is selected.
     public KeybindPicker(Consumer<String> onSelect) {
         setUseDefaultRootBackground(false);
-        WPlainPanel root = new WPlainPanel();
+        PanelWithHeader root = new PanelWithHeader("Select a keybind", 274, 142, true);
         setRootPanel(root);
-        root.setSize(274, 142);
-        root.setInsets(Insets.NONE);
 
-        root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
-            builder -> builder.cornerSize(8).cornerUv(0.33f)
-        ));
+        WPixelPanel scrollPanelContents = new WPixelPanel();
 
-        WPlainPanel header = new WPlainPanel();
-        header.setInsets(Insets.NONE);
-        header.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_header.png")),
-            builder -> builder.cornerSize(8).cornerUv(0.33f)
-        ));
-        root.add(header, 0,0,root.getWidth(),24);
-
-        WLabel label = new WLabel(Text.literal("Select a Keybind"), 0xFF_FFFFFF);
-        label.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        label.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        header.add(label, (root.getWidth() / 2),3);
-
-
-        WPlainPanel scrollPanelContents = new WPlainPanel();
-
-        // TODO - Method to fill out scrollPanelContents
-//        updateItems(scrollPanelContents, null);
         KeyBinding[] keyBindings = KeybindHandler.getKeybindings();
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
-        root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        scrollWrapper.setSize( root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        root.add(scrollWrapper, 17, 27);
 
         if(keyBindings != null)
         {
@@ -98,30 +72,11 @@ public class KeybindPicker extends LightweightGuiDescription {
                         }),
                         0, ELEMENT_SIZE * yOffset++
                     );
-//                    WLabel keyLabel = new WLabel(Text.translatable(keyBinding.getId()));
-//                    WButton buttonSelect = new WButton(Text.translatable("menu.action_picker.select"));
-//                    scrollPanelContents.add(keyLabel,0, yOffset, 10,1);
-//                    scrollPanelContents.add(buttonSelect,10, yOffset++, 1,1);
-
-//                    keybindsLayout.child(layout);
                 }
             }
 
         }
 
-
-
-        WTextField searchField = new WTextField(Text.literal(""));
-//        searchField.setChangedListener( str -> {
-//            // TODO - Filter search list.
-//            updateItems(scrollPanelContents, str);
-//        });
-//
-//        root.add(searchField,48, 5, root.getWidth() - (15 + 48 + 7), 16);
-
-//        WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
-//        root.add(icon, 17 + 7, 5 + 7);
-//        icon.setSize(12,12);
 
         root.validate(this);
     }
@@ -133,7 +88,7 @@ public class KeybindPicker extends LightweightGuiDescription {
         return TriState.TRUE;
     }
 
-    class KeybindCategory extends WPlainPanel {
+    class KeybindCategory extends WPixelPanel {
 
         public WLabel label;
 
@@ -146,7 +101,7 @@ public class KeybindPicker extends LightweightGuiDescription {
         }
     }
 
-    class KeybindEntry extends WPlainPanel {
+    class KeybindEntry extends WPixelPanel {
 
         public WButton select;
         public WLabel label;

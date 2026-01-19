@@ -4,14 +4,13 @@ import com.tehbeard.fabric.quickaction.data.action.CommandTask;
 import com.tehbeard.fabric.quickaction.data.action.DelayTask;
 import com.tehbeard.fabric.quickaction.data.action.IActionTask;
 import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
-import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
+import com.tehbeard.fabric.quickaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -27,15 +26,8 @@ public class ActionPicker extends LightweightGuiDescription {
 
     public ActionPicker(Consumer<IActionTask> newAction) {
         setUseDefaultRootBackground(false);
-        WPlainPanel root = new WPlainPanel();
+        PanelWithHeader root = new PanelWithHeader("New Task", 110, 110, true);
         setRootPanel(root);
-        root.setSize(110, 110);
-        root.setInsets(Insets.NONE);
-
-        root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
-            builder -> builder.cornerSize(8).cornerUv(0.33f)
-        ));
 
         List<ActionPickerEntry> list = List.of(
             new ActionPickerEntry("Command", "Runs a chat command", () -> { newAction.accept(new CommandTask("")); }),
@@ -49,7 +41,8 @@ public class ActionPicker extends LightweightGuiDescription {
             button.setOnClick(action.fn);
         });
 
-        root.add(listPanel, 5,5,100,100);
+        listPanel.setSize(100,85);
+        root.add(listPanel, 5,27);
 
         root.validate(this);
     }
