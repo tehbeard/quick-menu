@@ -2,8 +2,8 @@ package com.tehbeard.fabric.quickaction.ui;
 
 import com.tehbeard.fabric.quickaction.data.ActionButton;
 import com.tehbeard.fabric.quickaction.data.ActionConfig;
-import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
 import com.tehbeard.fabric.quickaction.ui.component.EditButton;
+import com.tehbeard.fabric.quickaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -11,8 +11,6 @@ import io.github.cottonmc.cotton.gui.widget.data.*;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.data.ActionButtonData;
-import xyz.imcodist.quickmenu.other.ActionButtonDataHandler;
 
 public class MainGui extends LightweightGuiDescription {
 
@@ -61,7 +59,10 @@ public class MainGui extends LightweightGuiDescription {
         header.add(editButton, root.getWidth() - 25,3);
 
 
+        var rotateButton = new TextButton("\uD83D\uDD04",(click, doubleClick) -> InputResult.PROCESSED);
+        rotateButton.setVerticalAlignment(VerticalAlignment.CENTER);
 
+        header.add(rotateButton, 8, 3);
 
         WGridPanel scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4,2);
@@ -116,7 +117,6 @@ public class MainGui extends LightweightGuiDescription {
         root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
 
         root.validate(this);
-        label.setLocation((root.getWidth() / 2),3);
     }
 
     @Override
