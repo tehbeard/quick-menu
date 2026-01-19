@@ -53,7 +53,7 @@ public class MainGui extends LightweightGuiDescription {
         label.setHorizontalAlignment(HorizontalAlignment.CENTER);
         label.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        header.add(label, (root.getWidth() / 2),3);
+        header.add(label, (root.getWidth() / 2) - 9,3);
 
         WLabel editButton = new EditButton(isEditMode);
         editButton.setHorizontalAlignment(HorizontalAlignment.RIGHT);
