@@ -7,8 +7,6 @@ import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import com.tehbeard.fabric.quickaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
-import io.github.cottonmc.cotton.gui.widget.data.Insets;
-import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.text.Text;
 

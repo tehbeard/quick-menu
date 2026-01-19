@@ -1,19 +1,18 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
 import com.tehbeard.fabric.quickaction.data.ActionButton;
+import com.tehbeard.fabric.quickaction.data.ActionConfig;
 import com.tehbeard.fabric.quickaction.data.action.*;
 import com.tehbeard.fabric.quickaction.ui.IconEntry;
 import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.quickaction.ui.component.KeybindSelectButton;
-import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
+import com.tehbeard.fabric.quickaction.ui.component.PanelWithHeader;
+import com.tehbeard.fabric.quickaction.ui.component.WPixelPanel;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
-import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
-import io.github.cottonmc.cotton.gui.widget.data.Insets;
-import io.github.cottonmc.cotton.gui.widget.data.Texture;
-import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.MergedComponentMap;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -23,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -40,36 +40,15 @@ public class ButtonEditor extends LightweightGuiDescription {
 
     public ButtonEditor(@NotNull ActionButton data) {
         setUseDefaultRootBackground(false);
-        WPlainPanel root = new WPlainPanel();
+        PanelWithHeader root = new PanelWithHeader("Action Editor", 274, 142, false);
         setRootPanel(root);
-        root.setSize(274, 142);
-        root.setInsets(Insets.NONE);
 
-        root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background.png")),
-            builder -> builder.cornerSize(8).cornerUv(0.33f)
-        ));
-
-        WPlainPanel header = new WPlainPanel();
-        header.setInsets(Insets.NONE);
-        header.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_header.png")),
-            builder -> builder.cornerSize(8).cornerUv(0.33f)
-        ));
-        root.add(header, 0,0,root.getWidth(),24);
-
-        WLabel label = new WLabel(Text.literal("Action Editor"), 0xFF_FFFFFF);
-        label.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        label.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        header.add(label, (root.getWidth() / 2),3);
-
-
-        WPlainPanel scrollPanelContents = new WPlainPanel();
+        WPixelPanel scrollPanelContents = new WPixelPanel();
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
-        root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        root.add(scrollWrapper, 17, 27);
 
         WTextField name = new WTextField(Text.literal("Name"));
         name.setMaxLength(255);
@@ -79,7 +58,13 @@ public class ButtonEditor extends LightweightGuiDescription {
         addRow(scrollPanelContents, "Name", name);
 
         WTextField model = new WTextField(Text.literal("namespace:id"));
+
         model.setMaxLength(4096);
+
+        var components = (MergedComponentMap) data.getIcon().getComponents();
+        if(components.hasChanged(DataComponentTypes.ITEM_MODEL)){
+            model.setText(data.getIcon().get(DataComponentTypes.ITEM_MODEL).toString());
+        }
 
         final IconEntry iconSelect = new IconEntry(data.getIcon(), selector -> {
             MinedeckScreen.pushCurrent(
@@ -106,7 +91,7 @@ public class ButtonEditor extends LightweightGuiDescription {
             }
         });
 
-        var iconRow = new WPlainPanel();
+        var iconRow = new WPixelPanel();
         iconRow.setSize(140, 26);
 
         iconRow.add(iconSelect,0,0);
@@ -115,15 +100,9 @@ public class ButtonEditor extends LightweightGuiDescription {
 
         addRow(scrollPanelContents, "Icon", iconRow);
 
-//        addRow(scrollPanelContents, "Custom Model", model);
-
-
-        // TODO - Wire up to `data.getKeybind()`
         WButton keybindButton = new KeybindSelectButton(data);
         keybindButton.setSize(100, keybindButton.getHeight());
-
         addRow(scrollPanelContents,"Keybind", keybindButton);
-        // END KEYBIND CODE
 
 
         WLabel actionsLabel = new WLabel(Text.literal("Actions:").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))));
@@ -195,10 +174,10 @@ public class ButtonEditor extends LightweightGuiDescription {
 
     }
 
-    public void addRow(WPlainPanel panel, String label, WWidget widget)
+    public void addRow(WPixelPanel panel, String label, WWidget widget)
     {
         panel.add(new WLabel(Text.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),  5,5 + 7 + (ELEMENT_SIZE * yOffset));
-        panel.add(widget,  100, 5 + (ELEMENT_SIZE * yOffset++), widget.getWidth(), widget.getHeight());
+        panel.add(widget,  100, 5 + (ELEMENT_SIZE * yOffset++));
     }
 
 
@@ -207,7 +186,7 @@ public class ButtonEditor extends LightweightGuiDescription {
         DOWN,
         DELETE
     }
-    class ActionRow extends WPlainPanel
+    class ActionRow extends WPixelPanel
     {
         public ActionRow(@NotNull IActionTask task, Consumer<RowButton> onClick) {
 
@@ -225,7 +204,7 @@ public class ButtonEditor extends LightweightGuiDescription {
                 var txt = new WTextField();
                 txt.setMaxLength(256);
                 txt.setText(c.getCommand());
-                txt.setChangedListener(str -> c.setCommand(str));
+                txt.setChangedListener(c::setCommand);
                 config = txt;
             } else if (task instanceof DelayTask d)
             {
@@ -246,18 +225,19 @@ public class ButtonEditor extends LightweightGuiDescription {
                             MinedeckScreen.popCurrent();
                         })
                     );
-                    // TODO - move this logic into a custom button that handles tracking internal state and capturing the input
                 });
                 config = btn;
             } else if(task instanceof PanelTask p)
             {
-                var btn = new WButton(Text.literal("No Panel Set"));
+                var btn = new WButton(p.description());
                 btn.setOnClick(() -> {
-                    // TODO - move this logic into a custom button that handles tracking internal state and capturing the input
+                    p.setTarget(ActionConfig.DEFAULT_TAB);
+                    // TODO - Open panel to select a tab
                 });
                 config = btn;
             }
-            this.add(config,50, (config instanceof WButton) ? 1 : 0, 120, 18);
+            config.setSize(120, 18);
+            this.add(config,50, (config instanceof WButton) ? 1 : 0);
 
             this.add(new WButton(Text.literal("▲")).setOnClick(() -> onClick.accept(RowButton.UP)),172, 1);
             this.add(new WButton(Text.literal("▼")).setOnClick(() -> onClick.accept(RowButton.DOWN)),192, 1);

@@ -1,6 +1,7 @@
 package com.tehbeard.fabric.quickaction.ui.panel;
 
 import com.tehbeard.fabric.quickaction.ui.ItemstackEntry;
+import com.tehbeard.fabric.quickaction.ui.component.WPixelPanel;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -22,7 +23,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
     public ItemstackPicker(Consumer<ItemStack> onSelect) {
         setUseDefaultRootBackground(false);
 //        WGridPanel root = new WGridPanel();
-        WPlainPanel root = new WPlainPanel();
+        WPixelPanel root = new WPixelPanel();
         setRootPanel(root);
         root.setSize(274, 175);
         this.onSelect = onSelect;
@@ -43,7 +44,8 @@ public class ItemstackPicker  extends LightweightGuiDescription {
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
-        root.add(scrollWrapper, 17, 27, root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        root.add(scrollWrapper, 17, 27);
 
         WTextField searchField = new WTextField(Text.literal(""));
         searchField.setChangedListener( str -> {
@@ -51,7 +53,8 @@ public class ItemstackPicker  extends LightweightGuiDescription {
             updateItems(scrollPanelContents, str);
         });
 
-        root.add(searchField,48, 5, root.getWidth() - (15 + 48 + 7), 16);
+        searchField.setSize(root.getWidth() - (15 + 48 + 7), 16);
+        root.add(searchField,48, 5);
 
         WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
         root.add(icon, 17 + 7, 5 + 7);

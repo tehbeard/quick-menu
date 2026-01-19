@@ -2,6 +2,9 @@ package com.tehbeard.fabric.quickaction.data.action;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.tehbeard.fabric.quickaction.ui.MainGui;
+import com.tehbeard.fabric.quickaction.ui.MinedeckScreen;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -46,7 +49,11 @@ public class PanelTask implements IActionTask {
     @Override
     public long run() {
 //        TODO - Open screen on selected panel.
-//        KeybindHandler.pressKey(keybindTranslationKey);
+        MinecraftClient.getInstance().setScreen(
+            new MinedeckScreen(
+                new MainGui(false) // TODO - Pass thru the panel id to use.
+            )
+        );
         return 0;
     }
 
