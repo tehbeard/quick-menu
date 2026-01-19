@@ -18,9 +18,6 @@ public class DelayTask implements IActionTask {
 
     public long ticks = 20;
 
-    public DelayTask() {
-    }
-
     public DelayTask(long ticks) {
         this.ticks = ticks;
     }

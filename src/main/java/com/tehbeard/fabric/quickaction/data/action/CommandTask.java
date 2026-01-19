@@ -18,9 +18,6 @@ public class CommandTask implements IActionTask {
         ).apply(inst, CommandTask::new)
     );
 
-    public CommandTask() {
-    }
-
     public CommandTask(String command) {
         this.command = command;
     }
