@@ -1,10 +1,6 @@
 package com.tehbeard.fabric.quickaction.data;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.quickaction.data.action.CommandTask;
 import com.tehbeard.fabric.quickaction.data.action.DelayTask;
 import com.tehbeard.fabric.quickaction.data.action.IActionTask;
@@ -12,22 +8,13 @@ import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.QuickMenu;
-import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 public class ActionConfigMigrator {
 
