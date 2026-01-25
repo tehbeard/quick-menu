@@ -87,15 +87,12 @@ public class ConfigEntry extends WWidget {
                     .onRemoved(() -> {
                         try {
                             ActionConfig.getConfig().save(QuickMenu.getConfigFile());
-//                            MinecraftClient.getInstance().setScreen(
-//                                new MainScreen(true)
-//                            );
+                            // TODO - Switch back to menu screen, can't do so direct from here though.
                         } catch (IOException e) {
                             QuickMenu.LOGGER.error(e.toString());
                         }
                     })
             );
-        // TODO - Load config screen
         return InputResult.PROCESSED;
     }
 }

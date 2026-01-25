@@ -39,7 +39,6 @@ public class ActionButton {
     private List<IActionTask> tasks = new ArrayList<>();
     private ItemStack Icon = Items.KNOWLEDGE_BOOK.getDefaultStack();
 
-    //    public List<Integer> keybind; // TODO - better way to store this??
     public InputUtil.Key keybind = null;
 
 
@@ -109,7 +108,6 @@ public class ActionButton {
             }
         }
     }
-    // TODO - Move keybind check logic in here.
 
     public void run(boolean isKeybind) {
         if ( isKeybind ) {
@@ -121,10 +119,5 @@ public class ActionButton {
         }
 
         new ActionButtonExecutorContext(tasks, 0).run();
-//        MinecraftClient.getInstance()
-
-        // Run the buttons action.
-//        actions.forEach(BaseActionData::run);
-//        new ActionButtonData.ActionButtonDataContext(new ArrayList<>(actions), 0).run();
     }
 }

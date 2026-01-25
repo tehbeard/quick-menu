@@ -35,7 +35,6 @@ public class QuickMenu implements ModInitializer {
             LOGGER.error(ex.toString());
         }
         ModKeybindings.initialize();
-        ActionButtonDataHandler.initialize();
 
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
@@ -43,7 +42,6 @@ public class QuickMenu implements ModInitializer {
 
             ActionButtonExecutor.getInstance().tick();
 
-            ActionButtonDelayHandler.INSTANCE.doDelayChecks();
             // Check for menu open keybind.
             if (ModKeybindings.menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {

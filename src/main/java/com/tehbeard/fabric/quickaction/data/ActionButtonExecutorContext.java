@@ -19,9 +19,7 @@ public class ActionButtonExecutorContext {
             var action = tasks.get(idx);
             var nextDelay = action.run();
             if (nextDelay > 0) {
-                // TODO : Envelope the remaining actions in a timer.
                 var nextSet = new ActionButtonExecutorContext(tasks.subList(idx + 1, tasks.size()), nextDelay);
-                // TODO - Create a timer construct that listens
                 ActionButtonExecutor.getInstance().queue(nextSet);
                 return;
             }

@@ -5,7 +5,6 @@ import net.minecraft.text.Text;
 
 public interface IActionTask {
 
-    // TODO - Codec registry for all available IAction types.
     Codec<IActionTask> TASK_CODEC = TaskType.REGISTRY.getCodec()
         .dispatch("type",IActionTask::getType, TaskType::codec);
 

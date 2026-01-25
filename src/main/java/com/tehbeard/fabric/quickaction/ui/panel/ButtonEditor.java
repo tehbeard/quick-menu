@@ -22,14 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
-/**
- * TODO: Redo as a list, try to figure an approach for category vs. keybind split
- * TODO: Implement search filtering
- * TODO: Sort label alignment.
- */
 public class ButtonEditor extends LightweightGuiDescription {
 
     private static final int ELEMENT_SIZE = 28;
@@ -114,8 +108,6 @@ public class ButtonEditor extends LightweightGuiDescription {
         scrollPanelContents.add(actions, 5, 5 + 7 + ( ELEMENT_SIZE * yOffset));
 
         updateActionsList(data.getTasks(), actions);
-
-        // TODO - Generate list from actions, or use the list widget and reset size to show all items.
 
         root.validate(this);
     }
