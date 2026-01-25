@@ -27,7 +27,13 @@ public class QuickMenu implements ModInitializer {
     @Override
     public void onInitialize() {
         // Initialize the mods keybinds and data handler.
-        ActionConfigMigrator.attemptMigrate();
+        try {
+            ActionConfigMigrator.migrate();
+        } catch(Exception ex)
+        {
+            LOGGER.error("Migration failed", ex);
+            System.exit(-100);
+        }
         try {
             ActionConfig.load(QuickMenu.getConfigFile());
         }catch(IOException ex)

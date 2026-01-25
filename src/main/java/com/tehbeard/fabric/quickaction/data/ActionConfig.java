@@ -59,7 +59,7 @@ public class ActionConfig {
     // Default tab to use in all other situations
     private Identifier defaultTab = DEFAULT_TAB;
 
-    private Size size = Size.SIX;
+    private Size size = Size.FIFTEEN;
 
     private boolean actionsInTooltip = true;
     private boolean closeOnAction = true;

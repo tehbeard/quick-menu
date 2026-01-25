@@ -1,14 +1,19 @@
 package com.tehbeard.fabric.quickaction.data;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.quickaction.data.action.CommandTask;
 import com.tehbeard.fabric.quickaction.data.action.DelayTask;
+import com.tehbeard.fabric.quickaction.data.action.IActionTask;
 import com.tehbeard.fabric.quickaction.data.action.KeybindTask;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import xyz.imcodist.quickmenu.QuickMenu;
@@ -16,87 +21,81 @@ import xyz.imcodist.quickmenu.data.ActionButtonDataJSON;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 public class ActionConfigMigrator {
 
+
+    private static IActionTask migrateTask(JsonArray task)
+    {
+        return switch (task.get(0).getAsString()) {
+            case "cmd" -> new CommandTask(task.get(1).getAsString());
+            case "delay" -> new DelayTask(Long.parseLong(task.get(1).getAsString()));
+            case "key" -> new KeybindTask(task.get(1).getAsString());
+            default -> throw new IllegalStateException("Unexpected value: " + task.get(0).getAsString());
+        };
+    }
+
+    private static ActionButton migrateButton(JsonObject action)
+    {
+        var btn = new ActionButton();
+        btn.setName(action.get("name").getAsString());
+        action.getAsJsonArray("actions").asList().forEach(task -> {
+            btn.getTasks().add(migrateTask(task.getAsJsonArray()));
+        });
+        btn.setIcon(
+            Registries.ITEM.get(Identifier.of(action.get("icon").getAsString())).getDefaultStack()
+        );
+        var kb = action.getAsJsonArray("keybind").asList();
+        if(!kb.isEmpty()) {
+            btn.setKeybind(InputUtil.fromKeyCode(new KeyInput(kb.get(0).getAsInt(), kb.get(1).getAsInt(), 0)));
+        }
+
+        return btn;
+    }
+
+
     /**
      * Converts quick menu entry to minedeck
-     * @param action
-     * @return
+     *
      */
-    public static ActionButton migrateActionButton(ActionButtonDataJSON action)
-    {
-        var button = new ActionButton();
-        button.setName(action.name);
-        if (action.icon != null) {
-            button.setIcon(
-                new ItemStack(Registries.ITEM.get(Identifier.of(action.icon)))
-            );
-        }
 
-        if (!action.keybind.isEmpty()) {
-//                InputUtil.fromKeyCode()
-            button.setKeybind(InputUtil.fromKeyCode(new KeyInput(action.keybind.get(0), action.keybind.get(1), 0)));
-        }
-
-        action.actions.forEach(
-            task -> {
-                switch (task.get(0)) {
-                    case "cmd" -> button.getTasks().add(
-                        new CommandTask(task.get(1))
-                    );
-                    case "delay" -> button.getTasks().add(
-                        new DelayTask(Long.parseLong(task.get(1)))
-                    );
-                    case "key" -> button.getTasks().add(
-                        new KeybindTask(task.get(1))
-                    );
-                }
-            }
-        );
-        return button;
-    }
-    public static ActionConfig convertQuickMenuToActionConfig(List<ActionButtonDataJSON> oldConfig) {
-        var cfg = new ActionConfig();
-
-        var tab = new ActionTab();
-        tab.setName("Default");
-
-        oldConfig.forEach(action -> {
-            var button = migrateActionButton(action);
-            tab.getButtons().add(button);
-        });
-        cfg.getTabs().add(tab);
-
-
-        return cfg;
-    }
-
-    public static void attemptMigrate() {
+    public static void migrate() throws IOException {
         File oldFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickmenu_data.json");
         File newFile = QuickMenu.getConfigFile();
         var gson = new GsonBuilder().setPrettyPrinting().create();
-        Type listType = new TypeToken<List<ActionButtonDataJSON>>() {
-        }.getType();
 
         // Load the json.
         if (oldFile.exists() && !newFile.exists()) {
-            try (FileReader fileReader = new FileReader(oldFile)) {
-                List<ActionButtonDataJSON> actionDataJSONS = gson.fromJson(fileReader, listType);
 
-                var newCfg = convertQuickMenuToActionConfig(actionDataJSONS);
-                Files.writeString(
-                    newFile.toPath(),
-                    gson.toJson(newCfg.encode())
-                );
+                var rawCfg = JsonParser.parseString(
+                    Files.readString(
+                        oldFile.toPath()
+                    )
+                ).getAsJsonArray();
+                var buttons = rawCfg.asList().stream().map(b -> migrateButton(b.getAsJsonObject())).toList();
 
-            } catch (Exception e) {
-                e.printStackTrace();
 
-            }
+                var cfg = new ActionConfig();
+
+                var tab = new ActionTab();
+                tab.setName("Default");
+
+                buttons.forEach(action -> {
+                    tab.getButtons().add(action);
+                });
+                cfg.getTabs().add(tab);
+
+                    Files.writeString(
+                        newFile.toPath(),
+                        gson.toJson(cfg.encode())
+                    );
         }
     }
 }
