@@ -5,10 +5,16 @@ import com.tehbeard.fabric.quickaction.data.ActionConfig;
 import com.tehbeard.fabric.quickaction.ui.component.EditButton;
 import com.tehbeard.fabric.quickaction.ui.component.PanelWithHeader;
 import com.tehbeard.fabric.quickaction.ui.component.TextButton;
+import com.tehbeard.fabric.quickaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.*;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.client.MinecraftClient;
+import org.lwjgl.glfw.GLFW;
+import xyz.imcodist.quickmenu.QuickMenu;
+
+import java.io.IOException;
 
 public class MainGui extends LightweightGuiDescription {
 
@@ -40,7 +46,28 @@ public class MainGui extends LightweightGuiDescription {
 
         for(ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons())
         {
-            ActionEntry actionWidget = new ActionEntry(data, isEditMode);
+            ActionEntry actionWidget = new ActionEntry(data, (click, dbl) -> {
+                if(click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode)
+                {
+                    ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
+                }else if(!isEditMode) {
+                    if(ActionConfig.getConfig().isCloseOnAction()) {
+                        MinecraftClient.getInstance().setScreen(null);
+                    }
+                    data.run(false);
+                } else {
+                    // TODO - Open edit mode
+                    MinecraftClient.getInstance().setScreen(
+                        new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
+                            try {
+                                ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                            } catch (IOException e) {
+                                QuickMenu.LOGGER.error(e.toString());
+                            }
+                        })
+                    );
+                }
+            });
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == perRow)
@@ -52,7 +79,19 @@ public class MainGui extends LightweightGuiDescription {
 
         if(isEditMode)
         {
-            ActionEntry actionWidget = new ActionEntry(null, true);
+            ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
+                var newData = new ActionButton().setName("");
+                ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
+                MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
+                    newData
+                )).onRemoved(() -> {
+                    try {
+                        ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                    } catch (IOException e) {
+                        QuickMenu.LOGGER.error(e.toString());
+                    }
+                }));
+            });
             scrollPanelContents.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == perRow) // TODO - Pull value from config

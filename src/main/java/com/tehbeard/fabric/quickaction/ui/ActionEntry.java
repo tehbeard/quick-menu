@@ -15,9 +15,11 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 import xyz.imcodist.quickmenu.QuickMenu;
 
 import java.io.IOException;
+import java.util.function.BiConsumer;
 
 public class ActionEntry extends WWidget {
 
@@ -28,13 +30,17 @@ public class ActionEntry extends WWidget {
     public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("quickmenu", "textures/btn_plus_normal.png");
     public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_plus_hover.png");
 
-    private ActionButton data;
-    private boolean isEditMode;
-    public ActionEntry(ActionButton data, boolean isEditMode) {
+    private final ActionButton data;
+
+    private final BiConsumer<Click,Boolean> onClick;
+    /**
+     * TODO: Refactor to accept a left click and right click function.
+     */
+    public ActionEntry(ActionButton data, BiConsumer<Click,Boolean> onClick) {
         height = 26;
         width = 26;
         this.data = data;
-        this.isEditMode = isEditMode;
+        this.onClick = onClick;
     }
 
     @Override
@@ -105,45 +111,8 @@ public class ActionEntry extends WWidget {
     @Override
     public InputResult onMouseDown(Click click, boolean doubled) {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-        if(data != null) {
-            if(!isEditMode) {
-                if(ActionConfig.getConfig().isCloseOnAction()) {
-                    MinecraftClient.getInstance().setScreen(null);
-                }
-                data.run(false);
-            } else {
-                // TODO - Open edit mode
-                MinecraftClient.getInstance().setScreen(
-                    new MinedeckScreen(
-                        new ButtonEditor(
-                            data
-                        )
-                    ).onRemoved(() -> {
-                        try {
-                            ActionConfig.getConfig().save(QuickMenu.getConfigFile());
-                        } catch (IOException e) {
-                            QuickMenu.LOGGER.error(e.toString());
-//                        throw new RuntimeException(e);
-                        }
-                    })
-                );
-            }
-        } else {
-            var newData = new ActionButton().setName("");
-            ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
-            MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-                newData
-            )).onRemoved(() -> {
-                try {
-                    ActionConfig.getConfig().save(QuickMenu.getConfigFile());
-                } catch (IOException e) {
-                        QuickMenu.LOGGER.error(e.toString());
-//                        throw new RuntimeException(e);
-                }
-            }));
+        this.onClick.accept(click, doubled);
 
-
-        }
         return InputResult.PROCESSED;
     }
 }
