@@ -15,15 +15,18 @@ import org.lwjgl.glfw.GLFW;
 import xyz.imcodist.quickmenu.QuickMenu;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class MainGui extends LightweightGuiDescription {
 
+    private boolean isEditMode;
+    private ActionConfig.Size size;
     public MainGui(boolean isEditMode) {
+        this.isEditMode = isEditMode;
         setUseDefaultRootBackground(false);
-        var size = ActionConfig.getConfig().getSize();
+        this.size = ActionConfig.getConfig().getSize();
         PanelWithHeader root = new PanelWithHeader("Quick Menu", size.getWidth(), size.getHeight(), false);
         setRootPanel(root);
-        int perRow = size.getRowSize();
 
         WLabel editButton = new EditButton(isEditMode);
         editButton.setHorizontalAlignment(HorizontalAlignment.RIGHT);
@@ -31,7 +34,7 @@ public class MainGui extends LightweightGuiDescription {
         root.add(editButton, root.getWidth() - 25,3);
 
 
-        var rotateButton = new TextButton("\uD83D\uDD04 ↕",(click, doubleClick) -> InputResult.PROCESSED);
+        var rotateButton = new TextButton("\uD83D\uDD04 ↕🗑",(click, doubleClick) -> InputResult.PROCESSED);
         rotateButton.setVerticalAlignment(VerticalAlignment.CENTER);
 
         root.add(rotateButton, 8, 3);
@@ -39,6 +42,27 @@ public class MainGui extends LightweightGuiDescription {
         WGridPanel scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4,2);
 
+        updateItems(scrollPanelContents);
+
+
+
+
+        WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
+        scrollWrapper.getVerticalScrollBar().addPainters();
+        scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
+        root.add(scrollWrapper, 17, 27);
+
+        root.validate(this);
+    }
+
+    protected void updateItems(WGridPanel panel)
+    {
+        var currentItems = panel.streamChildren().toList();
+        for (WWidget currentItem : currentItems) {
+            panel.remove(currentItem);
+        }
+        panel.setSize(4,4);
+        var perRow = ActionConfig.getConfig().getSize().getRowSize();
         int posX = 0;
         int posY = 0;
 
@@ -50,6 +74,13 @@ public class MainGui extends LightweightGuiDescription {
                 if(click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode)
                 {
                     ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
+                    try {
+                        ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                        updateItems(panel);
+                    } catch (IOException e) {
+                        QuickMenu.LOGGER.error(e.toString());
+                    }
+
                 }else if(!isEditMode) {
                     if(ActionConfig.getConfig().isCloseOnAction()) {
                         MinecraftClient.getInstance().setScreen(null);
@@ -68,7 +99,7 @@ public class MainGui extends LightweightGuiDescription {
                     );
                 }
             });
-            scrollPanelContents.add(actionWidget, posX, posY,1,1);
+            panel.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == perRow)
             {
@@ -92,7 +123,7 @@ public class MainGui extends LightweightGuiDescription {
                     }
                 }));
             });
-            scrollPanelContents.add(actionWidget, posX, posY,1,1);
+            panel.add(actionWidget, posX, posY,1,1);
             posX++;
             if(posX == perRow) // TODO - Pull value from config
             {
@@ -100,18 +131,11 @@ public class MainGui extends LightweightGuiDescription {
                 posY++;
             }
             ConfigEntry configWidget = new ConfigEntry();
-            scrollPanelContents.add(configWidget, posX, posY,1,1);
+            panel.add(configWidget, posX, posY,1,1);
         }
 
-
-
-
-        WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
-        scrollWrapper.getVerticalScrollBar().addPainters();
-        scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
-        root.add(scrollWrapper, 17, 27);
-
-        root.validate(this);
+        panel.validate(this);
+        Optional.ofNullable(panel.getParent()).ifPresent(WPanel::layout);
     }
 
     @Override
