@@ -8,7 +8,7 @@ import net.minecraft.client.MinecraftClient;
 public class EditButton extends TextButton {
 
     public EditButton(boolean isEditMode) {
-        super(isEditMode? "🔙" : "✎", (click, doubled) -> {
+        super(isEditMode? "❌" : "✎", (click, doubled) -> {
             MinecraftClient.getInstance().setScreen(new MainScreen(!isEditMode));
             return InputResult.PROCESSED;
         });

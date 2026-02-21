@@ -25,7 +25,7 @@ public class MainGui extends LightweightGuiDescription {
         this.isEditMode = isEditMode;
         setUseDefaultRootBackground(false);
         this.size = ActionConfig.getConfig().getSize();
-        PanelWithHeader root = new PanelWithHeader("Quick Menu", size.getWidth(), size.getHeight(), false);
+        PanelWithHeader root = new PanelWithHeader("Fast Actions", size.getWidth(), size.getHeight(), false);
         setRootPanel(root);
 
         WLabel editButton = new EditButton(isEditMode);
