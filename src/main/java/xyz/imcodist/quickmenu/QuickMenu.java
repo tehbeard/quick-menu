@@ -1,13 +1,18 @@
 package xyz.imcodist.quickmenu;
 
-import com.tehbeard.fabric.quickaction.data.ActionButton;
-import com.tehbeard.fabric.quickaction.data.ActionButtonExecutor;
-import com.tehbeard.fabric.quickaction.data.ActionConfig;
-import com.tehbeard.fabric.quickaction.data.ActionConfigMigrator;
-import com.tehbeard.fabric.quickaction.ui.MainScreen;
+import com.tehbeard.fabric.fastaction.data.ActionButton;
+import com.tehbeard.fabric.fastaction.data.ActionButtonExecutor;
+import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.data.ActionConfigMigrator;
+import com.tehbeard.fabric.fastaction.ui.MainScreen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.imcodist.quickmenu.other.*;
@@ -19,6 +24,8 @@ public class QuickMenu implements ModInitializer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("quickmenu");
     private static boolean menuKeyPressed = false;
+
+    private static KeyBinding menuOpenKeybinding;
 
     public static File getConfigFile()
     {
@@ -40,7 +47,13 @@ public class QuickMenu implements ModInitializer {
         {
             LOGGER.error(ex.toString());
         }
-        ModKeybindings.initialize();
+
+        menuOpenKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.fastaction.open",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_G,
+            KeyBinding.Category.create(Identifier.of("fastaction:all"))
+        ));
 
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
@@ -49,7 +62,7 @@ public class QuickMenu implements ModInitializer {
             ActionButtonExecutor.getInstance().tick();
 
             // Check for menu open keybind.
-            if (ModKeybindings.menuOpenKeybinding.isPressed()) {
+            if (menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
                     var mainScreen = new MainScreen(false);
                     client.setScreen(
@@ -64,8 +77,6 @@ public class QuickMenu implements ModInitializer {
             // Check for action buttons keybinds.
             // I really dont like this.
             if (client.currentScreen == null) {
-
-                var handle = client.getWindow();
                 ActionConfig.getConfig()
                     .getDefaultTab().getButtons()
                         .forEach(ActionButton::handleKeybind);
