@@ -25,9 +25,7 @@ public class ActionEntry extends WWidget {
     protected final ActionButton data;
 
     protected final BiConsumer<Click,Boolean> onClick;
-    /**
-     * TODO: Refactor to accept a left click and right click function.
-     */
+
     public ActionEntry(ActionButton data, BiConsumer<Click,Boolean> onClick) {
         height = 26;
         width = 26;
@@ -83,26 +81,6 @@ public class ActionEntry extends WWidget {
 
         if(isHovered ) {
             context.setCursor(StandardCursors.POINTING_HAND);
-
-//                context.drawTexture(
-//                    RenderPipelines.GUI_TEXTURED,
-//                    isLeft ? TEXTURE_LEFT_ARROW : TEXTURE_RIGHT_ARROW,
-//                    x+5 + (isLeft ? 0 : 3),
-//                    y+5,
-//                    0,0,
-//                    16,16,
-//                    16,
-//                    16
-//                );
-//            ScreenDrawing.drawString(
-//                context,
-//                isLeft ? "L" : "R",
-//                HorizontalAlignment.LEFT,
-//                x + 5,
-//                y + 5,
-//                this.getWidth(),
-//                0xFF_BCBCBC
-//            );
         }
 
 
