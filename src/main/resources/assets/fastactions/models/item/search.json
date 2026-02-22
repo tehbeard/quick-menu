@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "quickmenu:item/search_icon"
+    "layer0": "fastactions:item/search_icon"
   }
 }
