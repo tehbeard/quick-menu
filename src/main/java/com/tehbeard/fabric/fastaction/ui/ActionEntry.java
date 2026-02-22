@@ -19,9 +19,9 @@ import java.util.function.BiConsumer;
 
 public class ActionEntry extends WWidget {
 
-//    public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/switcher_buttons.png");
-    public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/btn_normal.png");
-    public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_hover.png");
+//    public static final Identifier TEXTURE_BUTTON = Identifier.of("fastactions", "textures/switcher_buttons.png");
+    public static final Identifier TEXTURE_BUTTON = Identifier.of("fastactions", "textures/btn_normal.png");
+    public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("fastactions", "textures/btn_hover.png");
 
     protected final ActionButton data;
 

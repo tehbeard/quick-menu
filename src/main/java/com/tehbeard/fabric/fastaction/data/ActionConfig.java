@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.tehbeard.fabric.fastaction.FastAction;
 import com.tehbeard.fabric.fastaction.data.action.KeybindTask;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -159,10 +160,10 @@ public class ActionConfig {
     }
 
     public JsonElement encode() {
-        var logger = Logger.getLogger("quickaction");
+        var logger = FastAction.LOGGER;
 
         var res = ActionConfig.CODEC.encodeStart(JsonOps.INSTANCE, this);
-        return res.resultOrPartial(logger::severe).orElseThrow();
+        return res.resultOrPartial(logger::error).orElseThrow();
     }
 
     public void save(File file) throws IOException {

@@ -21,8 +21,8 @@ import java.io.IOException;
 public class AddActionEntry extends WWidget {
 
 
-    public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("quickmenu", "textures/btn_plus_normal.png");
-    public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_plus_hover.png");
+    public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("fastactions", "textures/btn_plus_normal.png");
+    public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("fastactions", "textures/btn_plus_hover.png");
 
 
     /**

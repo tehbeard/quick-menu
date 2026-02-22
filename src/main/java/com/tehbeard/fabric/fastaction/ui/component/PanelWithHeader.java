@@ -17,14 +17,14 @@ public class PanelWithHeader extends WPixelPanel {
         this.setInsets(Insets.NONE);
 
         this.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", darker ? "textures/background_darker.png" : "textures/background.png")),
+            new Texture(Identifier.of("fastactions", darker ? "textures/background_darker.png" : "textures/background.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
 
         WPixelPanel header = new WPixelPanel();
         header.setInsets(Insets.NONE);
         header.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_header.png")),
+            new Texture(Identifier.of("fastactions", "textures/background_header.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
         header.setSize(this.getWidth(),24);

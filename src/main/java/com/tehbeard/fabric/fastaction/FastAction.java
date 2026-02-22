@@ -23,14 +23,14 @@ import java.io.IOException;
 
 public class FastAction implements ModInitializer {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("quickmenu");
+    public static final Logger LOGGER = LoggerFactory.getLogger("fastactions");
     private static boolean menuKeyPressed = false;
 
     private static KeyBinding menuOpenKeybinding;
 
     public static File getConfigFile()
     {
-        return new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickaction.json");
+        return new File(FabricLoader.getInstance().getConfigDir().toFile(), "fastactions.json");
     }
     @Override
     public void onInitialize() {

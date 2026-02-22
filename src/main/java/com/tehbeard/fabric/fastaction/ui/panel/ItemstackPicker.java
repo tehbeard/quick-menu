@@ -32,7 +32,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("quickmenu", "textures/background_darker.png")),
+            new Texture(Identifier.of("fastactions", "textures/background_darker.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
 
@@ -56,7 +56,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         searchField.setSize(root.getWidth() - (15 + 48 + 7), 16);
         root.add(searchField,48, 5);
 
-        WSprite icon = new WSprite(Identifier.of("quickmenu","textures/search_icon.png"));
+        WSprite icon = new WSprite(Identifier.of("fastactions","textures/search_icon.png"));
         root.add(icon, 17 + 7, 5 + 7);
         icon.setSize(12,12);
 

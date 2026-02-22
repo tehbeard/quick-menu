@@ -19,9 +19,9 @@ import java.util.function.BiConsumer;
 
 public class MoveEntry extends ActionEntry {
 
-    //    public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/switcher_buttons.png");
-    public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/btn_normal.png");
-    public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_hover.png");
+    //    public static final Identifier TEXTURE_BUTTON = Identifier.of("fastactions", "textures/switcher_buttons.png");
+    public static final Identifier TEXTURE_BUTTON = Identifier.of("fastactions", "textures/btn_normal.png");
+    public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("fastactions", "textures/btn_hover.png");
 
     public static final Identifier TEXTURE_LEFT_ARROW = Identifier.of("minecraft", "textures/gui/sprites/transferable_list/unselect.png");
     public static final Identifier TEXTURE_RIGHT_ARROW = Identifier.of("minecraft", "textures/gui/sprites/transferable_list/select.png");
