@@ -5,6 +5,8 @@ import com.tehbeard.fabric.fastaction.data.ActionButtonExecutor;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
 import com.tehbeard.fabric.fastaction.data.ActionConfigMigrator;
 import com.tehbeard.fabric.fastaction.ui.MainScreen;
+import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
+import com.tehbeard.fabric.fastaction.ui.panel.MainPanel;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -64,7 +66,8 @@ public class QuickMenu implements ModInitializer {
             // Check for menu open keybind.
             if (menuOpenKeybinding.isPressed()) {
                 if (!menuKeyPressed) {
-                    var mainScreen = new MainScreen(false);
+//                    var mainScreen = new MainScreen(false);
+                    var mainScreen = new MinedeckScreen(new MainPanel());
                     client.setScreen(
                         mainScreen
                     );

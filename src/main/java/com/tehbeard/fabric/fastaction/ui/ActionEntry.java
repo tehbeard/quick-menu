@@ -23,15 +23,9 @@ public class ActionEntry extends WWidget {
     public static final Identifier TEXTURE_BUTTON = Identifier.of("quickmenu", "textures/btn_normal.png");
     public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_hover.png");
 
-    public static final Identifier TEXTURE_ADD_BUTTON = Identifier.of("quickmenu", "textures/btn_plus_normal.png");
-    public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.of("quickmenu", "textures/btn_plus_hover.png");
+    protected final ActionButton data;
 
-
-    public static final Identifier TEXTURE_LEFT_ARROW = Identifier.of("minecraft","textures/gui/sprites/transferable_list/unselect.png");
-    public static final Identifier TEXTURE_RIGHT_ARROW = Identifier.of("minecraft","textures/gui/sprites/transferable_list/select.png");
-    private final ActionButton data;
-
-    private final BiConsumer<Click,Boolean> onClick;
+    protected final BiConsumer<Click,Boolean> onClick;
     /**
      * TODO: Refactor to accept a left click and right click function.
      */
@@ -71,20 +65,6 @@ public class ActionEntry extends WWidget {
         var isLeft = isHovered && ( mouseX < (getWidth() /2));
         // Doesn't render texture...
         // (RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight)
-        if(data == null ) {
-            context.drawTexture(
-                RenderPipelines.GUI_TEXTURED,
-                isHovered ? TEXTURE_ADD_BUTTON_HOVER : TEXTURE_ADD_BUTTON,
-                x,
-                y,
-                0,
-                0,
-                getWidth(),
-                getHeight(),
-                26,
-                26
-            );
-        } else {
             context.drawTexture(
                 RenderPipelines.GUI_TEXTURED,
                 isHovered ? TEXTURE_BUTTON_HOVER : TEXTURE_BUTTON,
@@ -101,21 +81,20 @@ public class ActionEntry extends WWidget {
                 data.getIcon(),
                 x + 5, y + 5
             );
-        }
 
         if(isHovered ) {
             context.setCursor(StandardCursors.POINTING_HAND);
 
-                context.drawTexture(
-                    RenderPipelines.GUI_TEXTURED,
-                    isLeft ? TEXTURE_LEFT_ARROW : TEXTURE_RIGHT_ARROW,
-                    x+5 + (isLeft ? 0 : 3),
-                    y+5,
-                    0,0,
-                    16,16,
-                    16,
-                    16
-                );
+//                context.drawTexture(
+//                    RenderPipelines.GUI_TEXTURED,
+//                    isLeft ? TEXTURE_LEFT_ARROW : TEXTURE_RIGHT_ARROW,
+//                    x+5 + (isLeft ? 0 : 3),
+//                    y+5,
+//                    0,0,
+//                    16,16,
+//                    16,
+//                    16
+//                );
 //            ScreenDrawing.drawString(
 //                context,
 //                isLeft ? "L" : "R",

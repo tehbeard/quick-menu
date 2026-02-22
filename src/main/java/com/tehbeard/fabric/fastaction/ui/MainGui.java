@@ -20,31 +20,27 @@ import java.util.Optional;
 public class MainGui extends LightweightGuiDescription {
 
     private boolean isEditMode;
-    private ActionConfig.Size size;
+
     public MainGui(boolean isEditMode) {
         this.isEditMode = isEditMode;
         setUseDefaultRootBackground(false);
-        this.size = ActionConfig.getConfig().getSize();
-        PanelWithHeader root = new PanelWithHeader("Fast Actions", size.getWidth(), size.getHeight(), false);
+        PanelWithHeader root = new PanelWithHeader(
+            "Fast Actions",
+            ActionConfig.getConfig().getSize().getWidth(),
+            ActionConfig.getConfig().getSize().getHeight(),
+            false);
         setRootPanel(root);
 
         WLabel editButton = new EditButton(isEditMode);
         editButton.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         editButton.setVerticalAlignment(VerticalAlignment.CENTER);
-        root.add(editButton, root.getWidth() - 25,3);
+        root.add(editButton, root.getWidth() - 25, 3);
 
-
-        var rotateButton = new TextButton("\uD83D\uDD04 ↕🗑",(click, doubleClick) -> InputResult.PROCESSED);
-        rotateButton.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        root.add(rotateButton, 8, 3);
 
         WGridPanel scrollPanelContents = new WGridPanel(26);
-        scrollPanelContents.setGaps(4,2);
+        scrollPanelContents.setGaps(4, 2);
 
         updateItems(scrollPanelContents);
-
-
 
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
@@ -55,24 +51,20 @@ public class MainGui extends LightweightGuiDescription {
         root.validate(this);
     }
 
-    protected void updateItems(WGridPanel panel)
-    {
+    protected void updateItems(WGridPanel panel) {
         var currentItems = panel.streamChildren().toList();
         for (WWidget currentItem : currentItems) {
             panel.remove(currentItem);
         }
-        panel.setSize(4,4);
+        panel.setSize(4, 4);
         var perRow = ActionConfig.getConfig().getSize().getRowSize();
         int posX = 0;
         int posY = 0;
 
 
-
-        for(ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons())
-        {
+        for (ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons()) {
             ActionEntry actionWidget = new ActionEntry(data, (click, dbl) -> {
-                if(click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode)
-                {
+                if (click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode) {
                     ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
                     try {
                         ActionConfig.getConfig().save(QuickMenu.getConfigFile());
@@ -81,8 +73,8 @@ public class MainGui extends LightweightGuiDescription {
                         QuickMenu.LOGGER.error(e.toString());
                     }
 
-                }else if(!isEditMode) {
-                    if(ActionConfig.getConfig().isCloseOnAction()) {
+                } else if (!isEditMode) {
+                    if (ActionConfig.getConfig().isCloseOnAction()) {
                         MinecraftClient.getInstance().setScreen(null);
                     }
                     data.run(false);
@@ -99,17 +91,16 @@ public class MainGui extends LightweightGuiDescription {
                     );
                 }
             });
-            panel.add(actionWidget, posX, posY,1,1);
+            panel.add(actionWidget, posX, posY, 1, 1);
             posX++;
-            if(posX == perRow)
-            {
+            if (posX == perRow) {
                 posX = 0;
                 posY++;
             }
-        };
+        }
+        ;
 
-        if(isEditMode)
-        {
+        if (isEditMode) {
             ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
                 var newData = new ActionButton().setName("");
                 ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
@@ -123,15 +114,15 @@ public class MainGui extends LightweightGuiDescription {
                     }
                 }));
             });
-            panel.add(actionWidget, posX, posY,1,1);
+            panel.add(actionWidget, posX, posY, 1, 1);
             posX++;
-            if(posX == perRow) // TODO - Pull value from config
+            if (posX == perRow) // TODO - Pull value from config
             {
                 posX = 0;
                 posY++;
             }
             ConfigEntry configWidget = new ConfigEntry();
-            panel.add(configWidget, posX, posY,1,1);
+            panel.add(configWidget, posX, posY, 1, 1);
         }
 
         panel.validate(this);

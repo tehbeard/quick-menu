@@ -11,6 +11,6 @@ public class EditButton extends TextButton {
         super(isEditMode? "❌" : "✎", (click, doubled) -> {
             MinecraftClient.getInstance().setScreen(new MainScreen(!isEditMode));
             return InputResult.PROCESSED;
-        });
+        }, TextButton.staticTooltip("Edit Actions"));
     }
 }

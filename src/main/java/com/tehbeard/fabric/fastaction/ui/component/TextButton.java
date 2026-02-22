@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.fastaction.ui.component;
 
+import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import net.minecraft.client.MinecraftClient;
@@ -11,15 +12,34 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public class TextButton extends WLabel {
 
     private final BiFunction<Click, Boolean, InputResult> fn;
+    private final Consumer<TooltipBuilder> tooltipFn;
 
-    public TextButton(String txt, BiFunction<Click, Boolean, InputResult> fn) {
+    public static Consumer<TooltipBuilder> staticTooltip(String text) {
+        return builder -> builder.add(Text.literal(text));
+    }
+//    private String
+    public TextButton(
+        String txt,
+        BiFunction<Click, Boolean, InputResult> fn,
+        Consumer<TooltipBuilder> tooltipFn
+        ) {
 
         super(Text.literal(txt), 0xFF_FFFFFF);
+        setSize(8,8);
         this.fn = fn;
+        this.tooltipFn = tooltipFn;
+    }
+
+    @Override
+    public void addTooltip(TooltipBuilder tooltip) {
+        if(tooltipFn != null) {
+            tooltipFn.accept(tooltip);
+        }
     }
 
     @Override
