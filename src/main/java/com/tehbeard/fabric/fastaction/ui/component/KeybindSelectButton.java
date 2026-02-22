@@ -9,7 +9,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
-import xyz.imcodist.quickmenu.QuickMenu;
+import com.tehbeard.fabric.fastaction.FastAction;
 
 
 public class KeybindSelectButton extends WButton {
@@ -41,7 +41,7 @@ public class KeybindSelectButton extends WButton {
 
     @Override
     public InputResult onKeyPressed(KeyInput input) {
-        var logger = QuickMenu.LOGGER;
+        var logger = FastAction.LOGGER;
         logger.info("Key pressed!");
         if(isDetecting)
         {

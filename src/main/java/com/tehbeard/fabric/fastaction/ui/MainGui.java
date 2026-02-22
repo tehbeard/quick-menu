@@ -4,7 +4,6 @@ import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
 import com.tehbeard.fabric.fastaction.ui.component.EditButton;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
-import com.tehbeard.fabric.fastaction.ui.component.TextButton;
 import com.tehbeard.fabric.fastaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -12,7 +11,7 @@ import io.github.cottonmc.cotton.gui.widget.data.*;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import xyz.imcodist.quickmenu.QuickMenu;
+import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -67,10 +66,10 @@ public class MainGui extends LightweightGuiDescription {
                 if (click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode) {
                     ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
                     try {
-                        ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                        ActionConfig.getConfig().save(FastAction.getConfigFile());
                         updateItems(panel);
                     } catch (IOException e) {
-                        QuickMenu.LOGGER.error(e.toString());
+                        FastAction.LOGGER.error(e.toString());
                     }
 
                 } else if (!isEditMode) {
@@ -83,9 +82,9 @@ public class MainGui extends LightweightGuiDescription {
                     MinecraftClient.getInstance().setScreen(
                         new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
                             try {
-                                ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                                ActionConfig.getConfig().save(FastAction.getConfigFile());
                             } catch (IOException e) {
-                                QuickMenu.LOGGER.error(e.toString());
+                                FastAction.LOGGER.error(e.toString());
                             }
                         })
                     );
@@ -108,9 +107,9 @@ public class MainGui extends LightweightGuiDescription {
                     newData
                 )).onRemoved(() -> {
                     try {
-                        ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                        ActionConfig.getConfig().save(FastAction.getConfigFile());
                     } catch (IOException e) {
-                        QuickMenu.LOGGER.error(e.toString());
+                        FastAction.LOGGER.error(e.toString());
                     }
                 }));
             });

@@ -10,15 +10,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.cursor.StandardCursors;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.QuickMenu;
+import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.IOException;
-import java.util.function.BiConsumer;
 
 public class AddActionEntry extends WWidget {
 
@@ -76,9 +74,9 @@ public class AddActionEntry extends WWidget {
             newData
         )).onRemoved(() -> {
             try {
-                ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                ActionConfig.getConfig().save(FastAction.getConfigFile());
             } catch (IOException e) {
-                QuickMenu.LOGGER.error(e.toString());
+                FastAction.LOGGER.error(e.toString());
             }
         }));
 

@@ -10,7 +10,7 @@ import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.QuickMenu;
+import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class ActionConfigMigrator {
 
     public static void migrate() throws IOException {
         File oldFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "quickmenu_data.json");
-        File newFile = QuickMenu.getConfigFile();
+        File newFile = FastAction.getConfigFile();
         var gson = new GsonBuilder().setPrettyPrinting().create();
 
         // Load the json.

@@ -2,21 +2,11 @@ package com.tehbeard.fabric.fastaction.ui;
 
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
-import com.tehbeard.fabric.fastaction.ui.component.EditButton;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
-import com.tehbeard.fabric.fastaction.ui.component.TextButton;
-import com.tehbeard.fabric.fastaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
-import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
-import io.github.cottonmc.cotton.gui.widget.data.InputResult;
-import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
-import xyz.imcodist.quickmenu.QuickMenu;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;

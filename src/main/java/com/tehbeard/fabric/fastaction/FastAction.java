@@ -1,10 +1,9 @@
-package xyz.imcodist.quickmenu;
+package com.tehbeard.fabric.fastaction;
 
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionButtonExecutor;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
 import com.tehbeard.fabric.fastaction.data.ActionConfigMigrator;
-import com.tehbeard.fabric.fastaction.ui.MainScreen;
 import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.fastaction.ui.panel.MainPanel;
 import net.fabricmc.api.ModInitializer;
@@ -22,7 +21,7 @@ import xyz.imcodist.quickmenu.other.*;
 import java.io.File;
 import java.io.IOException;
 
-public class QuickMenu implements ModInitializer {
+public class FastAction implements ModInitializer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("quickmenu");
     private static boolean menuKeyPressed = false;
@@ -44,7 +43,7 @@ public class QuickMenu implements ModInitializer {
             System.exit(-100);
         }
         try {
-            ActionConfig.load(QuickMenu.getConfigFile());
+            ActionConfig.load(FastAction.getConfigFile());
         }catch(IOException ex)
         {
             LOGGER.error(ex.toString());

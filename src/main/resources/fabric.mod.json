@@ -1,38 +1,46 @@
 {
-	"schemaVersion": 1,
-	"id": "quickmenu",
-	"version": "${version}",
-	"name": "Quick Menu",
-	"description": "Adds a configurable easy-to-access menu that runs basic repetitive commands.",
-	"authors": [
-		{
-			"name": "codist",
-			"contact": {
-				"homepage": "https://imcodist.xyz"
-			}
-		}
-	],
-	"contact": {
-		"homepage": "https://github.com/ImCodist/quick-menu",
-		"sources": "https://github.com/ImCodist/quick-menu",
-		"issues": "https://github.com/ImCodist/quick-menu/issues"
-	},
-	"license": "GNU-3.0",
-	"icon": "assets/quickmenu/icon.png",
-	"environment": "client",
-	"entrypoints": {
-		"main": [
-          "xyz.imcodist.quickmenu.QuickMenu"
-		]
-	},
-	"mixins": [
-		"quickmenu.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.17.2",
-		"minecraft": ["1.21.11"],
-		"java": ">=21",
-		"fabric-api": "*",
-		"fabric-key-binding-api-v1": "*"
-	}
+  "schemaVersion": 1,
+  "id": "fastactions",
+  "version": "${version}",
+  "name": "Fast Actions",
+  "description": "Adds a configurable menu to run commands and keybinds.",
+  "authors": [
+    {
+      "name": "Tehbeard",
+      "contact": {
+        "homepage": "https://tehbeard.com"
+      }
+    },
+    {
+      "name": "codist (Original mod)",
+      "contact": {
+        "homepage": "https://imcodist.xyz"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://github.com/tehbeard/fast-actions",
+    "sources": "https://github.com/tehbeard/fast-actions",
+    "issues": "https://github.com/tehbeard/fast-actions/issues"
+  },
+  "license": "GNU-3.0",
+  "icon": "assets/quickmenu/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.tehbeard.fabric.fastaction.FastAction"
+    ]
+  },
+  "mixins": [
+    "quickmenu.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.2",
+    "minecraft": [
+      "1.21.11"
+    ],
+    "java": ">=21",
+    "fabric-api": "*",
+    "fabric-key-binding-api-v1": "*"
+  }
 }

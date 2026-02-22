@@ -14,7 +14,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import xyz.imcodist.quickmenu.QuickMenu;
+import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.IOException;
 
@@ -86,10 +86,10 @@ public class ConfigEntry extends WWidget {
                 new MinedeckScreen(new ConfigMenu())
                     .onRemoved(() -> {
                         try {
-                            ActionConfig.getConfig().save(QuickMenu.getConfigFile());
+                            ActionConfig.getConfig().save(FastAction.getConfigFile());
                             // TODO - Switch back to menu screen, can't do so direct from here though.
                         } catch (IOException e) {
-                            QuickMenu.LOGGER.error(e.toString());
+                            FastAction.LOGGER.error(e.toString());
                         }
                     })
             );
