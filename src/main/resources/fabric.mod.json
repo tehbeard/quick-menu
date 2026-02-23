@@ -24,7 +24,7 @@
     "issues": "https://github.com/tehbeard/fast-actions/issues"
   },
   "license": "GNU-3.0",
-  "icon": "assets/quickmenu/icon.png",
+  "icon": "assets/fastactions/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
@@ -35,9 +35,9 @@
     "quickmenu.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.17.2",
+    "fabricloader": ">=${loader_version}",
     "minecraft": [
-      "1.21.11"
+      "${minecraft_version}"
     ],
     "java": ">=21",
     "fabric-api": "*",
