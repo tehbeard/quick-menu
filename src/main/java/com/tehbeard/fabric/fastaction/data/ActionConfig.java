@@ -8,9 +8,6 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.fastaction.FastAction;
 import com.tehbeard.fabric.fastaction.data.action.KeybindTask;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,13 +17,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Items;
 
 /**
  * Represents the config
  */
 public class ActionConfig {
 
-    public static final Identifier DEFAULT_TAB = Identifier.of("minedeck", "default");
+    public static final Identifier DEFAULT_TAB = Identifier.fromNamespaceAndPath("minedeck", "default");
 
     public static final Codec<ActionConfig> CODEC = RecordCodecBuilder.create(inst ->
         inst.group(
@@ -221,7 +220,7 @@ public class ActionConfig {
 
         var btn = new ActionButton();
         btn.setName("Open Vanilla Quick Actions");
-        btn.setIcon(Items.KNOWLEDGE_BOOK.getDefaultStack());
+        btn.setIcon(Items.KNOWLEDGE_BOOK.getDefaultInstance());
         tab.getButtons().add(btn);
 
         btn.getTasks().add(

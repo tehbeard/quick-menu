@@ -1,11 +1,10 @@
 package com.tehbeard.fabric.fastaction.ui.component;
 
 import io.github.cottonmc.cotton.gui.widget.WButton;
-import net.minecraft.text.Text;
-
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import net.minecraft.network.chat.Component;
 
 public class WSelectButton<T> extends WButton {
 
@@ -14,7 +13,7 @@ public class WSelectButton<T> extends WButton {
     public WSelectButton(
         List<T> options,
         T defaultValue,
-        Function<T, Text> labelFn,
+        Function<T, Component> labelFn,
         Consumer<T> onSelect
     ) {
         this.value = defaultValue;

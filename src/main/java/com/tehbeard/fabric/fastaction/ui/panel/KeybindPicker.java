@@ -6,11 +6,11 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import xyz.imcodist.quickmenu.other.KeybindHandler;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class KeybindPicker extends LightweightGuiDescription {
 
         WPixelPanel scrollPanelContents = new WPixelPanel();
 
-        KeyBinding[] keyBindings = KeybindHandler.getKeybindings();
+        KeyMapping[] keyBindings = KeybindHandler.getKeybindings();
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
         scrollWrapper.getVerticalScrollBar().addPainters();
@@ -45,9 +45,9 @@ public class KeybindPicker extends LightweightGuiDescription {
 
         if(keyBindings != null)
         {
-            Map<String, ArrayList<KeyBinding>> sortedKeybindings = new HashMap<>();
-            for (KeyBinding keyBinding : keyBindings) {
-                String category = keyBinding.getCategory().id().toTranslationKey("key.category"); // TODO - Handle this better
+            Map<String, ArrayList<KeyMapping>> sortedKeybindings = new HashMap<>();
+            for (KeyMapping keyBinding : keyBindings) {
+                String category = keyBinding.getCategory().id().toLanguageKey("key.category"); // TODO - Handle this better
 
                 if (!sortedKeybindings.containsKey(category)) {
                     sortedKeybindings.put(category, new ArrayList<>());
@@ -60,15 +60,15 @@ public class KeybindPicker extends LightweightGuiDescription {
 
             for (String category : sortedKeybindings.keySet()) {
                 scrollPanelContents.add(
-                    new KeybindCategory(Text.translatable(category).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),
+                    new KeybindCategory(Component.translatable(category).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE)))),
                     0,ELEMENT_SIZE * yOffset++
                 );
 
-                for (KeyBinding keyBinding : sortedKeybindings.get(category)) {
+                for (KeyMapping keyBinding : sortedKeybindings.get(category)) {
 
                     scrollPanelContents.add(
-                        new KeybindEntry(Text.translatable(keyBinding.getId()).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))), () -> {
-                            onSelect.accept(keyBinding.getId());
+                        new KeybindEntry(Component.translatable(keyBinding.getName()).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE))), () -> {
+                            onSelect.accept(keyBinding.getName());
                         }),
                         0, ELEMENT_SIZE * yOffset++
                     );
@@ -92,7 +92,7 @@ public class KeybindPicker extends LightweightGuiDescription {
 
         public WLabel label;
 
-        public KeybindCategory(Text txt) {
+        public KeybindCategory(Component txt) {
             label = new WLabel(txt);
 
             label.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -106,8 +106,8 @@ public class KeybindPicker extends LightweightGuiDescription {
         public WButton select;
         public WLabel label;
 
-        public KeybindEntry(Text txt, Runnable fn) {
-            select = new WButton(Text.literal(" > "));
+        public KeybindEntry(Component txt, Runnable fn) {
+            select = new WButton(Component.literal(" > "));
             select.setOnClick(fn);
             label = new WLabel(txt);
 

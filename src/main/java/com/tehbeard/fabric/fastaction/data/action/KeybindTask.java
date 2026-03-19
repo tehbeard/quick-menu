@@ -3,10 +3,10 @@ package com.tehbeard.fabric.fastaction.data.action;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import xyz.imcodist.quickmenu.other.KeybindHandler;
 
 public class KeybindTask implements IActionTask {
@@ -40,8 +40,8 @@ public class KeybindTask implements IActionTask {
     }
 
     @Override
-    public Text description() {
-        return Text.literal("KB: ").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY))).append(Text.translatable(keybindTranslationKey));
+    public Component description() {
+        return Component.literal("KB: ").setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.DARK_GRAY))).append(Component.translatable(keybindTranslationKey));
     }
 
     @Override

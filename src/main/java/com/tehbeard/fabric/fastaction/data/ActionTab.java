@@ -2,10 +2,9 @@ package com.tehbeard.fabric.fastaction.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Identifier;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.resources.Identifier;
 
 public class ActionTab {
 

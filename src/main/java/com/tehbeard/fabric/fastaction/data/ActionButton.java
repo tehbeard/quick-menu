@@ -1,18 +1,18 @@
 package com.tehbeard.fabric.fastaction.data;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.fastaction.data.action.IActionTask;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ActionButton {
 
@@ -22,8 +22,8 @@ public class ActionButton {
             IActionTask.TASK_CODEC.listOf().fieldOf("tasks").forGetter(ActionButton::getTasks),
             ItemStack.CODEC.fieldOf("icon").forGetter(ActionButton::getIcon),
             Codec.STRING.xmap(
-                str -> InputUtil.fromTranslationKey(str),
-                key -> key.getTranslationKey()
+                str -> InputConstants.getKey(str),
+                key -> key.getName()
             ).optionalFieldOf("keybind").forGetter(btn -> Optional.ofNullable(btn.getKeybind()))
         ).apply(inst, (name, tasks, icon, keybind) -> {
             var btn = new ActionButton();
@@ -37,9 +37,9 @@ public class ActionButton {
 
     private String name = "";
     private List<IActionTask> tasks = new ArrayList<>();
-    private ItemStack Icon = Items.KNOWLEDGE_BOOK.getDefaultStack();
+    private ItemStack Icon = Items.KNOWLEDGE_BOOK.getDefaultInstance();
 
-    public InputUtil.Key keybind = null;
+    public InputConstants.Key keybind = null;
 
 
     private boolean alreadyPressed = false; // transient latch to prevent repeated activation.
@@ -71,11 +71,11 @@ public class ActionButton {
         return this;
     }
 
-    public InputUtil.Key getKeybind() {
+    public InputConstants.Key getKeybind() {
         return keybind;
     }
 
-    public ActionButton setKeybind(InputUtil.Key keybind) {
+    public ActionButton setKeybind(InputConstants.Key keybind) {
         this.keybind = keybind;
         return this;
     }
@@ -85,10 +85,10 @@ public class ActionButton {
             return;
         } // Exit if no keybind set.
 //
-        var client = MinecraftClient.getInstance();
+        var client = Minecraft.getInstance();
         var handle = client.getWindow();
-        if (this.keybind.getCategory() == InputUtil.Type.KEYSYM) {
-            if (InputUtil.isKeyPressed(handle, keybind.getCode())) {
+        if (this.keybind.getType() == InputConstants.Type.KEYSYM) {
+            if (InputConstants.isKeyDown(handle, keybind.getValue())) {
                 if (!alreadyPressed) {
                     alreadyPressed = true;
                     run(true);
@@ -96,8 +96,8 @@ public class ActionButton {
             } else {
                 alreadyPressed = false;
             }
-        } else if (this.keybind.getCategory() == InputUtil.Type.MOUSE) {
-            if(GLFW.glfwGetMouseButton(client.getWindow().getHandle(), this.getKeybind().getCode()) == GLFW.GLFW_PRESS)
+        } else if (this.keybind.getType() == InputConstants.Type.MOUSE) {
+            if(GLFW.glfwGetMouseButton(client.getWindow().handle(), this.getKeybind().getValue()) == GLFW.GLFW_PRESS)
             {
                 if (!alreadyPressed) {
                     alreadyPressed = true;
@@ -111,10 +111,10 @@ public class ActionButton {
 
     public void run(boolean isKeybind) {
         if ( isKeybind ) {
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
 
             if (client != null && client.player != null) {
-                client.player.sendMessage(Text.of("Ran action \"" + name + "\""), true);
+                client.player.displayClientMessage(Component.nullToEmpty("Ran action \"" + name + "\""), true);
             }
         }
 

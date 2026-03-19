@@ -9,7 +9,7 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.*;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 import com.tehbeard.fabric.fastaction.FastAction;
 
@@ -74,12 +74,12 @@ public class MainGui extends LightweightGuiDescription {
 
                 } else if (!isEditMode) {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
-                        MinecraftClient.getInstance().setScreen(null);
+                        Minecraft.getInstance().setScreen(null);
                     }
                     data.run(false);
                 } else {
                     // TODO - Open edit mode
-                    MinecraftClient.getInstance().setScreen(
+                    Minecraft.getInstance().setScreen(
                         new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
                             try {
                                 ActionConfig.getConfig().save(FastAction.getConfigFile());
@@ -103,7 +103,7 @@ public class MainGui extends LightweightGuiDescription {
             ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
                 var newData = new ActionButton().setName("");
                 ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
-                MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
+                Minecraft.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
                     newData
                 )).onRemoved(() -> {
                     try {
