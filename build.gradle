@@ -17,10 +17,7 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
-
 	mavenLocal()
-	// owo-lib
-	maven { url 'https://maven.wispforest.io' }
 
     maven {
         name = "CottonMC"
