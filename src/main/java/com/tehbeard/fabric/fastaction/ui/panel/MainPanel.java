@@ -7,9 +7,8 @@ import com.tehbeard.fabric.fastaction.ui.MainScreen;
 import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.fastaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
-import net.minecraft.client.MinecraftClient;
-
 import java.util.List;
+import net.minecraft.client.Minecraft;
 
 public class MainPanel extends AbstractActionGui {
     public MainPanel() {
@@ -17,13 +16,13 @@ public class MainPanel extends AbstractActionGui {
             "Fast Actions",
             data -> new ActionEntry(data, (click, dbl) -> {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
-                        MinecraftClient.getInstance().setScreen(null);
+                        Minecraft.getInstance().setScreen(null);
                     }
                     data.run(false);
             }),
             List.of(
                 new TextButton("✎", (click, dbl) -> {
-                    MinecraftClient.getInstance().setScreen(new MinedeckScreen(new EditPanel()));
+                    Minecraft.getInstance().setScreen(new MinedeckScreen(new EditPanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Edit Actions"))
             ),

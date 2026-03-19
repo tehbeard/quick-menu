@@ -3,12 +3,12 @@ package com.tehbeard.fabric.fastaction.ui.component;
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.tehbeard.fabric.fastaction.FastAction;
 
 
@@ -24,14 +24,14 @@ public class KeybindSelectButton extends WButton {
     }
 
     @Override
-    public InputResult onClick(Click click, boolean doubled) {
+    public InputResult onClick(MouseButtonEvent click, boolean doubled) {
         if(!isDetecting) {
             isDetecting = true;
             updateState();
             getHost().requestFocus(this);
         } else {
             data.setKeybind(
-                InputUtil.Type.MOUSE.createFromCode(click.button())
+                InputConstants.Type.MOUSE.getOrCreate(click.button())
             );
             isDetecting = false;
             updateState();
@@ -40,7 +40,7 @@ public class KeybindSelectButton extends WButton {
     }
 
     @Override
-    public InputResult onKeyPressed(KeyInput input) {
+    public InputResult onKeyPressed(KeyEvent input) {
         var logger = FastAction.LOGGER;
         logger.info("Key pressed!");
         if(isDetecting)
@@ -52,7 +52,7 @@ public class KeybindSelectButton extends WButton {
             if (keyCode != GLFW.GLFW_KEY_ESCAPE) {
 
                 data.setKeybind(
-                    InputUtil.fromKeyCode(new KeyInput(
+                    InputConstants.getKey(new KeyEvent(
                         keyCode,
                         scanCode, modifiers)
                     )
@@ -70,18 +70,18 @@ public class KeybindSelectButton extends WButton {
 
     private void updateState()
     {
-        Text label = Text.literal("Not Bound");
+        Component label = Component.literal("Not Bound");
         if(data.getKeybind() != null)
         {
-            label = data.getKeybind().getLocalizedText();
+            label = data.getKeybind().getDisplayName();
         }
         if(isDetecting)
         {
 
             setLabel(
-                Text.literal("> ")
+                Component.literal("> ")
                     .append(label)
-                    .append(Text.literal(" <"))
+                    .append(Component.literal(" <"))
             );
         } else {
             setLabel(label);

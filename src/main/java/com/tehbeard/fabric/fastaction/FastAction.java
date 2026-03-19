@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.fastaction;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionButtonExecutor;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
@@ -10,9 +11,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class FastAction implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("fastactions");
     private static boolean menuKeyPressed = false;
 
-    private static KeyBinding menuOpenKeybinding;
+    private static KeyMapping menuOpenKeybinding;
 
     public static File getConfigFile()
     {
@@ -49,11 +49,11 @@ public class FastAction implements ModInitializer {
             LOGGER.error(ex.toString());
         }
 
-        menuOpenKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        menuOpenKeybinding = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.fastaction.open",
-            InputUtil.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_G,
-            KeyBinding.Category.create(Identifier.of("fastaction:all"))
+            KeyMapping.Category.register(Identifier.parse("fastaction:all"))
         ));
 
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
@@ -63,7 +63,7 @@ public class FastAction implements ModInitializer {
             ActionButtonExecutor.getInstance().tick();
 
             // Check for menu open keybind.
-            if (menuOpenKeybinding.isPressed()) {
+            if (menuOpenKeybinding.isDown()) {
                 if (!menuKeyPressed) {
 //                    var mainScreen = new MainScreen(false);
                     var mainScreen = new MinedeckScreen(new MainPanel());
@@ -72,13 +72,13 @@ public class FastAction implements ModInitializer {
                     );
                 }
                 menuKeyPressed = true;
-            } else if (client.currentScreen == null) {
+            } else if (client.screen == null) {
                 menuKeyPressed = false;
             }
 
             // Check for action buttons keybinds.
             // I really dont like this.
-            if (client.currentScreen == null) {
+            if (client.screen == null) {
                 ActionConfig.getConfig()
                     .getDefaultTab().getButtons()
                         .forEach(ActionButton::handleKeybind);

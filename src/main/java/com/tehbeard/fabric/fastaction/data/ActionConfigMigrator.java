@@ -1,15 +1,15 @@
 package com.tehbeard.fabric.fastaction.data;
 
 import com.google.gson.*;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.tehbeard.fabric.fastaction.data.action.CommandTask;
 import com.tehbeard.fabric.fastaction.data.action.DelayTask;
 import com.tehbeard.fabric.fastaction.data.action.IActionTask;
 import com.tehbeard.fabric.fastaction.data.action.KeybindTask;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.File;
@@ -37,11 +37,11 @@ public class ActionConfigMigrator {
             btn.getTasks().add(migrateTask(task.getAsJsonArray()));
         });
         btn.setIcon(
-            Registries.ITEM.get(Identifier.of(action.get("icon").getAsString())).getDefaultStack()
+            BuiltInRegistries.ITEM.getValue(Identifier.parse(action.get("icon").getAsString())).getDefaultInstance()
         );
         var kb = action.getAsJsonArray("keybind").asList();
         if(!kb.isEmpty()) {
-            btn.setKeybind(InputUtil.fromKeyCode(new KeyInput(kb.get(0).getAsInt(), kb.get(1).getAsInt(), 0)));
+            btn.setKeybind(InputConstants.getKey(new KeyEvent(kb.get(0).getAsInt(), kb.get(1).getAsInt(), 0)));
         }
 
         return btn;

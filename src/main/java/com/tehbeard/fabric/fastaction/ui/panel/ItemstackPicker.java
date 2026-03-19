@@ -8,12 +8,11 @@ import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -32,7 +31,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         root.setInsets(Insets.NONE);
 
         root.setBackgroundPainter(BackgroundPainter.createNinePatch(
-            new Texture(Identifier.of("fastactions", "textures/background_darker.png")),
+            new Texture(Identifier.fromNamespaceAndPath("fastactions", "textures/background_darker.png")),
             builder -> builder.cornerSize(8).cornerUv(0.33f)
         ));
 
@@ -47,7 +46,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
         root.add(scrollWrapper, 17, 27);
 
-        WTextField searchField = new WTextField(Text.literal(""));
+        WTextField searchField = new WTextField(Component.literal(""));
         searchField.setChangedListener( str -> {
             // TODO - Filter search list.
             updateItems(scrollPanelContents, str);
@@ -56,7 +55,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         searchField.setSize(root.getWidth() - (15 + 48 + 7), 16);
         root.add(searchField,48, 5);
 
-        WSprite icon = new WSprite(Identifier.of("fastactions","textures/search_icon.png"));
+        WSprite icon = new WSprite(Identifier.fromNamespaceAndPath("fastactions","textures/search_icon.png"));
         root.add(icon, 17 + 7, 5 + 7);
         icon.setSize(12,12);
 
@@ -75,14 +74,14 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         int posY = 0;
         final int perRow = 8;
 
-        var items = Registries.ITEM.stream().filter( i -> (
+        var items = BuiltInRegistries.ITEM.stream().filter( i -> (
             filter == null || filter.isEmpty() || i.getName().getString().toLowerCase().contains(filter)
                 )
         ).toList();
 
         for(Item item : items)
         {
-            var data = item.getDefaultStack();
+            var data = item.getDefaultInstance();
             ItemstackEntry actionWidget = new ItemstackEntry(data, a ->{
                 onSelect.accept(a);
             });

@@ -11,13 +11,13 @@ import com.tehbeard.fabric.fastaction.ui.component.WPixelPanel;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.MergedComponentMap;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.Identifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,20 +44,20 @@ public class ButtonEditor extends LightweightGuiDescription {
         scrollWrapper.setSize(root.getWidth() - (17 + 7), root.getHeight() - (27 + 5));
         root.add(scrollWrapper, 17, 27);
 
-        WTextField name = new WTextField(Text.literal("Name"));
+        WTextField name = new WTextField(Component.literal("Name"));
         name.setMaxLength(255);
         name.setSize(140,18);
         name.setText(data.getName());
         name.setChangedListener(data::setName);
         addRow(scrollPanelContents, "Name", name);
 
-        WTextField model = new WTextField(Text.literal("namespace:id"));
+        WTextField model = new WTextField(Component.literal("namespace:id"));
 
         model.setMaxLength(4096);
 
-        var components = (MergedComponentMap) data.getIcon().getComponents();
-        if(components.hasChanged(DataComponentTypes.ITEM_MODEL)){
-            model.setText(data.getIcon().get(DataComponentTypes.ITEM_MODEL).toString());
+        var components = (PatchedDataComponentMap) data.getIcon().getComponents();
+        if(components.hasNonDefault(DataComponents.ITEM_MODEL)){
+            model.setText(data.getIcon().get(DataComponents.ITEM_MODEL).toString());
         }
 
         final IconEntry iconSelect = new IconEntry(data.getIcon(), selector -> {
@@ -76,11 +76,11 @@ public class ButtonEditor extends LightweightGuiDescription {
             if(is != null)
             {
                 if(!str.isBlank()) {
-                    is.set(DataComponentTypes.ITEM_MODEL, Identifier.of(str));
+                    is.set(DataComponents.ITEM_MODEL, Identifier.parse(str));
                 }else{
                     // HACK - reset stack
-                    iconSelect.setIcon(is.getItem().getDefaultStack());
-                    data.setIcon(is.getItem().getDefaultStack());
+                    iconSelect.setIcon(is.getItem().getDefaultInstance());
+                    data.setIcon(is.getItem().getDefaultInstance());
                 }
             }
         });
@@ -99,7 +99,7 @@ public class ButtonEditor extends LightweightGuiDescription {
         addRow(scrollPanelContents,"Keybind", keybindButton);
 
 
-        WLabel actionsLabel = new WLabel(Text.literal("Actions:").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE))));
+        WLabel actionsLabel = new WLabel(Component.literal("Actions:").setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE))));
         scrollPanelContents.add(actionsLabel, 5, 5 + 7 + (ELEMENT_SIZE * yOffset++));
 
         WPlainPanel actions = new WPlainPanel();
@@ -147,7 +147,7 @@ public class ButtonEditor extends LightweightGuiDescription {
             }),0, ELEMENT_SIZE * i++);
 
         }
-        WButton addButton = new WButton(Text.literal("Add Action"));
+        WButton addButton = new WButton(Component.literal("Add Action"));
         addButton.setOnClick(() -> {
             MinedeckScreen.pushCurrent(
                 new ActionPicker( newAction -> {
@@ -165,7 +165,7 @@ public class ButtonEditor extends LightweightGuiDescription {
 
     public void addRow(WPixelPanel panel, String label, WWidget widget)
     {
-        panel.add(new WLabel(Text.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),  5,5 + 7 + (ELEMENT_SIZE * yOffset));
+        panel.add(new WLabel(Component.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE)))),  5,5 + 7 + (ELEMENT_SIZE * yOffset));
         panel.add(widget,  100, 5 + (ELEMENT_SIZE * yOffset++));
     }
 
@@ -179,7 +179,7 @@ public class ButtonEditor extends LightweightGuiDescription {
     {
         public ActionRow(@NotNull IActionTask task, Consumer<RowButton> onClick) {
 
-            this.add(new WLabel(Text.literal("%s:".formatted(StringUtils.capitalize(task.type()))).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))),0,5);
+            this.add(new WLabel(Component.literal("%s:".formatted(StringUtils.capitalize(task.type()))).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE)))),0,5);
 
             // TODO - Change this based on the action type.
             // With command, can we autocomplete the string? (Not easily)
@@ -187,7 +187,7 @@ public class ButtonEditor extends LightweightGuiDescription {
             // with panel, autocomplete panels? (Or show a list popup)
             // with keybind, show button to list popup.
 
-            WWidget config = new WLabel(Text.literal("Unknown"));
+            WWidget config = new WLabel(Component.literal("Unknown"));
 
             if(task instanceof CommandTask c) {
                 var txt = new WTextField();
@@ -205,12 +205,12 @@ public class ButtonEditor extends LightweightGuiDescription {
                 config = txt;
             } else if(task instanceof KeybindTask k)
             {
-                var btn = new WButton( k.getKeybind() == null ? Text.literal("Not Bound") : Text.translatable(k.getKeybind()));
+                var btn = new WButton( k.getKeybind() == null ? Component.literal("Not Bound") : Component.translatable(k.getKeybind()));
                 btn.setOnClick(() -> {
                     MinedeckScreen.pushCurrent(
                         new KeybindPicker( kb -> {
                             k.setKeybind(kb);
-                            btn.setLabel(Text.translatable(k.getKeybind()));
+                            btn.setLabel(Component.translatable(k.getKeybind()));
                             MinedeckScreen.popCurrent();
                         })
                     );
@@ -228,9 +228,9 @@ public class ButtonEditor extends LightweightGuiDescription {
             config.setSize(120, 18);
             this.add(config,50, (config instanceof WButton) ? 1 : 0);
 
-            this.add(new WButton(Text.literal("▲")).setOnClick(() -> onClick.accept(RowButton.UP)),172, 1);
-            this.add(new WButton(Text.literal("▼")).setOnClick(() -> onClick.accept(RowButton.DOWN)),192, 1);
-            this.add(new WButton(Text.literal("❌")).setOnClick(() -> onClick.accept(RowButton.DELETE)),212, 1);
+            this.add(new WButton(Component.literal("▲")).setOnClick(() -> onClick.accept(RowButton.UP)),172, 1);
+            this.add(new WButton(Component.literal("▼")).setOnClick(() -> onClick.accept(RowButton.DOWN)),192, 1);
+            this.add(new WButton(Component.literal("❌")).setOnClick(() -> onClick.accept(RowButton.DELETE)),212, 1);
 
             this.setSize(230, ELEMENT_SIZE);
         }

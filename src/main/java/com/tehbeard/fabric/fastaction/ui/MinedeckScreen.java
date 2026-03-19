@@ -5,12 +5,12 @@ import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
 import io.github.cottonmc.cotton.gui.impl.VisualLogger;
 import io.github.cottonmc.cotton.gui.widget.WPanel;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.input.KeyInput;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.KeyEvent;
 
 public class MinedeckScreen extends CottonClientScreen {
 
@@ -36,13 +36,13 @@ public class MinedeckScreen extends CottonClientScreen {
     }
 
     public static void pushCurrent(GuiDescription description) {
-        if (MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s) {
+        if (Minecraft.getInstance().screen instanceof MinedeckScreen s) {
             s.push(description);
         }
     }
 
     public static void popCurrent() {
-        if (MinecraftClient.getInstance().currentScreen instanceof MinedeckScreen s) {
+        if (Minecraft.getInstance().screen instanceof MinedeckScreen s) {
             s.pop();
         }
     }
@@ -64,22 +64,22 @@ public class MinedeckScreen extends CottonClientScreen {
 
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
     @Override
-    protected void applyBlur(DrawContext context) {
+    protected void renderBlurredBackground(GuiGraphics context) {
         // Do not apply blur
     }
 
     @Override
-    protected void renderDarkening(DrawContext context) {
+    protected void renderMenuBackground(GuiGraphics context) {
         // Do not darken screen
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float partialTicks) {
         overlay.forEach(
             entry -> {
                 var panel = entry.getRootPanel();
@@ -101,7 +101,7 @@ public class MinedeckScreen extends CottonClientScreen {
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if (input.isEscape() && !overlay.isEmpty()) {
             pop();
             return true;

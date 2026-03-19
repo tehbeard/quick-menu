@@ -7,11 +7,10 @@ import com.tehbeard.fabric.fastaction.ui.component.WSelectButton;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import java.util.Arrays;
 
 public class ConfigMenu extends LightweightGuiDescription {
@@ -30,7 +29,7 @@ public class ConfigMenu extends LightweightGuiDescription {
                     ActionConfig.Size.values()
                 ),
                 ActionConfig.getConfig().getSize(),
-                size -> Text.literal(size.getLabel()).append(" (%s x %s)".formatted(size.getRowSize(), size.getRowCount())),
+                size -> Component.literal(size.getLabel()).append(" (%s x %s)".formatted(size.getRowSize(), size.getRowCount())),
                 size -> ActionConfig.getConfig().setSize(size)
             )
         );
@@ -63,7 +62,7 @@ public class ConfigMenu extends LightweightGuiDescription {
     }
 
     public void addRow(WPixelPanel panel, int y, String label, WWidget widget) {
-        panel.add(new WLabel(Text.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.WHITE)))), 5, 5 + 7 + y);
+        panel.add(new WLabel(Component.literal(label).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE)))), 5, 5 + 7 + y);
         panel.add(widget, 120, 5 + y);
     }
 

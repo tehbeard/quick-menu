@@ -8,8 +8,7 @@ import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.text.Text;
-
+import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -34,7 +33,7 @@ public class ActionPicker extends LightweightGuiDescription {
         );
 
         var listPanel = new WListPanel<>(list, WButton::new, (ActionPickerEntry action, WButton button) -> {
-            button.setLabel(Text.literal(action.label));
+            button.setLabel(Component.literal(action.label));
             // TODO - Find way to adjust the tooltip, may need custom button
             button.setOnClick(action.fn);
         });

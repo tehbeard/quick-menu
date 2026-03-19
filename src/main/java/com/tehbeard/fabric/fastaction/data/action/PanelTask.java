@@ -4,12 +4,12 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.fastaction.ui.MainGui;
 import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.Identifier;
 
 public class PanelTask implements IActionTask {
 
@@ -42,14 +42,14 @@ public class PanelTask implements IActionTask {
     }
 
     @Override
-    public Text description() {
-        return Text.literal("Panel: %s".formatted("[TODO IMPLEMENT]")).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY)));
+    public Component description() {
+        return Component.literal("Panel: %s".formatted("[TODO IMPLEMENT]")).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.DARK_GRAY)));
     }
 
     @Override
     public long run() {
 //        TODO - Open screen on selected panel.
-        MinecraftClient.getInstance().setScreen(
+        Minecraft.getInstance().setScreen(
             new MinedeckScreen(
                 new MainGui(false) // TODO - Pass thru the panel id to use.
             )

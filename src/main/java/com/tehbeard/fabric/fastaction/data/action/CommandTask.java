@@ -3,12 +3,12 @@ package com.tehbeard.fabric.fastaction.data.action;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 
 public class CommandTask implements IActionTask {
 
@@ -38,16 +38,16 @@ public class CommandTask implements IActionTask {
     }
 
     @Override
-    public Text description() {
-        return Text.literal("Run: " + command).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.DARK_GRAY)));
+    public Component description() {
+        return Component.literal("Run: " + command).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.DARK_GRAY)));
     }
 
     @Override
     public long run() {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (client == null) return 0;
 
-        ClientPlayerEntity player = client.player;
+        LocalPlayer player = client.player;
         if (player == null) return 0;
 
         // Run the command.
@@ -56,12 +56,12 @@ public class CommandTask implements IActionTask {
         if (commandToRun != null) {
             if (commandToRun.startsWith("/")) {
                 commandToRun = commandToRun.substring(1);
-                player.networkHandler.sendChatCommand(commandToRun);
+                player.connection.sendCommand(commandToRun);
             } else {
                 if (commandToRun.length() >= 256) {
                     commandToRun = commandToRun.substring(0, 256);
                 }
-                player.networkHandler.sendChatMessage(commandToRun);
+                player.connection.sendChat(commandToRun);
             }
         }
         return 0;
