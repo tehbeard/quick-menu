@@ -75,7 +75,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         final int perRow = 8;
 
         var items = BuiltInRegistries.ITEM.stream().filter( i -> (
-            filter == null || filter.isEmpty() || i.getName().getString().toLowerCase().contains(filter)
+            filter == null || filter.isEmpty() || i.getName(i.getDefaultInstance()).getString().toLowerCase().contains(filter)
                 )
         ).toList();
 

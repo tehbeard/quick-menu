@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 
 public class MinedeckScreen extends CottonClientScreen {
@@ -68,18 +68,21 @@ public class MinedeckScreen extends CottonClientScreen {
         return false;
     }
 
+
     @Override
-    protected void renderBlurredBackground(GuiGraphics context) {
+    protected void extractBlurredBackground(GuiGraphicsExtractor graphics) {
         // Do not apply blur
     }
 
+
     @Override
-    protected void renderMenuBackground(GuiGraphics context) {
+    protected void extractMenuBackground(GuiGraphicsExtractor graphics) {
         // Do not darken screen
     }
 
+
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float partialTicks) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
         overlay.forEach(
             entry -> {
                 var panel = entry.getRootPanel();
@@ -87,7 +90,7 @@ public class MinedeckScreen extends CottonClientScreen {
                 panel.paint(context, (width / 2) - (panel.getWidth() / 2), (height / 2) - (panel.getHeight() / 2), -1, -1);
             }
         );
-        super.render(context, mouseX, mouseY, partialTicks);
+        super.extractRenderState(context, mouseX, mouseY, partialTicks);
 
         if (description != null) {
             WPanel root = description.getRootPanel();

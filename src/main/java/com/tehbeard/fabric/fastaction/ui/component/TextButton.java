@@ -7,7 +7,7 @@ import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -42,7 +42,7 @@ public class TextButton extends WLabel {
     }
 
     @Override
-    public void paint(GuiGraphics context, int x, int y, int mouseX, int mouseY) {
+    public void paint(GuiGraphicsExtractor context, int x, int y, int mouseX, int mouseY) {
         super.paint(context, x, y, mouseX, mouseY);
         var hovered = isFocused() || isWithinBounds(mouseX,mouseY);
 

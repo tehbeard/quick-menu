@@ -10,7 +10,7 @@ import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -41,8 +41,9 @@ public class ConfigEntry extends WWidget {
         tooltip.add(Component.literal("Config"));
     }
 
+
     @Override
-    public void paint(GuiGraphics context, int x, int y, int mouseX, int mouseY) {
+    public void paint(GuiGraphicsExtractor context, int x, int y, int mouseX, int mouseY) {
 
         var isHovered = isWithinBounds(mouseX,mouseY) || getHost().isFocused(this);
         // Doesn't render texture...

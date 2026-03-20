@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 
 /**
@@ -220,7 +221,7 @@ public class ActionConfig {
 
         var btn = new ActionButton();
         btn.setName("Open Vanilla Quick Actions");
-        btn.setIcon(Items.KNOWLEDGE_BOOK.getDefaultInstance());
+        btn.setIcon(ItemStackTemplate.fromNonEmptyStack(Items.KNOWLEDGE_BOOK.getDefaultInstance()));
         tab.getButtons().add(btn);
 
         btn.getTasks().add(

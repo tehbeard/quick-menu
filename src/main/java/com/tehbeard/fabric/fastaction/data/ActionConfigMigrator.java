@@ -11,6 +11,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import com.tehbeard.fabric.fastaction.FastAction;
+import net.minecraft.world.item.ItemStackTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class ActionConfigMigrator {
             btn.getTasks().add(migrateTask(task.getAsJsonArray()));
         });
         btn.setIcon(
-            BuiltInRegistries.ITEM.getValue(Identifier.parse(action.get("icon").getAsString())).getDefaultInstance()
+            ItemStackTemplate.fromNonEmptyStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(action.get("icon").getAsString())).getDefaultInstance())
         );
         var kb = action.getAsJsonArray("keybind").asList();
         if(!kb.isEmpty()) {

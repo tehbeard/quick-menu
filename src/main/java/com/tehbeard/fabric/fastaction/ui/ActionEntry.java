@@ -8,7 +8,7 @@ import io.github.cottonmc.cotton.gui.widget.WWidget;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import java.util.function.BiConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -54,7 +54,7 @@ public class ActionEntry extends WWidget {
     }
 
     @Override
-    public void paint(GuiGraphics context, int x, int y, int mouseX, int mouseY) {
+    public void paint(GuiGraphicsExtractor context, int x, int y, int mouseX, int mouseY) {
 
         var isHovered = isWithinBounds(mouseX,mouseY) || getHost().isFocused(this);
 
@@ -73,8 +73,8 @@ public class ActionEntry extends WWidget {
                 26,
                 26
             );
-            context.renderFakeItem(
-                data.getIcon(),
+            context.fakeItem(
+                data.getIcon().create(),
                 x + 5, y + 5
             );
 

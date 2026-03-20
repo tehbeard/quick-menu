@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,16 +56,16 @@ public class ButtonEditor extends LightweightGuiDescription {
 
         model.setMaxLength(4096);
 
-        var components = (PatchedDataComponentMap) data.getIcon().getComponents();
-        if(components.hasNonDefault(DataComponents.ITEM_MODEL)){
-            model.setText(data.getIcon().get(DataComponents.ITEM_MODEL).toString());
+        var currentModel = data.getIcon().get(DataComponents.ITEM_MODEL);
+        if(currentModel != null){
+            model.setText(currentModel.toString());
         }
 
-        final IconEntry iconSelect = new IconEntry(data.getIcon(), selector -> {
+        final IconEntry iconSelect = new IconEntry(data.getIcon().create(), selector -> {
             MinedeckScreen.pushCurrent(
                 new ItemstackPicker(item -> {
                     selector.setIcon(item);
-                    data.setIcon(item);
+                    data.setIcon(ItemStackTemplate.fromNonEmptyStack(item));
                     model.setText("");
                     MinedeckScreen.popCurrent();
                 })
@@ -80,7 +81,7 @@ public class ButtonEditor extends LightweightGuiDescription {
                 }else{
                     // HACK - reset stack
                     iconSelect.setIcon(is.getItem().getDefaultInstance());
-                    data.setIcon(is.getItem().getDefaultInstance());
+                    data.setIcon(ItemStackTemplate.fromNonEmptyStack(is.getItem().getDefaultInstance()));
                 }
             }
         });

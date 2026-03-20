@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.fastaction.data.action.IActionTask;
+import net.minecraft.world.item.ItemStackTemplate;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class ActionButton {
         inst.group(
             Codec.STRING.fieldOf("name").forGetter(ActionButton::getName),
             IActionTask.TASK_CODEC.listOf().fieldOf("tasks").forGetter(ActionButton::getTasks),
-            ItemStack.CODEC.fieldOf("icon").forGetter(ActionButton::getIcon),
+            ItemStackTemplate.CODEC.fieldOf("icon").forGetter(ActionButton::getIcon),
             Codec.STRING.xmap(
                 str -> InputConstants.getKey(str),
                 key -> key.getName()
@@ -37,7 +38,10 @@ public class ActionButton {
 
     private String name = "";
     private List<IActionTask> tasks = new ArrayList<>();
-    private ItemStack Icon = Items.KNOWLEDGE_BOOK.getDefaultInstance();
+    private ItemStackTemplate icon = new ItemStackTemplate(
+        Items.KNOWLEDGE_BOOK,
+        1
+    );
 
     public InputConstants.Key keybind = null;
 
@@ -62,12 +66,12 @@ public class ActionButton {
         return this;
     }
 
-    public ItemStack getIcon() {
-        return Icon;
+    public ItemStackTemplate getIcon() {
+        return icon;
     }
 
-    public ActionButton setIcon(ItemStack icon) {
-        Icon = icon;
+    public ActionButton setIcon(ItemStackTemplate icon) {
+        this.icon = icon;
         return this;
     }
 
@@ -114,7 +118,7 @@ public class ActionButton {
             Minecraft client = Minecraft.getInstance();
 
             if (client != null && client.player != null) {
-                client.player.displayClientMessage(Component.nullToEmpty("Ran action \"" + name + "\""), true);
+                client.player.sendOverlayMessage(Component.nullToEmpty("Ran action \"" + name + "\""));
             }
         }
 

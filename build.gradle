@@ -1,5 +1,6 @@
+// TODO: <https://fabricmc.net/2026/03/14/261.html>
 plugins {
-	id "fabric-loom" version "${loom_version}"
+	id "net.fabricmc.fabric-loom" version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -28,14 +29,16 @@ repositories {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+//    mappings loom.officialMojangMappings()
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+//    implementation fabricApi.module("fabric-key-binding-api-v1", project.fabric_version)
 
 	// lib-guid
-    modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
+    implementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
 
 	// gson
 	implementation 'com.google.code.gson:gson:2.8.9'
@@ -55,7 +58,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
@@ -64,8 +67,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
