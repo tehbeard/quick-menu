@@ -29,6 +29,7 @@ public class MoveEntry extends ActionEntry {
      */
     public MoveEntry(ActionButton data, BiConsumer<MouseButtonEvent, Boolean> onClick) {
         super(data, onClick);
+        hideTooltip();
     }
 
     boolean isLeft;

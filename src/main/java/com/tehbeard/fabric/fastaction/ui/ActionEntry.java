@@ -25,6 +25,8 @@ public class ActionEntry extends WWidget {
 
     protected final BiConsumer<MouseButtonEvent,Boolean> onClick;
 
+    private boolean hideTooltip = false;
+
     public ActionEntry(ActionButton data, BiConsumer<MouseButtonEvent,Boolean> onClick) {
         height = 26;
         width = 26;
@@ -35,6 +37,12 @@ public class ActionEntry extends WWidget {
     @Override
     public boolean canFocus() {
         return true;
+    }
+
+    public ActionEntry hideTooltip()
+    {
+        hideTooltip = true;
+        return this;
     }
 
     @Override

@@ -16,6 +16,23 @@ public class DeletePanel extends AbstractActionGui {
             "Delete Mode",
             (panel,data) -> new ActionEntry(data, (click, dbl) -> {
 
+                MinedeckScreen.pushCurrent(
+                    new ConfirmDeleteDialog(data, didDelete -> {
+                        MinedeckScreen.popCurrent();
+                        if(didDelete)
+                        {
+                            ActionConfig.getConfig().getDefaultTab().getButtons()
+                                .remove(data);
+                            panel.updateItems();
+                            try {
+                                ActionConfig.getConfig().save(FastAction.getConfigFile());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            panel.updateItems();
+                        }
+                    })
+                );
 //                Minecraft.getInstance().setScreen(
 //                    new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
 //                        try {
