@@ -53,7 +53,7 @@ public class ActionEntry extends WWidget {
             if (kb != null) {
                 tooltip.add(Component.literal("Trigger: ").append(kb.getDisplayName()));
             }
-            if(ActionConfig.getConfig().isActionsInTooltip()) {
+            if(ActionConfig.getConfig().isActionsInTooltip() && !hideTooltip) {
                 data.getTasks().forEach(a -> tooltip.add(a.description()));
             }
         } else {
