@@ -14,7 +14,7 @@ public class MainPanel extends AbstractActionGui {
     public MainPanel() {
         super(
             "Fast Actions",
-            data -> new ActionEntry(data, (click, dbl) -> {
+            (panel, data) -> new ActionEntry(data, (click, dbl) -> {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
                         Minecraft.getInstance().setScreen(null);
                     }
