@@ -14,7 +14,7 @@ public class EditPanel extends AbstractActionGui {
     public EditPanel() {
         super(
             "Edit Mode",
-            data -> new ActionEntry(data, (click, dbl) -> {
+            (panel,data) -> new ActionEntry(data, (click, dbl) -> {
                 Minecraft.getInstance().setScreen(
                     new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
                         try {
@@ -31,11 +31,11 @@ public class EditPanel extends AbstractActionGui {
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Exit Edit Mode")),
                 new TextButton("🗑", (click, dbl) -> {
-//                    MinecraftClient.getInstance().setScreen(new MinedeckScreen(new MainPanel()));
+                    Minecraft.getInstance().setScreen(new MinedeckScreen(new DeletePanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Delete Actions")),
                 new TextButton("🔁", (click, dbl) -> {
-//                    MinecraftClient.getInstance().setScreen(new MinedeckScreen(new MainPanel()));
+                    Minecraft.getInstance().setScreen(new MinedeckScreen(new MovePanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Move Actions"))
             ),

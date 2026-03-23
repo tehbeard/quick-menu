@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.util.TriState;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -20,11 +21,14 @@ import java.util.function.Function;
  */
 public abstract class AbstractActionGui extends LightweightGuiDescription {
 
-    private Function<ActionButton, WWidget> btnMaker;
+    private BiFunction<AbstractActionGui,ActionButton, WWidget> btnMaker;
     private List<WWidget> additionalActions;
+
+    private WGridPanel scrollPanelContents;
+
     public AbstractActionGui(
         String heading,
-        Function<ActionButton, WWidget> btnMaker,
+        BiFunction<AbstractActionGui,ActionButton, WWidget> btnMaker,
         List<WWidget> headingButtons,
         List<WWidget> additionalActions
     ) {
@@ -51,10 +55,10 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
 //
 //        root.add(rotateButton, 8, 3);
 
-        WGridPanel scrollPanelContents = new WGridPanel(26);
+        scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4, 2);
 
-        updateItems(scrollPanelContents);
+        updateItems();
 
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
@@ -65,21 +69,21 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
         root.validate(this);
     }
 
-    protected void updateItems(WGridPanel panel) {
-        var currentItems = panel.streamChildren().toList();
+    public void updateItems() {
+        var currentItems = scrollPanelContents.streamChildren().toList();
         for (WWidget currentItem : currentItems) {
-            panel.remove(currentItem);
+            scrollPanelContents.remove(currentItem);
         }
-        panel.setSize(4, 4);
+        scrollPanelContents.setSize(4, 4);
         var perRow = ActionConfig.getConfig().getSize().getRowSize();
         int posX = 0;
         int posY = 0;
 
 
         for (ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons()) {
-            var actionWidget = this.btnMaker.apply(data);
+            var actionWidget = this.btnMaker.apply(this,data);
 
-            panel.add(actionWidget, posX, posY, 1, 1);
+            scrollPanelContents.add(actionWidget, posX, posY, 1, 1);
             posX++;
             if (posX == perRow) {
                 posX = 0;
@@ -89,7 +93,7 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
         ;
         for( var addButton: additionalActions)
         {
-            panel.add(addButton, posX, posY, 1, 1);
+            scrollPanelContents.add(addButton, posX, posY, 1, 1);
             posX++;
             if (posX == perRow) {
                 posX = 0;
@@ -97,33 +101,8 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
             }
         }
 
-//        if (isEditMode) {
-//            ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
-//                var newData = new ActionButton().setName("");
-//                ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
-//                MinecraftClient.getInstance().setScreen(new MinedeckScreen(new ButtonEditor(
-//                    newData
-//                )).onRemoved(() -> {
-//                    try {
-//                        ActionConfig.getConfig().save(QuickMenu.getConfigFile());
-//                    } catch (IOException e) {
-//                        QuickMenu.LOGGER.error(e.toString());
-//                    }
-//                }));
-//            });
-//            panel.add(actionWidget, posX, posY, 1, 1);
-//            posX++;
-//            if (posX == perRow) // TODO - Pull value from config
-//            {
-//                posX = 0;
-//                posY++;
-//            }
-//            ConfigEntry configWidget = new ConfigEntry();
-//            panel.add(configWidget, posX, posY, 1, 1);
-//        }
-
-        panel.validate(this);
-        Optional.ofNullable(panel.getParent()).ifPresent(WPanel::layout);
+        scrollPanelContents.validate(this);
+        Optional.ofNullable(scrollPanelContents.getParent()).ifPresent(WPanel::layout);
     }
 
     @Override
