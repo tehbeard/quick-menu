@@ -24,7 +24,7 @@ public class MainGui extends LightweightGuiDescription {
         this.isEditMode = isEditMode;
         setUseDefaultRootBackground(false);
         PanelWithHeader root = new PanelWithHeader(
-            "Fast Actions",
+            "Quick Menu",
             ActionConfig.getConfig().getSize().getWidth(),
             ActionConfig.getConfig().getSize().getHeight(),
             false);

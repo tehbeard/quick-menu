@@ -20,7 +20,6 @@ import net.minecraft.sounds.SoundEvents;
 
 public class ConfigEntry extends WWidget {
 
-//    public static final Identifier TEXTURE_BUTTON = Identifier.of("fastactions", "textures/switcher_buttons.png");
     public static final Identifier TEXTURE_BUTTON = Identifier.fromNamespaceAndPath("fastactions", "textures/btn_normal.png");
     public static final Identifier TEXTURE_BUTTON_HOVER = Identifier.fromNamespaceAndPath("fastactions", "textures/btn_hover.png");
 
