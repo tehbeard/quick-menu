@@ -221,7 +221,7 @@ public class ActionConfig {
 
         var btn = new ActionButton();
         btn.setName("Open Vanilla Quick Actions");
-        btn.setIcon(ItemStackTemplate.fromNonEmptyStack(Items.KNOWLEDGE_BOOK.getDefaultInstance()));
+        btn.setIcon(new ItemStackTemplate(Items.KNOWLEDGE_BOOK));
         tab.getButtons().add(btn);
 
         btn.getTasks().add(

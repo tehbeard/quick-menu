@@ -14,7 +14,8 @@ import net.minecraft.client.input.KeyEvent;
 
 public class MinedeckScreen extends CottonClientScreen {
 
-    protected Stack<GuiDescription> overlay = new Stack<>();
+
+    protected static Stack<MinedeckScreen> priorScreens = new Stack<>();
 
     protected Runnable onRemove;
 
@@ -30,36 +31,25 @@ public class MinedeckScreen extends CottonClientScreen {
     @Override
     public void removed() {
         super.removed();
-        if (this.onRemove != null) {
-            this.onRemove.run();
-        }
     }
 
     public static void pushCurrent(GuiDescription description) {
         if (Minecraft.getInstance().screen instanceof MinedeckScreen s) {
-            s.push(description);
+            priorScreens.push(s);
+            Minecraft.getInstance().setScreen(new MinedeckScreen(description));
+//            s.push(description);
         }
     }
 
     public static void popCurrent() {
         if (Minecraft.getInstance().screen instanceof MinedeckScreen s) {
-            s.pop();
+            if (s.onRemove != null) {
+                s.onRemove.run();
+            }
+            if(!priorScreens.isEmpty()) {
+                Minecraft.getInstance().setScreen(priorScreens.pop());
+            }
         }
-    }
-
-    public MinedeckScreen push(GuiDescription description) {
-        this.overlay.push(this.description);
-        this.description = description;
-        this.reposition(width, height);
-        return this;
-    }
-
-    public MinedeckScreen pop() {
-        if (!this.overlay.isEmpty()) {
-            this.description = this.overlay.pop();
-            this.reposition(width, height);
-        }
-        return this;
     }
 
 
@@ -83,8 +73,11 @@ public class MinedeckScreen extends CottonClientScreen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
-        overlay.forEach(
-            entry -> {
+
+
+        priorScreens.forEach(
+            screen -> {
+                var entry = screen.getDescription();
                 var panel = entry.getRootPanel();
                 // HACK - This uses a hack to position all windows centered, might need to in future cache the left/top values when the stack is made.
                 panel.paint(context, (width / 2) - (panel.getWidth() / 2), (height / 2) - (panel.getHeight() / 2), -1, -1);
@@ -105,9 +98,15 @@ public class MinedeckScreen extends CottonClientScreen {
 
     @Override
     public boolean keyPressed(KeyEvent input) {
-        if (input.isEscape() && !overlay.isEmpty()) {
-            pop();
+        if (input.isEscape() && !priorScreens.isEmpty()) {
+            popCurrent();
             return true;
+        }
+        if(input.isEscape())
+        {
+            if (this.onRemove != null) {
+                this.onRemove.run();
+            }
         }
         return super.keyPressed(input);
     }

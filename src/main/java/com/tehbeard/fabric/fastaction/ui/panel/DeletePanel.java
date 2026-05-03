@@ -33,15 +33,7 @@ public class DeletePanel extends AbstractActionGui {
                         }
                     })
                 );
-//                Minecraft.getInstance().setScreen(
-//                    new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
-//                        try {
-//                            ActionConfig.getConfig().save(FastAction.getConfigFile());
-//                        } catch (IOException e) {
-//                            FastAction.LOGGER.error(e.toString());
-//                        }
-//                    })
-//                );
+
             }),
             List.of(
                 new TextButton("❌", (click, dbl) -> {
