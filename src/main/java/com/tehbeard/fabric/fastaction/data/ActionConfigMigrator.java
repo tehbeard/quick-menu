@@ -38,7 +38,7 @@ public class ActionConfigMigrator {
             btn.getTasks().add(migrateTask(task.getAsJsonArray()));
         });
         btn.setIcon(
-            ItemStackTemplate.fromNonEmptyStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(action.get("icon").getAsString())).getDefaultInstance())
+            new ItemStackTemplate(BuiltInRegistries.ITEM.getValue(Identifier.parse(action.get("icon").getAsString())))
         );
         var kb = action.getAsJsonArray("keybind").asList();
         if(!kb.isEmpty()) {
