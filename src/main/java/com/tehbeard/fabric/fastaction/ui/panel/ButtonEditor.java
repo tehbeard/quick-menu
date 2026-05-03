@@ -12,12 +12,14 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +60,10 @@ public class ButtonEditor extends LightweightGuiDescription {
 
         var currentModel = data.getIcon().get(DataComponents.ITEM_MODEL);
         if(currentModel != null){
-            model.setText(currentModel.toString());
+            var id = BuiltInRegistries.ITEM.getKey(data.getIcon().item().value());
+            if(!id.equals(currentModel)) {
+                model.setText(currentModel.toString());
+            }
         }
 
         final IconEntry iconSelect = new IconEntry(data.getIcon().create(), selector -> {
@@ -78,6 +83,14 @@ public class ButtonEditor extends LightweightGuiDescription {
             {
                 if(!str.isBlank()) {
                     is.set(DataComponents.ITEM_MODEL, Identifier.parse(str));
+                    data.setIcon(
+                        new ItemStackTemplate(
+                            is.getItem(),
+                            DataComponentPatch.builder()
+                                .set(DataComponents.ITEM_MODEL, Identifier.parse(str))
+                                .build()
+                        )
+                    );
                 }else{
                     // HACK - reset stack
                     iconSelect.setIcon(is.getItem().getDefaultInstance());
