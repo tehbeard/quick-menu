@@ -82,7 +82,7 @@ public class ConfigEntry extends WWidget {
     public InputResult onMouseDown(MouseButtonEvent click, boolean doubled) {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         Minecraft.getInstance()
-            .setScreen(
+            .setScreenAndShow(
                 new MinedeckScreen(new ConfigMenu())
                     .onRemoved(() -> {
                         try {

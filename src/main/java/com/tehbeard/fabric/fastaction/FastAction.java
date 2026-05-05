@@ -67,18 +67,18 @@ public class FastAction implements ModInitializer {
                 if (!menuKeyPressed) {
 //                    var mainScreen = new MainScreen(false);
                     var mainScreen = new MinedeckScreen(new MainPanel());
-                    client.setScreen(
+                    client.setScreenAndShow(
                         mainScreen
                     );
                 }
                 menuKeyPressed = true;
-            } else if (client.screen == null) {
+            } else if (client.gui.screen() == null) {
                 menuKeyPressed = false;
             }
 
             // Check for action buttons keybinds.
             // I really dont like this.
-            if (client.screen == null) {
+            if (client.gui.screen() == null) {
                 ActionConfig.getConfig()
                     .getDefaultTab().getButtons()
                         .forEach(ActionButton::handleKeybind);

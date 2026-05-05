@@ -49,7 +49,7 @@ public class PanelTask implements IActionTask {
     @Override
     public long run() {
 //        TODO - Open screen on selected panel.
-        Minecraft.getInstance().setScreen(
+        Minecraft.getInstance().setScreenAndShow(
             new MinedeckScreen(
                 new MainGui(false) // TODO - Pass thru the panel id to use.
             )

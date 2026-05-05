@@ -41,7 +41,7 @@ public class MovePanel extends AbstractActionGui {
             }),
             List.of(
                 new TextButton("❌", (click, dbl) -> {
-                    Minecraft.getInstance().setScreen(new MinedeckScreen(new MainPanel()));
+                    Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(new MainPanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Exit Move Mode"))
             ),
