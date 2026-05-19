@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "fastactions",
   "version": "${version}",
-  "name": "Fast Actions",
+  "name": "Quick Menu",
   "description": "Adds a configurable menu to run commands and keybinds.",
   "authors": [
     {
