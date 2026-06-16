@@ -36,7 +36,7 @@ public class MinedeckScreen extends CottonClientScreen {
     public static void pushCurrent(GuiDescription description) {
         if (Minecraft.getInstance().gui.screen() instanceof MinedeckScreen s) {
             priorScreens.push(s);
-            Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(description));
+            Minecraft.getInstance().gui.setScreen(new MinedeckScreen(description));
 //            s.push(description);
         }
     }
@@ -47,7 +47,7 @@ public class MinedeckScreen extends CottonClientScreen {
                 s.onRemove.run();
             }
             if(!priorScreens.isEmpty()) {
-                Minecraft.getInstance().setScreenAndShow(priorScreens.pop());
+                Minecraft.getInstance().gui.setScreen(priorScreens.pop());
             }
         }
     }

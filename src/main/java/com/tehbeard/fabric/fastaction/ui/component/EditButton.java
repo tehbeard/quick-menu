@@ -9,7 +9,7 @@ public class EditButton extends TextButton {
 
     public EditButton(boolean isEditMode) {
         super(isEditMode? "❌" : "✎", (click, doubled) -> {
-            Minecraft.getInstance().setScreenAndShow(new MainScreen(!isEditMode));
+            Minecraft.getInstance().gui.setScreen(new MainScreen(!isEditMode));
             return InputResult.PROCESSED;
         }, TextButton.staticTooltip("Edit Actions"));
     }

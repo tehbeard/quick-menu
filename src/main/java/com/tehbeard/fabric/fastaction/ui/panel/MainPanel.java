@@ -16,13 +16,13 @@ public class MainPanel extends AbstractActionGui {
             "Quick Menu",
             (panel, data) -> new ActionEntry(data, (click, dbl) -> {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
-                        Minecraft.getInstance().setScreenAndShow(null);
+                        Minecraft.getInstance().gui.setScreen(null);
                     }
                     data.run(false);
             }),
             List.of(
                 new TextButton("✎", (click, dbl) -> {
-                    Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(new EditPanel()));
+                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new EditPanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Edit Actions"))
             ),

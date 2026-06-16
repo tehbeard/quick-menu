@@ -67,9 +67,10 @@ public class FastAction implements ModInitializer {
                 if (!menuKeyPressed) {
 //                    var mainScreen = new MainScreen(false);
                     var mainScreen = new MinedeckScreen(new MainPanel());
-                    client.setScreenAndShow(
-                        mainScreen
-                    );
+                    client.gui.setScreen(mainScreen);
+//                    client.gui.setScreen(
+//                        mainScreen
+//                    );
                 }
                 menuKeyPressed = true;
             } else if (client.gui.screen() == null) {

@@ -37,7 +37,7 @@ public class DeletePanel extends AbstractActionGui {
             }),
             List.of(
                 new TextButton("❌", (click, dbl) -> {
-                    Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(new EditPanel()));
+                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new EditPanel()));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Exit Delete Mode"))
             ),

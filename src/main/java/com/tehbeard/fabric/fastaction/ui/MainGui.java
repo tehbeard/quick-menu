@@ -74,12 +74,12 @@ public class MainGui extends LightweightGuiDescription {
 
                 } else if (!isEditMode) {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
-                        Minecraft.getInstance().setScreenAndShow(null);
+                        Minecraft.getInstance().gui.setScreen(null);
                     }
                     data.run(false);
                 } else {
                     // TODO - Open edit mode
-                    Minecraft.getInstance().setScreenAndShow(
+                    Minecraft.getInstance().gui.setScreen(
                         new MinedeckScreen(new ButtonEditor(data)).onRemoved(() -> {
                             try {
                                 ActionConfig.getConfig().save(FastAction.getConfigFile());
@@ -103,7 +103,7 @@ public class MainGui extends LightweightGuiDescription {
             ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
                 var newData = new ActionButton().setName("");
                 ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
-                Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(new ButtonEditor(
+                Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new ButtonEditor(
                     newData
                 )).onRemoved(() -> {
                     try {

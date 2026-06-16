@@ -70,7 +70,7 @@ public class AddActionEntry extends WWidget {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         var newData = new ActionButton().setName("");
         ActionConfig.getConfig().getDefaultTab().getButtons().add(newData); // TODO - Switch to current tab when multiple tabs added.
-        Minecraft.getInstance().setScreenAndShow(new MinedeckScreen(new ButtonEditor(
+        Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new ButtonEditor(
             newData
         )).onRemoved(() -> {
             try {
