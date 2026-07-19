@@ -1,16 +1,21 @@
- ![banner](https://github.com/ImCodist/quick-menu/assets/50346006/9caa6fb8-4bbd-4aef-bb28-ceb161deeba6)
-![Version](https://img.shields.io/github/v/release/ImCodist/quick-menu?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/ImCodist/quick-menu/total?style=flat-square) [![wakatime](https://wakatime.com/badge/user/66a17a4d-fd33-4271-9faf-2a533d3d618e/project/127da8c1-1e08-48a6-9300-2a81b3b6a805.svg?style=flat-square)](https://wakatime.com/badge/user/66a17a4d-fd33-4271-9faf-2a533d3d618e/project/127da8c1-1e08-48a6-9300-2a81b3b6a805) ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/imcodist/quick-menu/build.yml?style=flat-square)
-![License](https://img.shields.io/github/license/ImCodist/quick-menu?style=flat-square)
+![banner](https://github.com/ImCodist/quick-menu/assets/50346006/9caa6fb8-4bbd-4aef-bb28-ceb161deeba6)
+![Version](https://img.shields.io/github/v/release/tehbeard/quick-menu?style=flat-square) 
+![Downloads](https://img.shields.io/github/downloads/tehbeard/quick-menu/total?style=flat-square)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/tehbeard/quick-menu/build.yml?style=flat-square)
+![License](https://img.shields.io/github/license/tehbeard/quick-menu?style=flat-square)
 
 # quick-menu
-**Quick Menu** is a **client-side** mod for Minecraft that adds a **configurable easy-to-access menu** that runs **basic repetitive commands**.<br>
-It aims to save you time by giving you a place to put all the commands you may need for a given context.
+**Quick Menu** is a **client-side** mod for Minecraft that adds a **configurable easy-to-access menu** that runs **commands, keybinds and other actions**.<br>
+This allows you to:
+- Save a commonly used command such as `/home` to a dedicated button (with optional keybind)
+- Configure more complex chains of commands with delays (e.g. `/lobby` , wait a second , `/skyblock`)
+- Move uncommonly used keybinds for other mods to a menu to allow continued access to them, without cluttering limited keybinds.
 
-The mod requires the [owo-lib](https://github.com/wisp-forest/owo-lib) modding library and [Fabric API](https://modrinth.com/mod/fabric-api).<br>
+The mod uses the [lib-gui](https://github.com/CottonMC/LibGui) GUI library (included in the jar) and [Fabric API](https://modrinth.com/mod/fabric-api).<br>
 
 ## Download
-You can download the **latest version** in the [Releases](https://github.com/ImCodist/quick-menu/releases) of this repo.<br>
-The mod is also avaliable to download on [Modrinth](https://modrinth.com/mod/quick-menu).
+You can download the **latest version** in the [Releases](https://github.com/tehbeard/quick-menu/releases) of this repo.<br>
+Older versions of the mod are also available to download on [Modrinth](https://modrinth.com/mod/quick-menu).
 
 ## Features
 <img src="https://github.com/ImCodist/quick-menu/assets/50346006/e6ce7cf2-43f5-442e-bf90-8d912eb0fa58" alt="In-Game Preview"/>
@@ -34,9 +39,8 @@ In **edit mode** you can:
 - [ ] More action types. (Keys, Menus, Timers)
 - [ ] More customization options. (Different themes, change button size)
 - [ ] Advanced action button options. (Should it close on pressed, run multiple times, toggle on and off)
-- [ ] General clean-up (the code is kinda a mess rn)
 
 ---
 
 License: [GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html)\
-Version Format: [Semetic Versioning](https://semver.org/)
+Version Format: Matched to game version (with `-n` suffix if necessary to denote bugfixes etc.)
