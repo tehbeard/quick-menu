@@ -1,9 +1,6 @@
 package com.tehbeard.fabric.fastaction.ui.panel;
 
-import com.tehbeard.fabric.fastaction.data.action.CommandTask;
-import com.tehbeard.fabric.fastaction.data.action.DelayTask;
-import com.tehbeard.fabric.fastaction.data.action.IActionTask;
-import com.tehbeard.fabric.fastaction.data.action.KeybindTask;
+import com.tehbeard.fabric.fastaction.data.action.*;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -29,7 +26,8 @@ public class ActionPicker extends LightweightGuiDescription {
         List<ActionPickerEntry> list = List.of(
             new ActionPickerEntry("Command", "Runs a chat command", () -> { newAction.accept(new CommandTask("")); }),
             new ActionPickerEntry("Keybind", "Activates a keybind", () -> { newAction.accept(new KeybindTask("")); }),
-            new ActionPickerEntry("Delay", "Adds a delay between tasks", () -> { newAction.accept(new DelayTask(20)); })
+            new ActionPickerEntry("Delay", "Adds a delay between tasks", () -> { newAction.accept(new DelayTask(20)); }),
+            new ActionPickerEntry("URL", "Opens a URL in your default browser", () -> { newAction.accept(new UrlTask("https://minecraft.wiki")); })
         );
 
         var listPanel = new WListPanel<>(list, WButton::new, (ActionPickerEntry action, WButton button) -> {
