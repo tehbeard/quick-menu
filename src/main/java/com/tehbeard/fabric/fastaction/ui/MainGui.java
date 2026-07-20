@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.fastaction.ui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
 import com.tehbeard.fabric.fastaction.ui.component.EditButton;
@@ -10,7 +11,6 @@ import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.*;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.glfw.GLFW;
 import com.tehbeard.fabric.fastaction.FastAction;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class MainGui extends LightweightGuiDescription {
 
         for (ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons()) {
             ActionEntry actionWidget = new ActionEntry(data, (click, dbl) -> {
-                if (click.button() == GLFW.GLFW_MOUSE_BUTTON_2 && isEditMode) {
+                if (click.button() == InputConstants.MOUSE_BUTTON_RIGHT && isEditMode) {
                     ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
                     try {
                         ActionConfig.getConfig().save(FastAction.getConfigFile());

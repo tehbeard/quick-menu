@@ -5,15 +5,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tehbeard.fabric.fastaction.data.action.IActionTask;
 import net.minecraft.world.item.ItemStackTemplate;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.lwjgl.sdl.SDLMouse;
 
 public class ActionButton {
 
@@ -91,8 +90,8 @@ public class ActionButton {
 //
         var client = Minecraft.getInstance();
         var handle = client.getWindow();
-        if (this.keybind.getType() == InputConstants.Type.KEYSYM) {
-            if (InputConstants.isKeyDown(handle, keybind.getValue())) {
+        if (this.keybind.getType() == InputConstants.Type.KEYBOARD) {
+            if (InputConstants.isKeyDown(keybind.getValue())) {
                 if (!alreadyPressed) {
                     alreadyPressed = true;
                     run(true);
@@ -101,7 +100,8 @@ public class ActionButton {
                 alreadyPressed = false;
             }
         } else if (this.keybind.getType() == InputConstants.Type.MOUSE) {
-            if(GLFW.glfwGetMouseButton(client.getWindow().handle(), this.getKeybind().getValue()) == GLFW.GLFW_PRESS)
+            var state = SDLMouse.nSDL_GetMouseState(0, 0);
+            if( (state & this.getKeybind().getValue()) != 0 )
             {
                 if (!alreadyPressed) {
                     alreadyPressed = true;

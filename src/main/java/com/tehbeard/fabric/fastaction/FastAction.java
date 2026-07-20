@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.imcodist.quickmenu.other.*;
@@ -51,8 +50,8 @@ public class FastAction implements ModInitializer {
 
         menuOpenKeybinding = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.fastaction.open",
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_G,
+            InputConstants.Type.KEYBOARD,
+            InputConstants.KEY_G,
             KeyMapping.Category.register(Identifier.parse("fastaction:all"))
         ));
 

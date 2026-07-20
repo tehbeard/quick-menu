@@ -7,7 +7,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.tehbeard.fabric.fastaction.FastAction;
 
@@ -45,16 +44,17 @@ public class KeybindSelectButton extends WButton {
         logger.info("Key pressed!");
         if(isDetecting)
         {
-            int keyCode = input.key();
-            int scanCode = input.scancode();
+            int key = input.key();
+            int keyCode = input.keycode();
             int modifiers = input.modifiers();
-
-            if (keyCode != GLFW.GLFW_KEY_ESCAPE) {
+            //
+            if (key != InputConstants.KEY_ESCAPE) {
 
                 data.setKeybind(
                     InputConstants.getKey(new KeyEvent(
+                        key,
                         keyCode,
-                        scanCode, modifiers)
+                        modifiers)
                     )
                 );
             } else {
