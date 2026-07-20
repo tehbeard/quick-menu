@@ -24,6 +24,11 @@ repositories {
         name = "AlexIIL"
         url = "https://staging.alexiil.uk/maven/"
     }
+
+    maven {
+        name = "forgejo"
+        url = "https://forgejo.local.tehbeard.com/api/packages/tehbeard/maven/"
+    }
 }
 
 dependencies {
