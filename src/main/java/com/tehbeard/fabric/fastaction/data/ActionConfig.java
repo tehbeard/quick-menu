@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import xyz.imcodist.quickmenu.mixins.MinecraftServerAccessor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -123,7 +126,29 @@ public class ActionConfig {
     }
 
     public Identifier getDefaultTabId() {
+        if(currentWorld != null){
+            return getDefaultTabs().getOrDefault(currentWorld, defaultTab);
+        }
         return defaultTab;
+    }
+
+    private String currentWorld = null;
+    public void setCurrentWorldId()
+    {
+        if(Minecraft.getInstance().getSingleplayerServer() != null)
+        {
+//            return Minecraft.getInstance().getSingleplayerServer().getWorldData().getLevelSettings().levelName();
+            currentWorld = "sp-" + ((MinecraftServerAccessor)Minecraft.getInstance().getSingleplayerServer()).getStorageSource().getLevelId();
+        } else {
+            currentWorld = "mp-" + Minecraft.getInstance().getCurrentServer().ip;
+        }
+
+        FastAction.LOGGER.info("CURRENT LEVEL: " + currentWorld);
+    }
+
+    public void clearCurrentWorld()
+    {
+        currentWorld = null;
     }
 
     public ActionTab getDefaultTab()

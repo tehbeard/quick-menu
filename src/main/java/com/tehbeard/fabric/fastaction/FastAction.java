@@ -10,6 +10,7 @@ import com.tehbeard.fabric.fastaction.ui.panel.MainPanel;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
@@ -55,6 +56,9 @@ public class FastAction implements ModInitializer {
             KeyMapping.Category.register(Identifier.parse("fastaction:all"))
         ));
 
+        ClientPlayConnectionEvents.JOIN.register((listener, sender, client) -> {
+            ActionConfig.getConfig().setCurrentWorldId();
+        });
 //        ClientTickEvents.START_CLIENT_TICK.register(ActionButtonDelayHandler.INSTANCE);
         // On the end of each tick check to see if a keybind has been pressed.
         ClientTickEvents.END_CLIENT_TICK.register((client) -> {

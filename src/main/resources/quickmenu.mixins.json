@@ -3,7 +3,8 @@
 	"package": "xyz.imcodist.quickmenu.mixins",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-      "KeyBindingMixin"
+      "KeyBindingMixin",
+      "MinecraftServerAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
