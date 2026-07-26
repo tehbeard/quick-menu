@@ -38,7 +38,7 @@ public class ActionConfig {
                 Codec.STRING,
                 Identifier.CODEC
             ).fieldOf("defaultTabs").forGetter(ActionConfig::getDefaultTabs),
-            Identifier.CODEC.fieldOf("defaultTab").forGetter(ActionConfig::getDefaultTabId),
+            Identifier.CODEC.fieldOf("defaultTab").forGetter(ActionConfig::getContextualDefaultTabId),
             Codec.STRING.xmap(Size::valueOf, Enum::name).fieldOf("size").forGetter(ActionConfig::getSize)
         ).apply(inst, (
             tabs,
@@ -49,7 +49,7 @@ public class ActionConfig {
             var cfg = new ActionConfig();
             cfg.setTabs(tabs);
             cfg.setDefaultTabs(defaultTabs);
-            cfg.setDefaultTab(defaultTab);
+            cfg.setFallbackTab(defaultTab);
             cfg.setSize(size);
             return cfg;
         }));
@@ -125,7 +125,17 @@ public class ActionConfig {
         this.defaultTabs = defaultTabs;
     }
 
-    public Identifier getDefaultTabId() {
+    /**
+     * @return the default tab id fallback
+     */
+    public Identifier getFallbackTabId() {
+        return defaultTab;
+    }
+
+    /**
+     * @return the tab id associated with the current context (world / server), or the fallback tab id if none found
+     */
+    public Identifier getContextualDefaultTabId() {
         if(currentWorld != null){
             return getDefaultTabs().getOrDefault(currentWorld, defaultTab);
         }
@@ -151,14 +161,25 @@ public class ActionConfig {
         currentWorld = null;
     }
 
-    public ActionTab getDefaultTab()
+    /**
+     *
+     * @return the current action tab associated with this world/server, or the fallback default one.
+     */
+    public ActionTab getContextualDefaultTab()
     {
-        return this.tabs.stream().filter( t -> t.getId().equals(getDefaultTabId())).findFirst().orElseThrow();
+        return this.tabs.stream().filter( t -> t.getId().equals(getContextualDefaultTabId())).findFirst().orElseThrow();
     }
 
-    public void setDefaultTab(Identifier defaultTab) {
+    public void setFallbackTab(Identifier defaultTab) {
         this.defaultTab = defaultTab;
     }
+
+    public void setContextualDefaultTab(Identifier defaultTab)
+    {
+        this.defaultTabs.put(currentWorld, defaultTab);
+    }
+
+
 
     public Size getSize() {
         return size;

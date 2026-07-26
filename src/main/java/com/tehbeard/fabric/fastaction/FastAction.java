@@ -84,7 +84,7 @@ public class FastAction implements ModInitializer {
             // I really dont like this.
             if (client.gui.screen() == null) {
                 ActionConfig.getConfig()
-                    .getDefaultTab().getButtons()
+                    .getContextualDefaultTab().getButtons()
                         .forEach(ActionButton::handleKeybind);
             }
 

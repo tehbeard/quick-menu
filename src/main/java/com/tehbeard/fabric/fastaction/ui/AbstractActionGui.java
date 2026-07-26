@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.util.TriState;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Represents an action panel.
@@ -80,7 +79,7 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
         int posY = 0;
 
 
-        for (ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons()) {
+        for (ActionButton data : ActionConfig.getConfig().getContextualDefaultTab().getButtons()) {
             var actionWidget = this.btnMaker.apply(this,data);
 
             scrollPanelContents.add(actionWidget, posX, posY, 1, 1);

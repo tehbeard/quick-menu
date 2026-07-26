@@ -61,10 +61,10 @@ public class MainGui extends LightweightGuiDescription {
         int posY = 0;
 
 
-        for (ActionButton data : ActionConfig.getConfig().getDefaultTab().getButtons()) {
+        for (ActionButton data : ActionConfig.getConfig().getContextualDefaultTab().getButtons()) {
             ActionEntry actionWidget = new ActionEntry(data, (click, dbl) -> {
                 if (click.button() == InputConstants.MOUSE_BUTTON_RIGHT && isEditMode) {
-                    ActionConfig.getConfig().getDefaultTab().getButtons().remove(data);
+                    ActionConfig.getConfig().getContextualDefaultTab().getButtons().remove(data);
                     try {
                         ActionConfig.getConfig().save(FastAction.getConfigFile());
                         updateItems(panel);
@@ -102,7 +102,7 @@ public class MainGui extends LightweightGuiDescription {
         if (isEditMode) {
             ActionEntry actionWidget = new ActionEntry(null, (click, dbl) -> {
                 var newData = new ActionButton().setName("");
-                ActionConfig.getConfig().getDefaultTab().getButtons().add(newData);
+                ActionConfig.getConfig().getContextualDefaultTab().getButtons().add(newData);
                 Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new ButtonEditor(
                     newData
                 )).onRemoved(() -> {

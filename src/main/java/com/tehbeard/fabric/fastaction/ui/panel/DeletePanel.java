@@ -21,7 +21,7 @@ public class DeletePanel extends AbstractActionGui {
                         MinedeckScreen.popCurrent();
                         if(didDelete)
                         {
-                            ActionConfig.getConfig().getDefaultTab().getButtons()
+                            ActionConfig.getConfig().getContextualDefaultTab().getButtons()
                                 .remove(data);
                             panel.updateItems();
                             try {

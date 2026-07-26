@@ -26,6 +26,12 @@ public class EditPanel extends AbstractActionGui {
                 );
             }),
             List.of(
+                new TextButton("⧉", (click, dbl) -> {
+                    MinedeckScreen.pushCurrent(new DuplicatePanelDialog( clicked -> {
+                        MinedeckScreen.popCurrent();
+                    }));
+                    return InputResult.PROCESSED;
+                }, TextButton.staticTooltip("Duplicate panel")),
                 new TextButton("❌", (click, dbl) -> {
                     Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new MainPanel()));
                     return InputResult.PROCESSED;
