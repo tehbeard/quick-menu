@@ -1,6 +1,7 @@
 package com.tehbeard.fabric.fastaction.ui.panel;
 
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.ui.component.OpenPanelsButton;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import com.tehbeard.fabric.fastaction.ui.component.WPixelPanel;
 import com.tehbeard.fabric.fastaction.ui.component.WSelectButton;
@@ -43,6 +44,7 @@ public class ConfigMenu extends LightweightGuiDescription {
             tglActions
         );
 
+
         // Close menu on action
         var tglClose = new WToggleButton();
         tglClose.setToggle(ActionConfig.getConfig().isCloseOnAction());
@@ -51,6 +53,11 @@ public class ConfigMenu extends LightweightGuiDescription {
             40, "Close menu on action",
             tglClose
         );
+
+        var btnPanels = new OpenPanelsButton();
+        addRow(scrollPanelContents, 60, "", btnPanels);
+        btnPanels.setSize(100, 18);
+
 
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
