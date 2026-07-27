@@ -234,8 +234,14 @@ public class ButtonEditor extends LightweightGuiDescription {
             {
                 var btn = new WButton(p.description());
                 btn.setOnClick(() -> {
-                    p.setTarget(ActionConfig.DEFAULT_TAB);
-                    // TODO - Open panel to select a tab
+                    MinedeckScreen.pushCurrent(
+                        new PanelPicker(t -> {
+                            p.setTarget(t);
+                            btn.setLabel(p.description());
+                            MinedeckScreen.popCurrent();
+                        })
+                    );
+
                 });
                 config = btn;
             } if(task instanceof UrlTask c) {

@@ -2,6 +2,7 @@ package com.tehbeard.fabric.fastaction.ui;
 
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.data.ActionTab;
 import com.tehbeard.fabric.fastaction.ui.panel.ButtonEditor;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
@@ -25,10 +26,12 @@ public class AddActionEntry extends WWidget {
     public static final Identifier TEXTURE_ADD_BUTTON_HOVER = Identifier.fromNamespaceAndPath("fastactions", "textures/btn_plus_hover.png");
 
 
+    private ActionTab currentTab;
     /**
      * TODO: Refactor to accept a left click and right click function.
      */
-    public AddActionEntry() {
+    public AddActionEntry(ActionTab currentTab) {
+        this.currentTab = currentTab;
         height = 26;
         width = 26;
     }
@@ -69,7 +72,7 @@ public class AddActionEntry extends WWidget {
     public InputResult onMouseDown(MouseButtonEvent click, boolean doubled) {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         var newData = new ActionButton().setName("");
-        ActionConfig.getConfig().getContextualDefaultTab().getButtons().add(newData); // TODO - Switch to current tab when multiple tabs added.
+        this.currentTab.getButtons().add(newData);
         Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new ButtonEditor(
             newData
         )).onRemoved(() -> {

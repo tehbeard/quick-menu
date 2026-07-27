@@ -2,6 +2,7 @@ package com.tehbeard.fabric.fastaction.ui;
 
 import com.tehbeard.fabric.fastaction.data.ActionButton;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.data.ActionTab;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
@@ -25,12 +26,16 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
 
     private WGridPanel scrollPanelContents;
 
+    private final ActionTab currentTab;
+
     public AbstractActionGui(
         String heading,
+        ActionTab currentTab,
         BiFunction<AbstractActionGui,ActionButton, WWidget> btnMaker,
         List<WWidget> headingButtons,
         List<WWidget> additionalActions
     ) {
+        this.currentTab = currentTab;
         this.btnMaker = btnMaker;
         this.additionalActions = additionalActions;
 
@@ -47,12 +52,6 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
             root.add(btn, root.getWidth() - offset, 8);
             offset += btn.getWidth() + 2;
         }
-
-
-//        var rotateButton = new TextButton("\uD83D\uDD04 ↕🗑", (click, doubleClick) -> InputResult.PROCESSED);
-//        rotateButton.setVerticalAlignment(VerticalAlignment.CENTER);
-//
-//        root.add(rotateButton, 8, 3);
 
         scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4, 2);
@@ -79,7 +78,7 @@ public abstract class AbstractActionGui extends LightweightGuiDescription {
         int posY = 0;
 
 
-        for (ActionButton data : ActionConfig.getConfig().getContextualDefaultTab().getButtons()) {
+        for (ActionButton data : currentTab.getButtons()) {
             var actionWidget = this.btnMaker.apply(this,data);
 
             scrollPanelContents.add(actionWidget, posX, posY, 1, 1);

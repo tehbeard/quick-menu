@@ -2,13 +2,11 @@ package com.tehbeard.fabric.fastaction.data.action;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.tehbeard.fabric.fastaction.ui.MainGui;
+import com.tehbeard.fabric.fastaction.data.ActionConfig;
 import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
-import net.minecraft.ChatFormatting;
+import com.tehbeard.fabric.fastaction.ui.panel.MainPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
 
 public class PanelTask implements IActionTask {
@@ -43,7 +41,7 @@ public class PanelTask implements IActionTask {
 
     @Override
     public Component description() {
-        return Component.literal("Panel: %s".formatted("[TODO IMPLEMENT]")).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.DARK_GRAY)));
+        return Component.literal("Panel: %s".formatted(ActionConfig.getConfig().getTabs().stream().filter(tab -> tab.getId().equals(target)).findFirst().get().getName() ));
     }
 
     @Override
@@ -51,7 +49,12 @@ public class PanelTask implements IActionTask {
 //        TODO - Open screen on selected panel.
         Minecraft.getInstance().gui.setScreen(
             new MinedeckScreen(
-                new MainGui(false) // TODO - Pass thru the panel id to use.
+                new MainPanel(
+                    ActionConfig.getConfig().getTabs()
+                        .stream().filter( t -> t.getId().equals(target))
+                        .findFirst()
+                        .orElseGet(() -> ActionConfig.getConfig().getContextualDefaultTab())
+                )
             )
         );
         return 0;

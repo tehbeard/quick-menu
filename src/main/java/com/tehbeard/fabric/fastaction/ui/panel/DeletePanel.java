@@ -2,6 +2,7 @@ package com.tehbeard.fabric.fastaction.ui.panel;
 
 import com.tehbeard.fabric.fastaction.FastAction;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.data.ActionTab;
 import com.tehbeard.fabric.fastaction.ui.*;
 import com.tehbeard.fabric.fastaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
@@ -11,9 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class DeletePanel extends AbstractActionGui {
-    public DeletePanel() {
+    public DeletePanel(ActionTab currentTab) {
         super(
             "Delete Mode",
+            currentTab,
             (panel,data) -> new ActionEntry(data, (click, dbl) -> {
 
                 MinedeckScreen.pushCurrent(
@@ -21,7 +23,7 @@ public class DeletePanel extends AbstractActionGui {
                         MinedeckScreen.popCurrent();
                         if(didDelete)
                         {
-                            ActionConfig.getConfig().getContextualDefaultTab().getButtons()
+                            currentTab.getButtons()
                                 .remove(data);
                             panel.updateItems();
                             try {
@@ -37,7 +39,7 @@ public class DeletePanel extends AbstractActionGui {
             }),
             List.of(
                 new TextButton("❌", (click, dbl) -> {
-                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new EditPanel()));
+                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new EditPanel(currentTab)));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Exit Delete Mode"))
             ),

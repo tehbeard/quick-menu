@@ -2,6 +2,7 @@ package com.tehbeard.fabric.fastaction.ui.panel;
 
 import com.tehbeard.fabric.fastaction.FastAction;
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
+import com.tehbeard.fabric.fastaction.data.ActionTab;
 import com.tehbeard.fabric.fastaction.ui.*;
 import com.tehbeard.fabric.fastaction.ui.component.TextButton;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
@@ -11,12 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class MovePanel extends AbstractActionGui {
-    public MovePanel() {
+    public MovePanel(ActionTab currentTab) {
         super(
             "Move Mode",
+            currentTab,
             (panel,data) -> new MoveEntry(data, (click, isLeft) -> {
                 // TODO: Move the data entry one to the left (-1 idx) if true, or right (+1 idx)
-                var btns = ActionConfig.getConfig().getContextualDefaultTab().getButtons();
+                var btns = currentTab.getButtons();
                 var currentIdx = btns.indexOf(data);
                 if(currentIdx == -1)
                 {
@@ -41,7 +43,7 @@ public class MovePanel extends AbstractActionGui {
             }),
             List.of(
                 new TextButton("❌", (click, dbl) -> {
-                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new MainPanel()));
+                    Minecraft.getInstance().gui.setScreen(new MinedeckScreen(new MainPanel(currentTab)));
                     return InputResult.PROCESSED;
                 }, TextButton.staticTooltip("Exit Move Mode"))
             ),

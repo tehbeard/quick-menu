@@ -1,7 +1,5 @@
 package com.tehbeard.fabric.fastaction.ui.panel;
 
-import com.tehbeard.fabric.fastaction.data.ActionButton;
-import com.tehbeard.fabric.fastaction.ui.ActionEntry;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
@@ -17,15 +15,20 @@ import java.util.function.Consumer;
  * TODO: Implement search filtering
  * TODO: Sort label alignment.
  */
-public class DuplicatePanelDialog extends LightweightGuiDescription {
+public class PanelNameDialog extends LightweightGuiDescription {
 
 
-    public DuplicatePanelDialog(Consumer<Optional<String>> onClick) {
+    public PanelNameDialog(String heading, String initialName, Consumer<Optional<String>> onClick) {
         setUseDefaultRootBackground(false);
-        PanelWithHeader root = new PanelWithHeader("Duplicate Panel", 160, 86, true);
+        PanelWithHeader root = new PanelWithHeader(heading, 160, 86, true);
         setRootPanel(root);
 
         var panelName = new WTextField(Component.literal("Name"));
+
+        if(initialName != null)
+        {
+            panelName.setText(initialName);
+        }
         panelName.setMaxLength(256);
 
         panelName.setSize(150, 18);
