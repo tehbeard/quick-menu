@@ -1,4 +1,3 @@
-// TODO: <https://fabricmc.net/2026/03/14/261.html>
 plugins {
 	id "net.fabricmc.fabric-loom" version "${loom_version}"
 	id 'maven-publish'

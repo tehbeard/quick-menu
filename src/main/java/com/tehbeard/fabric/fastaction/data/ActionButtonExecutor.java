@@ -3,9 +3,6 @@ package com.tehbeard.fabric.fastaction.data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO: Handles execution of delayed tasks
- */
 public class ActionButtonExecutor {
 
     private static final ActionButtonExecutor instance = new ActionButtonExecutor();

@@ -87,7 +87,6 @@ public class ConfigEntry extends WWidget {
                     .onRemoved(() -> {
                         try {
                             ActionConfig.getConfig().save(FastAction.getConfigFile());
-                            // TODO - Switch back to menu screen, can't do so direct from here though.
                         } catch (IOException e) {
                             FastAction.LOGGER.error(e.toString());
                         }

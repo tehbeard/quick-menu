@@ -17,7 +17,6 @@ public class MovePanel extends AbstractActionGui {
             "Move Mode",
             currentTab,
             (panel,data) -> new MoveEntry(data, (click, isLeft) -> {
-                // TODO: Move the data entry one to the left (-1 idx) if true, or right (+1 idx)
                 var btns = currentTab.getButtons();
                 var currentIdx = btns.indexOf(data);
                 if(currentIdx == -1)

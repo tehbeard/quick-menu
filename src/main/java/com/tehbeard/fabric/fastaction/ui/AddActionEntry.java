@@ -27,9 +27,7 @@ public class AddActionEntry extends WWidget {
 
 
     private ActionTab currentTab;
-    /**
-     * TODO: Refactor to accept a left click and right click function.
-     */
+
     public AddActionEntry(ActionTab currentTab) {
         this.currentTab = currentTab;
         height = 26;

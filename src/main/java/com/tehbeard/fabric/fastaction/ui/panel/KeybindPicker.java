@@ -18,17 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-/**
- * TODO: Redo as a list, try to figure an approach for category vs. keybind split
- * TODO: Implement search filtering
- * TODO: Sort label alignment.
- */
 public class KeybindPicker extends LightweightGuiDescription {
 
     private static final int ELEMENT_SIZE = 20;
 
-    private Consumer<String> onSelect;
-    // TODO - Passthru a handler for when a keybind is selected.
     public KeybindPicker(Consumer<String> onSelect) {
         setUseDefaultRootBackground(false);
         PanelWithHeader root = new PanelWithHeader("Select a keybind", 274, 142, true);
@@ -47,7 +40,7 @@ public class KeybindPicker extends LightweightGuiDescription {
         {
             Map<String, ArrayList<KeyMapping>> sortedKeybindings = new HashMap<>();
             for (KeyMapping keyBinding : keyBindings) {
-                String category = keyBinding.getCategory().id().toLanguageKey("key.category"); // TODO - Handle this better
+                String category = keyBinding.getCategory().id().toLanguageKey("key.category");
 
                 if (!sortedKeybindings.containsKey(category)) {
                     sortedKeybindings.put(category, new ArrayList<>());

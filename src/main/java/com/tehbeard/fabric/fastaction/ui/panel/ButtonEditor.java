@@ -195,12 +195,6 @@ public class ButtonEditor extends LightweightGuiDescription {
 
             this.add(new WLabel(Component.literal("%s:".formatted(StringUtils.capitalize(task.type()))).setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE)))),0,5);
 
-            // TODO - Change this based on the action type.
-            // With command, can we autocomplete the string? (Not easily)
-            // with delay, ensure numeric only
-            // with panel, autocomplete panels? (Or show a list popup)
-            // with keybind, show button to list popup.
-
             WWidget config = new WLabel(Component.literal("Unknown"));
 
             if(task instanceof CommandTask c) {

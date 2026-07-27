@@ -10,11 +10,6 @@ import net.minecraft.network.chat.Component;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-/**
- * TODO: Redo as a list, try to figure an approach for category vs. keybind split
- * TODO: Implement search filtering
- * TODO: Sort label alignment.
- */
 public class PanelNameDialog extends LightweightGuiDescription {
 
 

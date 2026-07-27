@@ -21,12 +21,6 @@ public class MoveEntry extends ActionEntry {
     public static final Identifier TEXTURE_LEFT_ARROW = Identifier.fromNamespaceAndPath("minecraft", "textures/gui/sprites/transferable_list/unselect.png");
     public static final Identifier TEXTURE_RIGHT_ARROW = Identifier.fromNamespaceAndPath("minecraft", "textures/gui/sprites/transferable_list/select.png");
 
-    /**
-     * TODO: Refactor to accept a left click and right click function.
-     *
-     * @param data
-     * @param onClick
-     */
     public MoveEntry(ActionButton data, BiConsumer<MouseButtonEvent, Boolean> onClick) {
         super(data, onClick);
         hideTooltip();

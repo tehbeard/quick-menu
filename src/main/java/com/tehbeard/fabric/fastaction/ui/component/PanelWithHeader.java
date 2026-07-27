@@ -9,7 +9,6 @@ import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
-// TODO - Add methods to set widgets left/right of header.
 public class PanelWithHeader extends WPixelPanel {
 
     public PanelWithHeader(String heading, int width, int height, boolean darker) {

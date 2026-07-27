@@ -33,13 +33,6 @@ In **edit mode** you can:
 - Create a new action using the button below the main menu.
 - Delete an action button by right-clicking the button you'd like to delete.
 
-## TODO
-- [x] Keybinds to activate each button.
-- [ ] Group system that can show or hide itself when not active. (Server specific groups)
-- [ ] More action types. (Keys, Menus, Timers)
-- [ ] More customization options. (Different themes, change button size)
-- [ ] Advanced action button options. (Should it close on pressed, run multiple times, toggle on and off)
-
 ---
 
 License: [GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html)\

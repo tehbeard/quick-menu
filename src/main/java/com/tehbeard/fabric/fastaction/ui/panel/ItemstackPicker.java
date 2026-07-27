@@ -38,7 +38,6 @@ public class ItemstackPicker  extends LightweightGuiDescription {
         WGridPanel scrollPanelContents = new WGridPanel(26);
         scrollPanelContents.setGaps(4,2);
 
-        // TODO - Method to fill out scrollPanelContents
         updateItems(scrollPanelContents, null);
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);
@@ -48,7 +47,6 @@ public class ItemstackPicker  extends LightweightGuiDescription {
 
         WTextField searchField = new WTextField(Component.literal(""));
         searchField.setChangedListener( str -> {
-            // TODO - Filter search list.
             updateItems(scrollPanelContents, str);
         });
 
@@ -87,7 +85,7 @@ public class ItemstackPicker  extends LightweightGuiDescription {
             });
             panel.add(actionWidget, posX, posY,1,1);
             posX++;
-            if(posX == perRow) // TODO - Pull value from config
+            if(posX == perRow)
             {
                 posX = 0;
                 posY++;

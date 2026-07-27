@@ -10,11 +10,6 @@ import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * TODO: Redo as a list, try to figure an approach for category vs. keybind split
- * TODO: Implement search filtering
- * TODO: Sort label alignment.
- */
 public class ActionPicker extends LightweightGuiDescription {
 
     record ActionPickerEntry(String label, String tooltip, Runnable fn){}
@@ -34,7 +29,6 @@ public class ActionPicker extends LightweightGuiDescription {
 
         var listPanel = new WListPanel<>(list, WButton::new, (ActionPickerEntry action, WButton button) -> {
             button.setLabel(Component.literal(action.label));
-            // TODO - Find way to adjust the tooltip, may need custom button
             button.setOnClick(action.fn);
         });
 

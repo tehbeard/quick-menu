@@ -33,7 +33,6 @@ public class PanelPicker extends LightweightGuiDescription {
 
         var listPanel = new WListPanel<>(list, WButton::new, (PanelPickerEntry action, WButton button) -> {
             button.setLabel(Component.literal(action.label));
-            // TODO - Find way to adjust the tooltip, may need custom button
             button.setOnClick(action.fn);
         });
 
