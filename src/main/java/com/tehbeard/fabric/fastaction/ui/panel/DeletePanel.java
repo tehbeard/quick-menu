@@ -19,7 +19,7 @@ public class DeletePanel extends AbstractActionGui {
             (panel,data) -> new ActionEntry(data, (click, dbl) -> {
 
                 MinedeckScreen.pushCurrent(
-                    new ConfirmDeleteDialog(data, didDelete -> {
+                    new ConfirmDeleteActionDialog(data, didDelete -> {
                         MinedeckScreen.popCurrent();
                         if(didDelete)
                         {

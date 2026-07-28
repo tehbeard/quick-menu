@@ -68,6 +68,10 @@ public class ActionConfig {
     private boolean actionsInTooltip = true;
     private boolean closeOnAction = true;
 
+    public void setDefaultTab(String currentWorld, Identifier id) {
+        defaultTabs.put(currentWorld, id);
+    }
+
     public enum Size {
         SIX("Small", 3, 2,124, 86),
         FIFTEEN("Medium", 5, 3, 180, 114),
@@ -114,7 +118,7 @@ public class ActionConfig {
     }
 
     public void setTabs(List<ActionTab> tabs) {
-        this.tabs = tabs;
+        this.tabs = new ArrayList<>(tabs);
     }
 
     public Map<String, Identifier> getDefaultTabs() {
@@ -122,7 +126,7 @@ public class ActionConfig {
     }
 
     public void setDefaultTabs(Map<String, Identifier> defaultTabs) {
-        this.defaultTabs = defaultTabs;
+        this.defaultTabs = new HashMap<>(defaultTabs);
     }
 
     /**
@@ -154,6 +158,10 @@ public class ActionConfig {
         }
 
         FastAction.LOGGER.info("CURRENT LEVEL: " + currentWorld);
+    }
+
+    public String getCurrentWorld() {
+        return currentWorld;
     }
 
     public void clearCurrentWorld()
@@ -274,5 +282,21 @@ public class ActionConfig {
             new KeybindTask("key.quickActions")
         );
         return cfg;
+    }
+
+    public Identifier generateId(String input)
+    {
+        String validatedInput = input.toLowerCase().replaceAll(" ","_").replaceAll("[^a-z0-9_\\-]","");
+        var currentIds = getTabs().stream().map( ActionTab::getId).toList();
+        var idx = 0;
+        while(true) {
+            var id = Identifier.parse("minedeck:" + validatedInput + ( idx > 0 ? "_%s".formatted(idx) : ""));
+            if (currentIds.contains(id))
+            {
+                idx++;
+            } else {
+                return id;
+            }
+        }
     }
 }

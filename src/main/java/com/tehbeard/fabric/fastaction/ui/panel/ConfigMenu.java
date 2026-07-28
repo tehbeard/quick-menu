@@ -1,17 +1,20 @@
 package com.tehbeard.fabric.fastaction.ui.panel;
 
 import com.tehbeard.fabric.fastaction.data.ActionConfig;
-import com.tehbeard.fabric.fastaction.ui.component.OpenPanelsButton;
+import com.tehbeard.fabric.fastaction.ui.MinedeckScreen;
 import com.tehbeard.fabric.fastaction.ui.component.PanelWithHeader;
 import com.tehbeard.fabric.fastaction.ui.component.WPixelPanel;
 import com.tehbeard.fabric.fastaction.ui.component.WSelectButton;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
+import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+
 import java.util.Arrays;
 
 public class ConfigMenu extends LightweightGuiDescription {
@@ -38,7 +41,7 @@ public class ConfigMenu extends LightweightGuiDescription {
         // Actions in tooltip
         var tglActions = new WToggleButton();
         tglActions.setToggle(ActionConfig.getConfig().isActionsInTooltip());
-        tglActions.setOnToggle( a -> ActionConfig.getConfig().setActionsInTooltip(a));
+        tglActions.setOnToggle(a -> ActionConfig.getConfig().setActionsInTooltip(a));
         addRow(scrollPanelContents,
             20, "Show action in tooltip",
             tglActions
@@ -48,16 +51,22 @@ public class ConfigMenu extends LightweightGuiDescription {
         // Close menu on action
         var tglClose = new WToggleButton();
         tglClose.setToggle(ActionConfig.getConfig().isCloseOnAction());
-        tglClose.setOnToggle( a -> ActionConfig.getConfig().setCloseOnAction(a));
+        tglClose.setOnToggle(a -> ActionConfig.getConfig().setCloseOnAction(a));
         addRow(scrollPanelContents,
             40, "Close menu on action",
             tglClose
         );
 
-        var btnPanels = new OpenPanelsButton();
+        var btnPanels = new WButton(Component.literal("View Panels")) {
+
+            @Override
+            public InputResult onClick(MouseButtonEvent click, boolean doubled) {
+                MinedeckScreen.pushCurrent(new PanelsMenu());
+                return InputResult.PROCESSED;
+            }
+        };
         addRow(scrollPanelContents, 60, "", btnPanels);
         btnPanels.setSize(100, 18);
-
 
 
         WScrollPanel scrollWrapper = new WScrollPanel(scrollPanelContents);

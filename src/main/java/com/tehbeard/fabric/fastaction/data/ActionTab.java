@@ -27,6 +27,12 @@ public class ActionTab {
 
     private List<ActionButton> buttons = new ArrayList<>();
 
+    public ActionTab() {
+    }
+
+    public ActionTab(Identifier id) {
+        this.id = id;
+    }
 
     public Identifier getId() {
         return id;
