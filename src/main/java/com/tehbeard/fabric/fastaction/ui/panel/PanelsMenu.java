@@ -11,9 +11,11 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
+import io.github.cottonmc.cotton.gui.widget.icon.TextureIcon;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -35,6 +37,7 @@ public class PanelsMenu extends LightweightGuiDescription {
 
         private WLabel name;
         private WButton view;
+        private WButton edit;
         private WButton delete;
         private WButton setDefault;
 
@@ -43,7 +46,7 @@ public class PanelsMenu extends LightweightGuiDescription {
             this.setSize(264, 18);
             this.setInsets(Insets.NONE);
             name = new WLabel(Component.literal("N/A"));
-            view = new WButton(Component.literal("View")) {
+            view = new WButton(Component.literal("V")) {
                 @Override
                 public InputResult onClick(MouseButtonEvent click, boolean doubled) {
                     MinedeckScreen.popCurrent();
@@ -53,9 +56,32 @@ public class PanelsMenu extends LightweightGuiDescription {
                     );
                     return super.onClick(click, doubled);
                 }
+
+                @Override
+                public void addTooltip(TooltipBuilder tooltip) {
+                    tooltip.add(Component.literal("View"));
+                }
             };
-            view.setSize(36, 18);
-            delete = new WButton(Component.literal("Delete")).setOnClick(() -> {
+            edit = new WButton(Component.literal("E")) {
+                @Override
+                public InputResult onClick(MouseButtonEvent click, boolean doubled) {
+//                    Minecraft.getInstance().gui.setScreen(
+//                        new MinedeckScreen(new MainPanel(tab))
+//                    );
+                    return super.onClick(click, doubled);
+                }
+
+                @Override
+                public void addTooltip(TooltipBuilder tooltip) {
+                    tooltip.add(Component.literal("Edit"));
+                }
+            };
+            delete = new WButton(new TextureIcon(Identifier.withDefaultNamespace("textures/gui/sprites/container/beacon/cancel.png"))){
+                @Override
+                public void addTooltip(TooltipBuilder tooltip) {
+                    tooltip.add(Component.literal("Delete"));
+                }
+            }.setOnClick(() -> {
                 MinedeckScreen.pushCurrent(new ConfirmDeleteGenericDialog("Delete " + tab.getName(), yes -> {
                     if(yes)
                     {
@@ -69,10 +95,10 @@ public class PanelsMenu extends LightweightGuiDescription {
                     }
                     MinedeckScreen.popCurrent();
                 }));
-            });
-            delete.setSize(36, 18);
 
-            setDefault = new WButton(Component.literal("Set Default")) {
+            });
+
+            setDefault = new WButton(new TextureIcon(Identifier.withDefaultNamespace("textures/gui/sprites/container/beacon/confirm.png"))) {
                 @Override
                 public void addTooltip(TooltipBuilder tooltip) {
                     tooltip.add(Component.literal("Currently default for:"));
@@ -115,13 +141,12 @@ public class PanelsMenu extends LightweightGuiDescription {
                     return InputResult.PROCESSED;
                 }
             };
-            setDefault.setSize(60, 18);
 
             this.add(name, 0,4);
             this.add(view, 100, 0);
+            this.add(edit, 119, 0);
             this.add(delete, 138, 0);
-
-            this.add(setDefault, 176, 0);
+            this.add(setDefault, 157, 0);
         }
 
         public void setTab(ActionTab tab)
@@ -164,8 +189,8 @@ public class PanelsMenu extends LightweightGuiDescription {
                                 throw new RuntimeException(e);
                             }
                             listPanel.layout();
-                            MinedeckScreen.popCurrent();
                         });
+                        MinedeckScreen.popCurrent();
                     })
                 );
 
