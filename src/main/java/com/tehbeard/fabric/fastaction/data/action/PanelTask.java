@@ -41,7 +41,7 @@ public class PanelTask implements IActionTask {
 
     @Override
     public Component description() {
-        return Component.literal("Panel: %s".formatted(ActionConfig.getConfig().getTabs().stream().filter(tab -> tab.getId().equals(target)).findFirst().get().getName() ));
+        return Component.literal("Panel: %s".formatted(ActionConfig.getConfig().getTabs().stream().filter(tab -> tab.getId().equals(target)).findFirst().map( tab -> tab.getName()).orElse("Not found!") ));
     }
 
     @Override
