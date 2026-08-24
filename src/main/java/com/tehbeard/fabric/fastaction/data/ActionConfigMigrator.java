@@ -73,7 +73,7 @@ public class ActionConfigMigrator {
                 var cfg = new ActionConfig();
 
                 var tab = new ActionTab();
-                tab.setName("Default");
+                tab.setName("Quick Menu");
 
                 buttons.forEach(action -> {
                     tab.getButtons().add(action);
