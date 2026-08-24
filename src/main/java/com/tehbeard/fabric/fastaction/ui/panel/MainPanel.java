@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 public class MainPanel extends AbstractActionGui {
     public MainPanel(ActionTab currentTab) {
         super(
-            "Quick Menu",
+            currentTab.getName(), // "Quick Menu",
             currentTab,
             (panel, data) -> new ActionEntry(data, (click, dbl) -> {
                     if (ActionConfig.getConfig().isCloseOnAction()) {
