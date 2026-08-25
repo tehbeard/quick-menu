@@ -244,6 +244,12 @@ public class ButtonEditor extends LightweightGuiDescription {
                 txt.setText(c.getUrl());
                 txt.setChangedListener(c::setUrl);
                 config = txt;
+            } else if (task instanceof ChatTask c) {
+                var txt = new WTextField();
+                txt.setMaxLength(256);
+                txt.setText(c.getMessage());
+                txt.setChangedListener(c::setMessage);
+                config = txt;
             }
             config.setSize(120, 18);
             this.add(config,50, (config instanceof WButton) ? 1 : 0);

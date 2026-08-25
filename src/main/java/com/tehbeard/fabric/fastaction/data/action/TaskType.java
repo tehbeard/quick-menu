@@ -11,6 +11,7 @@ public record TaskType<T extends IActionTask>(MapCodec<T> codec) {
     public static final Registry<TaskType<?>> REGISTRY = new MappedRegistry<>(
         ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath("fastaction", "task_types")), Lifecycle.stable());
     public static TaskType<CommandTask> COMMAND_TASK = register("command", CommandTask.CODEC);
+    public static TaskType<ChatTask> CHAT_TASK = register("chat", ChatTask.CODEC);
     public static TaskType<DelayTask> DELAY_TASK = register("delay", DelayTask.CODEC);
     public static TaskType<KeybindTask> KEYBIND_TASK = register("keybind", KeybindTask.CODEC);
     public static TaskType<PanelTask> PANEL_TASK = register("panel", PanelTask.CODEC);

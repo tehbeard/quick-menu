@@ -24,6 +24,7 @@ public class ActionPicker extends LightweightGuiDescription {
             new ActionPickerEntry("Keybind", "Activates a keybind", () -> { newAction.accept(new KeybindTask("")); }),
             new ActionPickerEntry("Delay", "Adds a delay between tasks", () -> { newAction.accept(new DelayTask(20)); }),
             new ActionPickerEntry("URL", "Opens a URL in your default browser", () -> { newAction.accept(new UrlTask("https://minecraft.wiki")); }),
+            new ActionPickerEntry("Chat", "Prepares a chat message", () -> { newAction.accept(new ChatTask("")); }),
             new ActionPickerEntry("Panel", "Opens a panel", () -> { newAction.accept(new PanelTask(ActionConfig.getConfig().getFallbackTabId())); })
         );
 
