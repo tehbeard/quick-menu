@@ -21,6 +21,9 @@ jobs:
 
       - name: build
         run: ./gradlew build
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: capture build artifacts
         uses: actions/upload-artifact@v4
