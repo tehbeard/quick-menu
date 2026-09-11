@@ -53,7 +53,7 @@ dependencies {
 //    implementation fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)
 
 	// lib-guid
-    implementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
+    implementation include("io.github.cottonmc:libgui:${project.libgui_version}")
 
 	// gson
 	implementation 'com.google.code.gson:gson:2.8.9'
