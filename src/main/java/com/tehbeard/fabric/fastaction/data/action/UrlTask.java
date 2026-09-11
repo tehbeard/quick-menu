@@ -1,5 +1,6 @@
 package com.tehbeard.fabric.fastaction.data.action;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -10,6 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Util;
+
+import java.net.URI;
 
 public class UrlTask implements IActionTask {
 
@@ -50,7 +53,9 @@ public class UrlTask implements IActionTask {
 
     @Override
     public long run() {
-        Util.getPlatform().openUri(url);
+        Blaze3D.openUri(URI.create(url));
+//        No clue why it moved from platform to the RENDERING ENGINE... Oh Mojang...
+//        Util.getPlatform().openUri(url);
         return 0;
     }
 
