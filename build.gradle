@@ -28,6 +28,15 @@ repositories {
         name = "forgejo"
         url = "https://forgejo.local.tehbeard.com/api/packages/tehbeard/maven/"
     }
+
+    maven {
+        name = "lib-gui-fork"
+        url = uri("https://maven.pkg.github.com/tehbeard/LibGui")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
