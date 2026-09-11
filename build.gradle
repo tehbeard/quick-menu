@@ -24,17 +24,19 @@ repositories {
         url = "https://staging.alexiil.uk/maven/"
     }
 
-    maven {
-        name = "forgejo"
-        url = "https://forgejo.local.tehbeard.com/api/packages/tehbeard/maven/"
-    }
-
-    maven {
-        name = "lib-gui-fork"
-        url = uri("https://maven.pkg.github.com/tehbeard/LibGui")
-        credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
+    if (System.getenv("GITHUB_ACTIONS") != "true") {
+        maven {
+            name = "forgejo"
+            url = "https://forgejo.local.tehbeard.com/api/packages/tehbeard/maven/"
+        }
+    } else {
+        maven {
+            name = "lib-gui-fork"
+            url = uri("https://maven.pkg.github.com/tehbeard/LibGui")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }
