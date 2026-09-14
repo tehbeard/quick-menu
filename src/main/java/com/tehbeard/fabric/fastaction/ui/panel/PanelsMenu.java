@@ -26,6 +26,7 @@ import net.minecraft.resources.Identifier;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -85,7 +86,18 @@ public class PanelsMenu extends LightweightGuiDescription {
                 MinedeckScreen.pushCurrent(new ConfirmDeleteGenericDialog("Delete " + tab.getName(), yes -> {
                     if(yes)
                     {
-                        ActionConfig.getConfig().getTabs().removeIf( t -> t.getId().equals(tab.getId()));
+                        var didRemove = ActionConfig.getConfig().getTabs().removeIf( t -> t.getId().equals(tab.getId()));
+                        if(didRemove)
+                        {
+                            var removeEntries = new ArrayList<String>();
+                            ActionConfig.getConfig().getDefaultTabs().forEach( (name, key) -> {
+                                if(key.equals(tab.getId()))
+                                {
+                                    removeEntries.add(name);
+                                }
+                            });
+                            removeEntries.forEach( name -> ActionConfig.getConfig().getDefaultTabs().remove(name));
+                        }
                         listPanel.layout();
                         try {
                             ActionConfig.getConfig().save(FastAction.getConfigFile());

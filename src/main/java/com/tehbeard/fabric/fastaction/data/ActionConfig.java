@@ -175,7 +175,18 @@ public class ActionConfig {
      */
     public ActionTab getContextualDefaultTab()
     {
-        return this.tabs.stream().filter( t -> t.getId().equals(getContextualDefaultTabId())).findFirst().orElseThrow();
+        var contextualDefault = getContextualDefaultTabId();
+        return this.tabs.stream().filter( t -> t.getId().equals(contextualDefault)).findFirst().orElseGet(() -> {
+            var defaultTab = ActionConfig.getDefActionTabConfig();
+            defaultTab.setId(contextualDefault);
+            getTabs().add(defaultTab);
+            try {
+                ActionConfig.getConfig().save(FastAction.getConfigFile());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return defaultTab;
+        });
     }
 
     public void setFallbackTab(Identifier defaultTab) {
@@ -264,14 +275,11 @@ public class ActionConfig {
         return config;
     }
 
-    public static ActionConfig getDefaultConfig() {
-        var cfg = new ActionConfig();
-
+    public static ActionTab getDefActionTabConfig()
+    {
         var tab = new ActionTab();
+        tab.setName("Menu");
         tab.setId(ActionConfig.DEFAULT_TAB);
-        cfg.getTabs().add(
-            tab
-        );
 
         var btn = new ActionButton();
         btn.setName("Open Vanilla Quick Actions");
@@ -281,6 +289,16 @@ public class ActionConfig {
         btn.getTasks().add(
             new KeybindTask("key.quickActions")
         );
+        return tab;
+    }
+
+    public static ActionConfig getDefaultConfig() {
+        var cfg = new ActionConfig();
+        var tab = getDefActionTabConfig();
+        cfg.getTabs().add(
+            tab
+        );
+        
         return cfg;
     }
 
