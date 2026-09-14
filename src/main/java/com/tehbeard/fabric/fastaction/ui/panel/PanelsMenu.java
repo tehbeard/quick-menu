@@ -66,9 +66,19 @@ public class PanelsMenu extends LightweightGuiDescription {
             edit = new WButton(Component.literal("E")) {
                 @Override
                 public InputResult onClick(MouseButtonEvent click, boolean doubled) {
-//                    Minecraft.getInstance().gui.setScreen(
-//                        new MinedeckScreen(new MainPanel(tab))
-//                    );
+                    MinedeckScreen.pushCurrent(new PanelNameDialog("Rename Panel", tab.getName(), newName -> {
+                        newName.ifPresent( n -> {
+                            tab.setName(n);
+                            name.setText(Component.literal(n));
+                            try {
+                                ActionConfig.getConfig().save(FastAction.getConfigFile());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+                        MinedeckScreen.popCurrent();
+                    }));
                     return super.onClick(click, doubled);
                 }
 
@@ -83,6 +93,9 @@ public class PanelsMenu extends LightweightGuiDescription {
                     tooltip.add(Component.literal("Delete"));
                 }
             }.setOnClick(() -> {
+                if(ActionConfig.getConfig().getFallbackTabId().equals(tab.getId())) {
+                    return;
+                }
                 MinedeckScreen.pushCurrent(new ConfirmDeleteGenericDialog("Delete " + tab.getName(), yes -> {
                     if(yes)
                     {
@@ -156,8 +169,9 @@ public class PanelsMenu extends LightweightGuiDescription {
 
             this.add(name, 0,4);
             this.add(view, 100, 0);
-            this.add(edit, 119, 0);
+            this.add(edit, 119, 0); // TODO - Add this later
             this.add(delete, 138, 0);
+
             this.add(setDefault, 157, 0);
         }
 
