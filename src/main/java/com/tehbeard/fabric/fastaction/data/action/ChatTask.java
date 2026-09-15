@@ -36,7 +36,7 @@ public class ChatTask implements IActionTask {
 
     @Override
     public String type() {
-        return "command";
+        return "chat";
     }
 
     @Override
